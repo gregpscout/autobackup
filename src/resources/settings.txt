@@ -3,8 +3,8 @@ ${BROWSER}                  Firefox
 
 ${HOST_STAGING}             appstguseb01.talentpx.com
 ${USERNAME_STAGING}         tpxapp
-${PASSWORD_STAGING}         PHRASE  # specify your password to login to staging
-${KEYFILE}                  /Users/djangal/.ssh/id_dsa  # specify path to key file eg. /Users/djangal/.ssh/id_dsa
+${PASSWORD_STAGING}         # specify your password to login to staging
+${KEYFILE}                  # specify path to key file eg. /Users/djangal/.ssh/id_dsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  
