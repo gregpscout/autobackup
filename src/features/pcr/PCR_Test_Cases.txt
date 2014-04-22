@@ -1,0 +1,30 @@
+*** Settings ***
+Library           Selenium2Library
+Library 		  ImapLibrary
+Resource          ../../keywords/pcr/ui_pcr_keywords.txt
+Resource          ../../resources/settings.txt  
+Suite Teardown    Close All Browsers
+Variables         ../../models/Requisition_Models.py
+
+*** Variables ***
+${browser}  googlechrome
+${feedback_input}  Robot Test Feedback in PCR
+${feedback_subject}  Feedback: Scout TestAccount at PCRClient (pcr)
+
+*** Test Cases ***
+Scenario: PCR Test
+	Given User is on PCR Site  ${PCR_TEST}  ${browser}   
+	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+	Go to Scout Iframe in PCR
+	Search Jobs Orders Tab on Scout For PCR
+	Test Clear Button on Scout For PCR
+    Import Scout Job into PCR  ${TBE_REQ4['title']}
+    Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}
+    Then Logout of PCR
+#Need to verify that the imported job does not exist after import (clean up script needed to be able to write/test this)    
+
+Scenario: PCR Test links
+	Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}   
+	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+	Go to Scout Iframe in PCR
+	Test Feedback Link on Scout For PCR  ${feedback_input}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}

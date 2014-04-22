@@ -1,0 +1,25 @@
+*** Settings ***
+Library         MongoDBLibrary
+
+*** Variables ***
+${dbHost}      dbstguseb01.talentpx.com
+${dbPort}      ${27017}
+${dbname}      tpx
+${coll}        position_profile
+
+*** Keywords ***
+Retrieve JobId With Desired Fields From Mongodb  [Arguments]  ${PassJobId}  ${JobTitle}
+    Comment  Connect to MongoDB Server
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}"}  title  ${false}
+    Log    ${allResults}
+    Should Contain   ${allResults}  title
+    Should Contain   ${allResults}  ${JobTitle}
+    Disconnect From MongoDB
+    
+Delete Desired Objects From Mongodb  [Arguments]  ${PassJobId}  
+    Comment  Connect to MongoDB Server
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    Remove MongoDB Records  ${dbname}  ${coll}  {"req_id": "${PassJobId}"} 
+    Disconnect From MongoDB    
+

@@ -1,0 +1,26 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../../keywords/bullhorn/ui_bullhorn_keywords.txt 
+Resource          ../../resources/settings.txt  
+Suite Teardown    Close Browser
+Variables         ../../models/Requisition_Models.py
+
+*** Variables ***
+${browser}  IE
+
+*** Test Cases ***
+Scenario: Test Importing job in Bullhorn
+	Given User is on Bullhorn Site  ${BULLHORN}  ${browser}   
+	When Login to Bullhorn  ${USERNAME_BULLHORN}  ${PASSWORD_BULLHORN}
+    Go to Scout Staging Environment
+    Go to Search Jobs Page on Scout For Bullhorn
+    Test Clear Button on Scout For Bullhorn
+    Import Scout Job into Bullhorn  ${TBE_REQ1['title']} 
+    Back to Search on Scout for Bullhorn 
+    Go To Bullhorn Jobs Page
+    Then Logout of Bullhorn
+
+
+
+
+

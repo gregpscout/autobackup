@@ -1,0 +1,38 @@
+*** Keywords ***
+User is on Scout Admin Login Page
+  [Arguments]  ${url}  ${BROWSER}  
+	Open Browser  ${url}  ${BROWSER}
+	Maximize Browser Window
+	TPX Admin Login Page Should Be Open
+	
+TPX Admin Login Page Should Be Open
+	Title Should Be  Admin | Scout	
+	
+Verify User is on Scout Admin Login Page
+	Title Should Be  Admin | Scout	
+	
+Enter login details
+  [Arguments]  ${username}  ${password}
+    Input Text  email  ${username}
+    Input Text  password  ${password}
+    Click Button  submit	
+    
+Verify user is logged in to Scout Admin
+	Element Should Contain  //*[@id="main"]/div/h1  Partners 
+	
+Go To TBE-Sandbox
+    Verify user is logged in to Scout Admin
+	Go to Partner "taleo" page
+	Go to Company "TALENTDRIVE2" page 
+	
+Go to Partner "${partner}" page
+    Click Link  /admin/account/${partner}/
+    
+Go to Company "${company}" page
+    Click Link  /admin/account/taleo/${company}/   	
+	
+Verify user is on TBE-Sandbox Users page
+	Page Should Contain  Users	
+	
+Verify User is on Scout Admin Login Page
+	Title Should Be  Admin | Scout		

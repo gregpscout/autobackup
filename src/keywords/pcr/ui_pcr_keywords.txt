@@ -1,0 +1,119 @@
+*** Keywords ***
+User is on PCR Site  [Arguments]  ${url}  ${browser}  
+	Open Browser  ${url}  ${browser}
+	Maximize Browser Window
+		
+Login to PCR  [Arguments]  ${username}  ${password}  ${databaseId}
+    Title Should be  PCRecruiter HTML Interface
+    Select Frame  list
+    Input Text  user  ${username}
+    Input Password  pw  ${password}
+    Select From List  db  ${databaseId}
+    Click Link  myhref_1
+    Verify successful login to PCR
+    Unselect Frame
+
+Verify successful login to PCR
+    Wait Until Keyword Succeeds  10  10  Title Should be  PCRecruiter (SCOUTUSER/SCOUTTEST1)
+
+Go to Scout Iframe in PCR
+  [Documentation]  Takes user to Scout iframe in PCR if already logged in to PCR
+    Select Frame  menu
+    Click Position Tab in PCR
+    Unselect Frame
+    Select Frame  list
+    Click Link  Scout
+    Unselect Frame
+    Selecting Frames in PCR
+    Wait Until Page Contains  10  10  Scout
+    Unselect Frame
+
+Click Position Tab in PCR
+    Wait Until Keyword Succeeds  10  10  Click Link  myhref_4
+
+Search Jobs Orders Tab on Scout For PCR
+  [Documentation]  Takes user to search jobs orders tab in Scout iframe
+    Selecting Frames in PCR
+    Click link  signals-search
+    Verify User is on Search Jobs Page for Scout in PCR
+
+Verify User is on Search Jobs Page for Scout in PCR
+    Wait Until Keyword Succeeds  10  10  Element Should Be Visible  advanced-search
+
+Test Clear Button on Scout For PCR 
+  [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
+    Input Text  keyword  abcde
+    Textfield Should Contain  keyword  abcde  
+    Click Element  clear
+    Textfield Should Contain  keyword  \
+
+Import Scout Job into PCR  [Arguments]  ${jobTitle}
+  [Documentation]  Searches and imports specified job from Scout iframe into PCR
+    Search for Job by Title in Scout For PCR  ${jobTitle}
+    Sleep  5s
+    Select Checkbox  xpath=//*[@id="req-results-table"]/tbody/tr[1]/td[1]/input
+    Click Button  import-selected
+    Wait Until Keyword Succeeds  20  10  Element Should Be Visible  import-confirm
+    Wait Until Page Contains  2  2  imported-jobs
+    Unselect Frame
+
+Search for Job by Title in Scout For PCR  [Arguments]  ${jobTitle}
+  [Documentation]  Searches for specified job on Scout iframe
+    Input Text  keyword  ${jobTitle} 
+    Click Element  search-button
+
+# Currently this below keyword is not being used in the  PCR smoke test as we have the PCR frame blocking the popup issue. This keyword can be used when we invoke the iframe on a seperate window and test the 'Back to Search' button during regression testing.
+Back to Search on Scout for PCR
+  [Documentation]  selects back to search button after importing a job from Scout into PCR
+    Click Button  import-back-to-list   
+    Wait Until Keyword Succeeds  20  10  Verify User is on Search Jobs Page for Scout
+
+Go To PCR Position Page to View Imported Job  [Arguments]  ${jobTitle}
+  [Documentation]  Goes back to Position page after importing a job from Scout into PCR to view the job
+  Select Frame  menu
+  Click Link  myhref_4
+  Unselect Frame
+  Select Frame  list
+  Input Text  datainputa  ${jobTitle}
+  Click Link  myhref_2
+  Click Link  ${jobTitle}
+  Unselect Frame
+  Verify the Job Selected is the Job Displayed in PCR
+
+Verify the Job Selected is the Job Displayed in PCR
+    Select Frame  detail
+    Textfield Should Contain  title  ${jobTitle}
+    Unselect Frame
+
+Test Feedback Link on Scout For PCR  [Arguments]  ${feedback_input}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}
+    [Documentation]  PCR uses frames and because of that, the feedback modal submit button is getting hidden beneath the PCR detail frame. Since the test cannot view the modal, the workaround is to open the scout iframe in its own window and test the feedback link
+    Go To  https://test.talentpx.com/pcr/#recommended
+    Click Link  //*[@class="feedback-link"]
+    Wait Until Page Contains  5  5  feedback-modal__headline-text
+    Input Text  feedback-modal__feedback-textarea  ${feedback_input}
+    Click Button  feedback-modal__submit
+    Validate Feedback Email Received  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}
+
+Validate Feedback Email Received  [Arguments]  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}
+    Open Mailbox  server=imap.googlemail.com  user=${TEST_EMAIL_ID}  password=${TEST_EMAIL_PWD}   
+    ${latest}=  Wait for mail  fromEmail=${NOREPLY_TEST_EMAIL}  toEmail=${SCOUT_QA_EMAIL}  timeout=60
+    ${parts}=  Walk Multipart Email  ${latest}
+    @{fields}=  Get Multipart Field Names
+    ${subject}=  Get Multipart Field  Subject
+    Should Be Equal   ${subject}   ${feedback_subject}
+    ${payload}=  Get Multipart Payload  decode=True
+    ${content}=  Should Contain  ${payload}  ${feedback_input}
+    Close Mailbox
+
+Logout of PCR
+    Select Frame  menu
+    Click Link  myhref_13
+    Confirm Action
+    Unselect Frame
+
+Selecting Frames in PCR
+  [Documentation]  PCR needs frame selection to be able to verify and validate actions
+    Select Frame  list
+    Select Frame  scoutframe
+
+

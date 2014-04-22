@@ -1,0 +1,91 @@
+*** Settings ***
+Variables  ../../models/Requisition_Models.py
+
+*** Keywords ***
+User is on TBE Site  
+  [Arguments]  ${Url}  ${Browser}  
+	Open Browser  ${Url}  ${Browser}
+	Maximize Browser Window
+	TBE Login Page Should Be Open
+	
+Login to TBE
+  [Arguments]  ${username}  ${password}  ${companyCode}
+    Input Text  uname  ${username}
+    Input Text  pword  ${password}
+    Input Text  ccode  ${companyCode} 
+    Click Button  Submit	
+    
+Go to Create Requisition Form in TBE
+  [Documentation]  Takes the user to Create Requisition Form when logged in to TBE
+    Mouse Down On Link  Requisitions 
+    Wait Until Page Contains  New Requisition
+    Wait Until Element is Visible  xpath=/html/body/div[4]/div/div/ul/li[2]/ul/li[2]/a
+    Click Link  New Requisition	
+    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a    	
+	
+User is on Create Requisition Page for TBE
+    Page Should Contain  Requisitions: New Requisition 
+    
+Create New Requisition in TBE  [Arguments]  ${tbeReq} 
+    Go to Create Requisition Form in TBE
+    User is on Create Requisition Page for TBE 
+    Enter Job Details for TBE  ${tbeReq}
+    
+Enter Job Details for TBE  [Arguments]  ${tbeReq}    
+    Input Text  openedDate  ${tbeReq['openDate']}
+    Input Text  title  ${tbeReq['title']} 
+    Select From List  location  ${tbeReq['location']}
+    Select From List  jobCat  ${tbeReq['jobCat']}
+    Select From List  status  ${tbeReq['status']}
+    Input Text  numOpen  ${tbeReq['numOpen']}  
+    Select From List  duration  ${tbeReq['duration']}
+    Select Checkbox  ${tbeReq['abc']}
+    Checkbox Should Be Selected  CUSTOM_950
+    Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
+    Input Text  xpath= //body[contains(@class,'cke_editable')]  Test Successful 
+    Unselect Frame
+    Click Button  update        
+    	
+Get Job Req Id
+  [Arguments]  ${jobTitle}
+  [Documentation]  Returns job id when searched by title on TBE  
+    Click Link  Requisitions
+    Verify User is on TBE Requisitions Page
+    ${jobId}=  Search Job Requisition on TBE  ${jobTitle}
+    [return]  ${jobId.strip()}
+  
+Search Job Requisition on TBE
+  [Arguments]  ${jobTitle}
+  [Documentation]  Returns job id on TBE when user is on Requisitions page
+    Input Text  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[2]  ${jobTitle}
+    Sleep  5S
+    Click Button  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[3]
+    Click Link  Last Updated
+    Click Link  Last Updated
+    ${jobId}=  Get Table Cell  REQUS_0  2  3  
+    [return]  ${jobId}
+    
+Delete Job from TBE  [Arguments]  ${jobId}
+    Select Checkbox  ${jobId}
+    Click Button  Delete    
+ 
+Verify user is logged in to TBE
+    Page Should Contain  My View:
+	      
+Verify User is on TBE Requisitions Page
+    Page Should Contain  Requisitions: Home  
+    Page Should Contain Element  keywords   
+		
+TBE Login Page Should Be Open
+	Title Should Be  Log into Taleo Business Edition	
+		
+	
+	
+
+
+
+
+
+
+
+

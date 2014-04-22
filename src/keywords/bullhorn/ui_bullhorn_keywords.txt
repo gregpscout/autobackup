@@ -1,0 +1,80 @@
+*** Keywords ***
+User is on Bullhorn Site  [Arguments]  ${url}  ${browser}  
+	Open Browser  ${url}  ${browser}
+	Maximize Browser Window
+		
+Login to Bullhorn  [Arguments]  ${username}  ${password}
+    Input Text  username  ${username}
+    Input Text  password  ${password}
+    Click Button  Log in to Bullhorn
+    Verify user is logged in to Bullhorn
+
+Go to Scout Staging Environment 
+  [Documentation]  Takes user to Scout iframe in Bullhorn if already logged in to Bullhorn
+    Click Jobs Link in Bullhorn 
+    Click Element  TD1option121
+    Go To  https://staging.talentpx.com/bullhorn/search#
+    Confirm Action
+    Wait Until Element is Visible  signals-search
+
+Go to Search Jobs Page on Scout For Bullhorn  
+  [Documentation]  Takes user to search jobs page in Scout iframe when already in iframe
+    Click Link  signals-search
+    Verify User is on Search Jobs Page for Scout 
+
+Verify User is on Search Jobs Page for Scout
+    Page Should Contain  Search Scout
+
+Click Jobs Link in Bullhorn 
+    Wait Until Keyword Succeeds  10  10  Click Element  td3 
+
+Verify user is logged in to Bullhorn  
+    Wait Until Keyword Succeeds  10  10  Page Should Contain Link  /BullhornStaffing/BHLogin.cfm 
+    [Documentation]  Following line is to maintain stability otherwise it keeps switching between jobs and candidates page
+    Go To Jobs List Page in Bullhorn    
+
+Go To Jobs List Page in Bullhorn   
+    Click Element  windowTab_BHSWindow1097 
+
+Import Scout Job into Bullhorn  [Arguments]  ${jobTitle}
+  [Documentation]  Searches and imports specified job from Scout iframe into Bullhorn
+    Search for Job by Title in Scout For Bullhorn  ${jobTitle}
+    Sleep  5s
+    Select Checkbox  xpath=//*[@id="req-search-table"]/tbody/tr[1]/td[1]/input   
+    Click Button  import-selected 
+    Wait Until Keyword Succeeds  20  10  Element Should Be Visible  xpath=//*[@id="import-back-to-list"]  
+
+Logout of Bullhorn
+    Click Link  /BullhornStaffing/BHLogin.cfm   
+    Confirm Action
+
+Test Clear Button on Scout For Bullhorn 
+  [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
+    Input Text  keyword  abcde
+    Textfield Should Contain  keyword  abcde  
+    Click Element  clear
+    Textfield Should Contain  keyword  \
+
+Search for Job by Title in Scout For Bullhorn  [Arguments]  ${jobTitle}
+  [Documentation]  Searches for specified job on Scout iframe
+    Input Text  keyword  ${jobTitle} 
+    Click Element  review
+
+Back to Search on Scout for Bullhorn
+  [Documentation]  selects back to search button after importing a job from Scout into Bullhorn
+    Click Button  import-back-to-list   
+    Wait Until Keyword Succeeds  20  10  Verify User is on Search Jobs Page for Scout
+
+Go To View Imported Jobs for Bullhorn
+  [Documentation]  selects  view imported jobs button after importing a job from Scout into Bullhorn
+    Click Button  import-confirm-close
+
+Go To Bullhorn Jobs Page
+  [Documentation]  Takes user to Bullhorn jobs page once logged in
+    Go To  https://bhnext.bullhornstaffing.com/BullhornStaffing/MainFrame.cfm
+    Verify User is on Bullhorn Home Page
+    Go To Jobs List Page in Bullhorn
+
+Verify User is on Bullhorn Home Page
+  [Documentation]  Verifies user is logged in to Bullhorn
+    Title Should Be  Bullhorn 2013 Release

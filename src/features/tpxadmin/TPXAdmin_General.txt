@@ -1,0 +1,28 @@
+*** Settings ***
+Library    Selenium2Library
+Suite Teardown    Close Browser
+Resource  ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt
+Resource  ../../resources/settings.txt
+
+*** Test Cases ***
+Scenario: Test Login to Scout Admin
+  [Tags]  SMOKE
+	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
+	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
+	Then Verify user is logged in to Scout Admin
+	When Go To TBE-Sandbox
+	Then Verify user is on TBE-Sandbox Users page
+	When Click Link  /logout
+	Then TPX Admin Login Page Should Be Open
+	
+
+
+
+	
+	
+
+		
+	    
+    
+	
+	
