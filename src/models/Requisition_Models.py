@@ -67,6 +67,3 @@ TBE_REQ6 = {
     "duration": '1',
     "abc": 'CUSTOM_935'    
 }
-
-
-

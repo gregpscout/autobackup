@@ -2,18 +2,16 @@
 Library     SSHLibrary
 Resource    ../../resources/settings.txt    
 
-*** Variables ***
-${syncTBEJobs}    ./manage.py --sync sync-taleo-requisitions
 
 *** Keywords ***
-Open connection and log in
+Open connection and log in  [Arguments]  ${HOST}
   [Documentation]  SSH into the specified host with given credentials
-    Open Connection   ${HOST_STAGING}
-    Login With Public Key  ${USERNAME_STAGING}  ${KEYFILE}  ${PASSWORD_STAGING}
+    Open Connection  ${HOST}
+    Login With Public Key  ${USERNAME}  ${KEYFILE}  ${PASSWORD}
     
-Run Sync Jobs to Taleo
+Run Sync Jobs  [Arguments]  ${HOST}  ${sync}
   [Documentation]  Logs into staging environment and runs manage.py command to sync taleo requisitions 
-    Open connection and log in
+    Open connection and log in  ${HOST}
     Write  cd current   
     Write  source virtualenv/bin/activate 
-    Write  ${syncTBEJobs}
+    Write  ${sync}
