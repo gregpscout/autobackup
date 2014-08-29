@@ -2,9 +2,10 @@
 ${BROWSER}                  Firefox
 
 ${HOST_STAGING}             appstguseb01.talentpx.com
-${USERNAME_STAGING}         tpxapp
-${PASSWORD_STAGING}         # specify your password to login to staging
-${KEYFILE}                  # specify path to key file eg. /Users/djangal/.ssh/id_dsa
+${HOST_TEST}	            apptstuseb01.talentpx.com
+${USERNAME}         		tpxapp
+${PASSWORD}			        # specify your password to login to staging
+${KEYFILE}                  # specify path to keyfile /Users/username/.ssh/id_dsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  
@@ -19,6 +20,13 @@ ${TBE}                      https://tbe.taleo.net/login
 ${TBE_USERNAME}             qa_scout
 ${TBE_PASSWORD}             qa_scout
 ${TBE_COMPANY}              TALENTDRIVE2
+${TBE_CONTACT}				QA Scout
+
+${TBE_USERNAME_TEST}        pparker
+${TBE_PASSWORD_TEST}        spiderman2013
+${TBE_PHONE_TEST}			(617) 535-5030
+${TBE_CONTACT_TEST}			Peter Parker
+${TBE_EMAIL_TEST}			scout_qa@goscoutgo.com
 
 ${TPXADMIN_STG}             https://staging.talentpx.com/admin/login
 ${USERNAME_TPXADMIN_STG}    scout_support@goscoutgo.com
@@ -26,5 +34,7 @@ ${PASSWORD_TPXADMIN_STG}    password1
 
 ${TEST_EMAIL_ID}			sent-email-test@talentdrive.com
 ${TEST_EMAIL_PWD}			Noreply2014$
-${NOREPLY_TEST_EMAIL}		no-reply-test@talentpx.com
+${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com
 ${SCOUT_QA_EMAIL}			scout_qa@talentdrive.com
+
+${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended

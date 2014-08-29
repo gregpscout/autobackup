@@ -9,6 +9,9 @@ Resource          ../../resources/settings.txt
 Variables         ../../models/Requisition_Models.py  
 Suite Teardown    Close Browser
 
+*** Variables ***
+${syncTBEJobs}      ./manage.py --sync sync-taleo-requisitions
+
 *** Test Cases ***
 
 Scenario: Test Create Requisition in TBE
@@ -21,9 +24,10 @@ Scenario: Test Create Requisition in TBE
 	Then Verify user is logged in to TBE
 	When Create New Requisition in TBE  ${TBE_REQ1}
 	When Create New Requisition in TBE  ${TBE_REQ4}
-    ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
-    Run Sync Jobs to Taleo
-    Sleep  4m  
+    ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
+    Run Sync Jobs to Taleo  ${HOST_STAGING}  ${syncTBEJobs} 
+    Run Sync Jobs to Taleo  ${HOST_TEST}  ${syncTBEJobs}
+    Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
    
 
