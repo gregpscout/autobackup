@@ -61,8 +61,8 @@ Scenario: PCR Smoke Test for Employer Contact Un-blinding and Candidate Placemen
   [TAGS]  SMOKE  PLACEMENT  BLINDING
 	Given User is on PCR Site  ${PCR_TEST}  ${browser}   
 	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
-	Go To PCR Position Page to View Imported Job  ${TBE_REQ1['title']}  ${status_pending}
-    Test Employer Info is Un-blinded After Candidate gets Accepted by Employer  ${TBE_REQ1['title']}
+	Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
+    Test Employer Info is Un-blinded After Candidate gets Accepted by Employer  ${TBE_REQ4['title']}
     Place the Accepted Candidate  ${PCR_Accept_Candidate['full_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['first_name']}
     Then Logout of PCR
 
@@ -101,7 +101,7 @@ Scenario: PCR Regression Test For Running Sync and Check Email for Missing Resum
   [Documentation]  Testing PCR for the following
   ...  Sync the submission
   ...  Validate error email was received
-  [Tags]  REGRESSION  MISSINGRESUME1
+  [Tags]  REGRESSION  MISSINGRESUME
   Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
   Sleep  5s
   Validate Email Received  ${missing_resume_text}  ${missing_resume_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
@@ -114,9 +114,9 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Email
   When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
   Go to Scout Iframe in PCR
   Search Jobs Orders Tab on Scout For PCR
-  Import Scout Job into PCR  ${TBE_REQ1['title']}
+  Import Scout Job into PCR  ${TBE_REQ4['title']}
   Edit Candidate Status Before Setting Up Interview  ${PCR_Candidate_Missing_Email['first_name']}  ${PCR_Candidate_Missing_Email['last_name']}  ${PCR_Candidate_Missing_Email['id']}
-  Go To PCR Position Page to View Imported Job  ${TBE_REQ1['title']}  ${status_pending}
+  Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
   Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Email['first_name']}  ${PCR_Candidate_Missing_Email['last_name']}
   Then Logout of PCR
 
@@ -124,7 +124,7 @@ Scenario: PCR Regression Test For Running Sync and Check Email for Missing Email
   [Documentation]  Testing PCR for the following
   ...  Sync the submission
   ...  Validate error email was received
-  [Tags]  REGRESSION  MISSINGEMAIL1
+  [Tags]  REGRESSION  MISSINGEMAIL
   Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
   Sleep  10s
   Validate Email Received  ${missing_email_text}  ${missing_email_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
