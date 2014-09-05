@@ -11,7 +11,7 @@ ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  
 ${PASSWORD_BULLHORN}        jsimmons@litl
 
-${PCR_TEST}					http://rc2.pcrecruiter.net
+${PCR_TEST}					https://rc2.pcrecruiter.net
 ${USERNAME_PCR}				SCOUTUSER
 ${PASSWORD_PCR}				a8kjlLk2
 ${DATABASEID_PCR}			ScoutTest1
@@ -35,6 +35,6 @@ ${PASSWORD_TPXADMIN_STG}    password1
 ${TEST_EMAIL_ID}			sent-email-test@talentdrive.com
 ${TEST_EMAIL_PWD}			Noreply2014$
 ${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com
-${SCOUT_QA_EMAIL}			scout_qa@talentdrive.com
+${SCOUT_QA_EMAIL}			scout_qa@goscoutgo.com
 
 ${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended

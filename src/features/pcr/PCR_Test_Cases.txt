@@ -28,13 +28,13 @@ Scenario: PCR Smoke Test for Searching and Importing a Job
   [Documentation]  Testing PCR for the following
   ...  Search Iframe for Job and import
   ...  Verify that Job is imported
-  [Tags]  SMOKE  IMPORT
+  [Tags]  SMOKE  IMP
 	Given User is on PCR Site  ${PCR_TEST}  ${browser}   
 	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
 	Go to Scout Iframe in PCR
 	Search Jobs Orders Tab on Scout For PCR
 	Test Clear Button on Scout For PCR
-  Import Scout Job into PCR  ${TBE_REQ4['title']}
+    Import Scout Job into PCR  ${TBE_REQ4['title']}
 
 Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Employer Contact Blinding feature verification
   [Documentation]  Testing PCR for the following
@@ -62,9 +62,9 @@ Scenario: PCR Smoke Test for Employer Contact Un-blinding and Candidate Placemen
 	Given User is on PCR Site  ${PCR_TEST}  ${browser}   
 	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
 	Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
-  Test Employer Info is Un-blinded After Candidate gets Accepted by Employer  ${TBE_REQ4['title']}
-  Place the Accepted Candidate  ${PCR_Accept_Candidate['full_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['first_name']}
-  Then Logout of PCR
+    Test Employer Info is Un-blinded After Candidate gets Accepted by Employer  ${TBE_REQ4['title']}
+    Place the Accepted Candidate  ${PCR_Accept_Candidate['full_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['first_name']}
+    Then Logout of PCR
 
 
 Scenario: PCR Cleanup
@@ -82,7 +82,6 @@ Scenario: PCR Test links
 	When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
 	Go to Scout Iframe in PCR
 	Test Links on Scout For PCR  ${TEST_SCOUTLINK}
-  Then Logout of PCR
 
 Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
   [Documentation]  Testing PCR for the following
@@ -103,7 +102,7 @@ Scenario: PCR Regression Test For Running Sync and Check Email for Missing Resum
   [Documentation]  Testing PCR for the following
   ...  Sync the submission
   ...  Validate error email was received
-  [Tags]  REGRESSION  MISSINGRESUME 
+  [Tags]  REGRESSION  MISSINGRESUME
   Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
   Sleep  5s
   Validate Email Received  ${missing_resume_text}  ${missing_resume_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}

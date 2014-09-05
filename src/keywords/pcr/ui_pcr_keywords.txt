@@ -6,6 +6,7 @@ User is on PCR Site  [Arguments]  ${url}  ${browser}
 Login to PCR  [Arguments]  ${username}  ${password}  ${databaseId}
     Title Should be  PCRecruiter HTML Interface
     Select Frame  list
+    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  user
     Input Text  user  ${username}
     Input Password  pw  ${password}
     Select From List  db  ${databaseId}
@@ -20,6 +21,7 @@ Go to Scout Iframe in PCR
   [Documentation]  Takes user to Scout iframe in PCR if already logged in to PCR
     Click Position Tab in PCR
     Select Frame  list
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  Scout
     Click Link  Scout
     Unselect Frame
     Selecting ScoutFrame in PCR
@@ -120,6 +122,7 @@ Set Up Interview for Imported Job  [Arguments]  ${candidate_firstname}  ${candid
     Mouse Over  myhref_24
     Click Link  myhref_25
     Click Link  myhref_3
+    Sleep  2s
     Select Window  title=Search Results
     Input Text  xpath=//*[@tabindex="1"]  ${candidate_firstname}
     Input Text  xpath=//*[@tabindex="2"]  ${candidate_lastname}
@@ -190,13 +193,14 @@ Test Feedback Link on Scout  [Arguments]  ${feedback_input}  ${feedback_subject}
 
 Test Need Help with Scout Link for PCR  [Arguments]  ${needhelp_link}  ${needhelp_text}
     Click Link  xpath=//*[@class="faq"]
+    Sleep  2s
     Select Window  title=${needhelp_link}
     Page Should Contain  ${needhelp_text}
     Close Window
 
 Validate Email Received  [Arguments]  ${validate_input}  ${validate_subject}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}
     Open Mailbox  server=imap.googlemail.com  user=${EMAIL_ID}  password=${EMAIL_PWD}   
-    ${latest}=  Wait for mail  fromEmail=${NOREPLY_EMAIL}  toEmail=${SCOUT_QA_EMAIL}  timeout=60
+    ${latest}=  Wait for mail  fromEmail=${NOREPLY_TEST_EMAIL}  toEmail=${SCOUT_QA_EMAIL}  timeout=60
     ${parts}=  Walk Multipart Email  ${latest}
     @{fields}=  Get Multipart Field Names
     ${subject}=  Get Multipart Field  Subject
