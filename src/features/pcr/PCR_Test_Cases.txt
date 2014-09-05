@@ -99,6 +99,7 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
   Then Logout of PCR
 
 Scenario: PCR Regression Test For Running Sync and Check Email for Missing Resume Error
+#This is for running a sync and checking the error email got sent
   [Documentation]  Testing PCR for the following
   ...  Sync the submission
   ...  Validate error email was received
