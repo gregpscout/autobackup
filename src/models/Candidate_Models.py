@@ -3,9 +3,21 @@ from datetime import datetime, time, timedelta
 now = dt.datetime.now()
 
 BHS_Accept_Candidate = {
-    "name": "Robot_accept_BH Kruger",
-    "mod_name": "Robot_accept_BHS K.",
+    "name": "Robot_Accept_BHS Kruger",  
+    "mod_name": "Robot_Accept_BHS K.",
     "id": '85'
+}
+
+BHS_Reject_Candidate = {
+    "name": "Robot_Reject_BHS Candidate2",  
+    "mod_name": "Robot_Reject_BHS C.",
+    "id": '112'
+}
+
+BHS_No_Contact = {
+    "name": "Robot_BHS_No Contact_Details",  
+    "mod_name": "Robot_BHS_No C.",
+    "id": '114'
 }
 
 PCR_Accept_Candidate = {

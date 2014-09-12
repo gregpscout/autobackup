@@ -7,6 +7,7 @@ Resource          ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
 Resource          ../../keywords/db/sync_tasks.txt 
 Resource          ../../resources/settings.txt
 Variables         ../../models/Requisition_Models.py  
+Variables         ../../models/Candidate_Models.py
 Suite Teardown    Close Browser
 
 *** Variables ***
@@ -29,10 +30,31 @@ Scenario: Test Create Requisition in TBE
     Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
     Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
-   
-
-
-
+    
+Scenario: Test Candidate Acceptance in TBE
+  [Documentation]  Accepts candidates for a job in TBE
+  [Tags]  ACCEPTSUBMISSION  SMOKE
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
+    Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}   
+    
+Scenario: Test Candidate Rejection in TBE
+  [Documentation]  Accepts candidates for a job in TBE
+  [Tags]  REJECTSUBMISSION  SMOKE
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
+    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}       
+     
+    
+    
+    
+    
 	
 	
 

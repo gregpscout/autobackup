@@ -4,12 +4,17 @@ ${BROWSER}                  Firefox
 ${HOST_STAGING}             appstguseb01.talentpx.com
 ${HOST_TEST}	            apptstuseb01.talentpx.com
 ${USERNAME}         		tpxapp
-${PASSWORD}			        # specify your password to login to staging
-${KEYFILE}                  # specify path to keyfile /Users/username/.ssh/id_dsa
+${PASSWORD}			        PHRASE           # specify your password to login to staging
+${KEYFILE}                  /Users/djangal/.ssh/id_dsa         # specify path to keyfile /Users/username/.ssh/id_dsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  
 ${PASSWORD_BULLHORN}        jsimmons@litl
+
+${BULLHORN_S}               https://bhnext.bullhornstaffing.com
+${USERNAME_BULLHORN_S}      scout.test  
+${PASSWORD_BULLHORN_S}      bull2horn
+${BH_FEEDBACK_TEXT}         Testing feedback from Bullhorn 
 
 ${PCR_TEST}					https://rc2.pcrecruiter.net
 ${USERNAME_PCR}				SCOUTUSER
@@ -38,3 +43,7 @@ ${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com
 ${SCOUT_QA_EMAIL}			scout_qa@goscoutgo.com
 
 ${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended
+
+${SCOUT_EMAIL}              scout_support@goscoutgo.com
+${TBE_SCOUT_CONTACT}        QA Scout
+${TBE_SCOUT_EMAIL}          scout_qa+tbeautomation@goscoutgo.com
