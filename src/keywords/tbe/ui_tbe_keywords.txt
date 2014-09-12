@@ -21,17 +21,19 @@ Go to Create Requisition Form in TBE
     Wait Until Page Contains  New Requisition
     Wait Until Element is Visible  xpath=/html/body/div[4]/div/div/ul/li[2]/ul/li[2]/a
     Click Link  New Requisition	
-    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a    	
-	
+    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a  
+    
 User is on Create Requisition Page for TBE
     Page Should Contain  Requisitions: New Requisition 
     
-Create New Requisition in TBE  [Arguments]  ${tbeReq} 
+Create New Requisition in TBE  
+  [Arguments]  ${tbeReq} 
     Go to Create Requisition Form in TBE
     User is on Create Requisition Page for TBE 
     Enter Job Details for TBE  ${tbeReq}
     
-Enter Job Details for TBE  [Arguments]  ${tbeReq}    
+Enter Job Details for TBE  
+  [Arguments]  ${tbeReq}    
     Input Text  openedDate  ${tbeReq['openDate']}
     Input Text  title  ${tbeReq['title']} 
     Select From List  location  ${tbeReq['location']}
@@ -44,15 +46,18 @@ Enter Job Details for TBE  [Arguments]  ${tbeReq}
     Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
     Input Text  xpath= //body[contains(@class,'cke_editable')]  Test Successful 
     Unselect Frame
-    Click Button  update        
+    Click Button  update            
     	
 Get Job Req Id
   [Arguments]  ${jobTitle}
   [Documentation]  Returns job id when searched by title on TBE  
-    Click Link  Requisitions
-    Verify User is on TBE Requisitions Page
+    Go to Requisitions Page in TBE
     ${jobId}=  Search Job Requisition on TBE  ${jobTitle}
     [return]  ${jobId.strip()}
+    
+Go to Requisitions Page in TBE 
+    Click Link  Requisitions 
+    Verify User is on TBE Requisitions Page 
   
 Search Job Requisition on TBE
   [Arguments]  ${jobTitle}
@@ -78,6 +83,52 @@ Verify User is on TBE Requisitions Page
 		
 TBE Login Page Should Be Open
 	Title Should Be  Log into Taleo Business Edition	
+	
+Go to Scout Candidates List for Job  
+  [Arguments]  ${jobTitle}
+    Search Job Requisition on TBE  ${jobTitle}
+    Click Link  ${jobTitle}
+    Verify User is on Job Details Page  ${jobTitle}
+    Click Link  \#a185
+    Verify User is on Scout Candidates Page for TBE
+    
+Verify User is on Scout Candidates Page for TBE
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
+    
+Accept Candidate in TBE  
+  [Arguments]  ${CandidateName}  ${jobTitle}
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
+    Click Element  interested 
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 
+    Element Should Contain  interested-modal  Would you like to import ${CandidateName} to the ${jobTitle} requisition?
+    Click Element  interested-modal__submit
+        
+Reject Candidate in TBE  
+  [Arguments]  ${CandidateName}  ${reason}  ${comments}
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
+    Click Element  not-interested
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
+    Select Radio Button  not-interested-reason  ${reason}    
+    Input Text  not-interested-modal__comments  ${comments}         
+    Click Element  not-interested-modal__submit    
+    
+Go to Candidate Details Page from Scout Candidates List
+  [Arguments]  ${CandidateName} 
+    Select Frame  xpath=//iframe[contains(@src,'https://staging.talentpx.com')]
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="candidateList"]
+    Click Link  ${CandidateName} 
+    Verify User is on Candidate Details Page       
+    
+Verify User is on Candidate Details Page
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
+    
+Verify User is on Job Details Page  
+  [Arguments]  ${jobTitle} 
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a28  Posting Information 
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a185  Scout Candidates
+    	
+	
 		
 	
 	
