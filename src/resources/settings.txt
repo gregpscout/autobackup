@@ -40,7 +40,10 @@ ${PASSWORD_TPXADMIN_STG}    password1
 ${TEST_EMAIL_ID}			sent-email-test@talentdrive.com
 ${TEST_EMAIL_PWD}			Noreply2014$
 ${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com
-${SCOUT_QA_EMAIL}			scout_qa@goscoutgo.com
+${SCOUT_QA_EMAIL}			scout_qa@talentdrive.com
+${STAGING_EMAIL_ID}			sent-email-stage@talentdrive.com
+${STAGING_EMAIL_PWD}		Noreply2014$
+${NOREPLY_STAGING_EMAIL}	no-reply-stage@goscoutgo.com
 
 ${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended
 

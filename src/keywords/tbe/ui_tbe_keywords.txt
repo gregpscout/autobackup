@@ -67,6 +67,7 @@ Search Job Requisition on TBE
     Click Button  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[3]
     Click Link  Last Updated
     Click Link  Last Updated
+    Wait until Page Contains Element  REQUS_0 
     ${jobId}=  Get Table Cell  REQUS_0  2  3  
     [return]  ${jobId}
     
@@ -94,6 +95,10 @@ Go to Scout Candidates List for Job
     
 Verify User is on Scout Candidates Page for TBE
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
+    Select Frame in TBE
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
+    Unselect Frame
     
 Accept Candidate in TBE  
   [Arguments]  ${CandidateName}  ${jobTitle}
@@ -127,11 +132,10 @@ Verify User is on Job Details Page
   [Arguments]  ${jobTitle} 
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a28  Posting Information 
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a185  Scout Candidates
-    	
 	
-		
-	
-	
+Select Frame in TBE
+    Select Frame  xpath=//iframe[contains(@src,'https://staging.talentpx.com')]
+
 
 
 
