@@ -8,6 +8,7 @@ Resource          ../../keywords/db/sync_tasks.txt
 Resource          ../../resources/settings.txt
 Variables         ../../models/Requisition_Models.py  
 Variables         ../../models/Candidate_Models.py
+Variables         ../../models/Candidate_Rejection.py
 Suite Teardown    Close Browser
 
 *** Variables ***
@@ -39,17 +40,37 @@ Scenario: Test Candidate Acceptance in TBE
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}   
+    Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
     
-Scenario: Test Candidate Rejection in TBE
-  [Documentation]  Accepts candidates for a job in TBE
+Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
+  [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
   [Tags]  REJECTSUBMISSION  SMOKE
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}       
+    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
+    
+Scenario: Test Candidate Rejection in TBE due to Placement Fee
+  [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
+  [Tags]  REJECTSUBMISSION  
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
+    Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
+        
+Scenario: Test Candidate Rejection in TBE for Other Reason
+  [Documentation]  Rejects candidates for a job in TBE with reason Other
+  [Tags]  REJECTSUBMISSION  
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
+    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}       
      
     
     

@@ -94,8 +94,6 @@ Go to Scout Candidates List for Job
     
 Verify User is on Scout Candidates Page for TBE
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
-    # Page Should Contain Link  learn-more
-    # Page Should Contain Link  Got feedback?
     
 Accept Candidate in TBE  
   [Arguments]  ${CandidateName}  ${jobTitle}
@@ -106,12 +104,12 @@ Accept Candidate in TBE
     Click Element  interested-modal__submit
         
 Reject Candidate in TBE  
-  [Arguments]  ${CandidateName}
+  [Arguments]  ${CandidateName}  ${reason}  ${comments}
     Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
     Click Element  not-interested
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
-    Select Radio Button  not-interested-reason  2    # Make this more dynamic
-    Input Text  not-interested-modal__comments  Test        # Update this later 
+    Select Radio Button  not-interested-reason  ${reason}    
+    Input Text  not-interested-modal__comments  ${comments}         
     Click Element  not-interested-modal__submit    
     
 Go to Candidate Details Page from Scout Candidates List
