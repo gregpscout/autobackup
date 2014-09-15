@@ -14,10 +14,16 @@ BHS_Reject_Candidate = {
     "id": '112'
 }
 
-BHS_No_Contact = {
-    "name": "Robot_BHS_No Contact_Details",  
-    "mod_name": "Robot_BHS_No C.",
+BHS_No_Email = {
+    "name": "Robot_BHS_No Email",  
+    "mod_name": "Robot_BHS_No E.",
     "id": '114'
+}
+
+BHS_No_Resume = {
+    "name": "Robot_BHS No_Resume",  
+    "mod_name": "Robot_BHS N.",
+    "id": '115'
 }
 
 PCR_Accept_Candidate = {

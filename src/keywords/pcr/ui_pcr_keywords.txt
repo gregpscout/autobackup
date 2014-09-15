@@ -185,7 +185,7 @@ Test Links on Scout For PCR  [Arguments]  ${TEST_SCOUTLINK}
 
 Test Feedback Link on Scout  [Arguments]  ${feedback_input}  ${feedback_subject}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}
     Click Link  xpath=//*[@class="feedback-link"]
-    Wait Until Page Contains  5  5  feedback-modal__headline-text
+    Wait Until Element is Visible  feedback-modal
     Input Text  feedback-modal__feedback-textarea  ${feedback_input}
     Click Button  feedback-modal__submit
     Sleep  2s

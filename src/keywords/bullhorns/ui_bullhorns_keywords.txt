@@ -1,0 +1,338 @@
+*** Settings ***
+Resource          ../../resources/settings.txt
+
+*** Keywords ***
+Bullhorn Setup
+    User is on Bullhorn Site  ${BULLHORN_S}  ${BROWSER}
+    Login to Bullhorn  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S}
+
+User is on Bullhorn Site  [Arguments]  ${url}  ${browser}  
+	Open Browser  ${url}  ${browser}
+	Maximize Browser Window
+		
+Login to Bullhorn  [Arguments]  ${username}  ${password}
+    Input Text  username  ${username}
+    Input Text  password  ${password}
+    Click Button  Log in to Bullhorn
+    Verify user is logged in to Bullhorn
+
+Verify user is logged in to Bullhorn  
+    Wait Until Keyword Succeeds  10  1  Title Should Be  Bullhorn S Release   
+
+Go to Scout Staging Environment 
+  [Documentation]  Takes user to Scout iframe in Bullhorn if already logged in to Bullhorn
+  ...  Expands menu bar in Bullhorn S if not opened already 
+  ...  Clicks on Marketplace and then Scout Staging to go to Scout iframe
+    ${elementVisible}=  Get Element Attribute  new-menu@class
+    Run keyword If  '${elementVisible}' == 'menu-label-open'  Expand the Bullhorn menu bar
+    Wait Until Keyword Succeeds  10  1  Click Element  sub-marketplace
+    Wait Until Keyword Succeeds  10  1  Click Link  Scout Staging
+        
+Expand the Bullhorn menu bar 
+  [Documentation]  Expands the main menu bar in Bullhorn S to provide user with options  
+    Click Element  new-menu  
+    
+Go to Search Jobs Page on Scout For Bullhorn  
+  [Documentation]  Takes user to search jobs page in Scout iframe when already in iframe
+    Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
+    Wait Until Keyword Succeeds  5  5  Click Link  signals-search
+    Verify User is on Search Jobs Page for Scout
+    Unselect Frame
+
+Verify User is on Search Jobs Page for Scout
+  [Documentation]  Verifies user is already on Search Jobs tab in Scout iframe for Bullhorn
+    Page Should Contain  Search Scout
+
+Test Clear Button on Scout For Bullhorn 
+  [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
+    Select Frame  BHSWindow1717
+    Wait Until Keyword Succeeds  5  5  Input Text  keyword  abcde
+    Textfield Should Contain  keyword  abcde  
+    Click Element  clear
+    Textfield Should Contain  keyword  \
+    Unselect Frame
+    
+Import Scout Job into Bullhorn  [Arguments]  ${jobTitle}
+  [Documentation]  Searches and imports specified job from Scout iframe into Bullhorn
+    Select Frame  BHSWindow1717
+    Search for Job by Title in Scout For Bullhorn  ${jobTitle}
+    Wait Until Keyword Succeeds  20  2  Select Checkbox  xpath=//*[@id="req-search-table"]/tbody/tr[1]/td[1]/input   
+    Click Button  import-selected 
+    Wait Until Keyword Succeeds  20  10  Element Should Be Visible  xpath=//*[@id="import-back-to-list"] 
+    Unselect Frame 
+    
+Search for Job by Title in Scout For Bullhorn  [Arguments]  ${jobTitle}
+  [Documentation]  Searches for specified job on Scout iframe
+    Input Text  keyword  ${jobTitle} 
+    Sleep  2s                              # Added sleep to make sure search happens only after entering complete search string
+    Click Element  review
+    Wait Until Keyword Succeeds  20  2  Table Row Should Contain  req-search-table  1  ${jobTitle}
+
+Go To View Imported Jobs for Bullhorn
+  [Documentation]  Selects  view imported jobs button after importing a job from Scout into Bullhorn
+    Select Frame  BHSWindow1717
+    Click Button  import-confirm-close
+    Unselect Frame
+        
+Verify User is on Job Details Page  
+  [Arguments]  ${jobTitle}  
+  [Documentation]  Verifies that user is on job details page for the specified job in Bullhorn
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  ${jobTitle}  
+    Wait Until Page Contains  Overview  10  
+    Wait Until Page Contains  Scout Staging  10    
+
+Test Feedback Link on Scout For Bullhorn Jobs Page  [Arguments]  ${feedback}
+    Wait Until Keyword Succeeds  5  2  Click Link  Got feedback?
+    Wait Until Page Contains  5  2  feedback-modal
+    Unselect Frame
+    # Select Frame  BHSWindow1717
+    Input Text  feedback-modal__feedback-textarea  ${feedback}
+    Click Button  feedback-modal__submit
+    # Unselect Frame
+    
+Back to Search on Scout for Bullhorn
+  [Documentation]  selects back to search button after importing a job from Scout into Bullhorn
+    Select Frame  BHSWindow1717
+    Click Button  import-back-to-list   
+    Wait Until Keyword Succeeds  20  2  Verify User is on Search Jobs Page for Scout
+    Unselect Frame
+    
+Submit two internal candidates in Bullhorn  
+  [Arguments]  ${jobTitle}  ${candidate_name1}  ${candidate_name2}  ${frame}
+  [Documentation]  Once user is on job details page in Bullhorn 
+  ...  it submits both the specified candidates to this job in Bullhorn
+  ...  If only one candidate needs to be submitted pass the same candidate name twice
+    Verify User is on Job Details Page  ${jobTitle}
+    Select Frame  ${frame}                                     # Frame name is different if you get to this screen from Scout as opposed to BH directly 
+    ${x}=  Get Text  xpath=//*[@title="ID"]                    # Get Job id which is part of page title
+    ${y}=  Fetch From Right  ${x}  \#                          # Ignore text in the id
+    Wait Until Keyword Succeeds  5  1  Click Button  Add Internal Submission
+    Unselect Frame
+    Select Frame  PlacementWnd${y}
+    Wait Until Page Contains  Add Internal Submission: 
+    Wait Until Keyword Succeeds  5  1  Click Element  xpath=//div[@class="picker-multi Candidate picker"]       
+    Selecting Candidate on Bullhorn Submission Page  ${candidate_name1}
+    Selecting Candidate on Bullhorn Submission Page  ${candidate_name2}
+    Click Button  Save
+    Unselect Frame
+    
+Selecting Candidate on Bullhorn Submission Page
+  [Arguments]  ${candidate_name}
+    Input Text  userID_userInput  ${candidate_name}
+    Sleep  2s                                                 # Waiting for auto-complete to populate matching candidate
+    Click Element  sendingUserID_userInput                    # Need to click outside the auto-complete element to select the suggested candidate
+    Sleep  2s      
+      
+Submit a candidate to a Scout job successfully 
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+  [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
+  ...  This keyword submits the candidate to the job in Scout for Bullhorn
+  ...  And verifies that the candidate is submitted successfully
+    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frame  ${frame}
+    Select Frame  iframeObj
+    Wait Until Keyword Succeeds  10  2  Element Should contain  xpath=//h3  Candidate submitted
+    Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
+    Table Should Contain  xpath=//table  ${candidate_name}    # Edit this once table has an id or name
+    Unselect Frame    
+    
+Submit a Candidate to Scout Without Email and Verify Errors
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frame  ${frame}
+    Select Frame  iframeObj
+    Verify User is on Candidate Submission Page for Scout
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="alert-message error"]
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//*[@class="alert-message error"]/span  This field is required.
+    Unselect Frame        
+    
+Submit a Candidate to Scout Without Resume and Verify Errors
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frame  ${frame}
+    Select Frame  iframeObj
+    Verify User is on Candidate Submission Page for Scout
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="control-group error"]
+    Unselect Frame 
+        
+Submit a candidate to a Scout job  
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+  [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
+  ...  submits the candidate in Scout  
+    Verify User is on Job Details Page  ${jobTitle}
+    Select Frames and Go to Scout Candidates Page  ${frame}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_name}
+    Select Radio Button  id  ${candidate_id}
+    Click Button  Submit Selected Candidate
+    Wait Until Keyword Succeeds  10  2  Verify User is on Candidate Submission Page for Scout   
+    Click Button  submit-candidate
+    Unselect Frame
+    
+Verify User is on Candidate Submission Page for Scout   
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  submission-draft 
+            
+Test Contact Information is Blinded Before Acceptance
+  [Arguments]  ${frame}  ${contact}  ${email}
+    Select Frame  ${frame}  
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//td[@class="ItemInfoTable"]  Scout
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//td[@class="ItemInfoTable"]  ${email}   
+    Wait Until Keyword Succeeds  10  2  Page Should Not Contain  ${contact}    
+    Unselect Frame    
+    
+Test Contact Information is Unblinded After Acceptance
+  [Arguments]  ${frame}  ${contact}  ${email}
+    Select Frame  ${frame}  
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//td[@class="ItemInfoTable"]  ${contact}
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//td[@class="ItemInfoTable"]  ${email}   
+    Unselect Frame        
+       
+Verify candidate has been submitted to job
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${frame} 
+  [Documentation]  Verifies that the candidate has been submitted to Scout
+    Select Frames and Go to Scout Candidates Page  ${frame}
+    Wait Until Keyword Succeeds  10  2  Table Should Contain  submissions  ${candidate_name}   
+    Unselect Frame                                            # Unselect frame iframeObj
+    # Unselect Frame                                            # Unselect frame BHSWindow1717
+    
+Test Feedback Link on Scout For Bullhorn Candidates Page  
+  [Arguments]  ${feedback} 
+    Select Frame  JobPostingWnd
+    Wait Until Keyword Succeeds  10  2  Click Link  Scout Staging
+    Wait Until Keyword Succeeds  10  2  Select Frame  iframeObj
+    Click Link  Got feedback for Scout?
+    Wait Until Element is Visible  feedback-modal
+    Input Text  feedback-modal__feedback-textarea  ${feedback}
+    Click Button  feedback-modal__submit
+    Unselect Frame
+    # Unselect Frame
+
+Select Frames and Go to Scout Candidates Page
+  [Arguments]  ${frame} 
+    Select Frame  ${frame}                      # Frame name is different if you get to this screen from Scout as opposed to BH directly
+    Wait Until Keyword Succeeds  10  2  Click Link  Scout Staging
+    Wait Until Keyword Succeeds  10  2  Select Frame  iframeObj
+    
+Go to Jobs List Page in Bullhorn
+  [Documentation]  Takes user to jobs list page in bullhorn-s if already logged in
+    ${elementVisible}=  Get Element Attribute  new-menu@class
+    Run keyword If  '${elementVisible}' == 'menu-label-open'  Expand the Bullhorn menu bar  
+    Wait Until Keyword Succeeds  10  1  Click Element  td6
+    Verify User is on Jobs List Page for Bullhorn    
+        
+Verify User is on Jobs List Page for Bullhorn
+  [Documentation]  Verifies that the user is on jobs list page in Bullhorn 
+    Page Should Contain  Jobs
+    Sleep  10s
+    # Wait Until Page Contains Element  keywords 
+    Select Frame  BHSWindow828   
+    
+Search for Job in Bullhorn  
+  [Arguments]  ${jobTitle}
+  [Documentation]  Once user is on jobs list page in Bullhorn
+  ...  this keyword searches for the specified job in Bullhorn  
+    Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
+    Wait Until Keyword Succeeds  10  1  Click Button  xpath=//*[@class="search-toggle-btn"]
+    Input Text  keywords  ${jobTitle} 
+    Sleep  2s
+    Click Element  keywords
+    Wait Until Page Contains Element  xpath=//*[contains(@class,"primary search")]       
+    Click Button  xpath=//*[@class="primary search large"]
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${jobTitle}     
+
+Go to Candidates List Page in Bullhorn
+  [Documentation]  Takes user to candidates list page in bullhorn-s if already logged in
+    ${elementVisible}=  Get Element Attribute  new-menu@class
+    Run keyword If  '${elementVisible}' == 'menu-label-open'  Expand the Bullhorn menu bar  
+    Wait Until Keyword Succeeds  10  1  Click Element  td3
+    Verify User is on Candidates List Page for Bullhorn    
+        
+Verify User is on Candidates List Page for Bullhorn
+  [Documentation]  Verifies that the user is on candidates list page in Bullhorn 
+    Page Should Contain  Candidates
+    Sleep  10s
+    # Select Frame  BHSWindow814       
+    
+Search for Candidate in Bullhorn  
+  [Arguments]  ${candidateName}
+  [Documentation]  Once user is on candidates list page in Bullhorn
+  ...  this keyword searches for the specified candidate in Bullhorn  
+    Select Frame  BHSWindow814
+    Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
+    Wait Until Keyword Succeeds  10  1  Click Button  xpath=//*[@class="search-toggle-btn"]
+    Input Text  keywords  ${candidateName} 
+    Sleep  2s
+    Click Element  keywords
+    Wait Until Page Contains Element  xpath=//*[contains(@class,"primary search")]       
+    Click Button  xpath=//*[@class="primary search large"]
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${candidateName}  
+    Unselect Frame
+        
+Go to Job Details Page in Bullhorn  
+  [Arguments]  ${jobTitle}  
+  [Documentation]  Takes user to the specified job overview page from jobs list page in Bullhorn   
+    Click Link  ${job_title}
+    Verify User is on Job Details Page  ${jobTitle}
+    
+Go to Candidate Details Page in Bullhorn  
+  [Arguments]  ${candidateName}  
+  [Documentation]  Takes user to the specified candidate overview page from candidates list page in Bullhorn 
+    Select Frame  BHSWindow814
+    Select Frame  xpath=//*[@id="bhBody"]/iframe  
+    Click Link  ${candidateName}
+    Verify User is on Candidate Details Page  ${candidateName}  
+    Unselect Frame
+    
+Verify User is on Candidate Details Page  
+  [Arguments]  ${candidateName}  
+  [Documentation]  Verifies that user is on candidate details page in Bullhorn
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  ${candidateName}  
+    Wait Until Page Contains  Overview  10  
+
+Update Candidate Status to Available 
+  [Arguments]  ${candidateName}
+    Go to Candidates List Page in Bullhorn
+    Search for Candidate in Bullhorn  ${candidateName}
+    Go to Candidate Details Page in Bullhorn  ${candidateName}
+    Select Frame  CandidateWnd
+    Click Link  Edit
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  candidate_firstName
+    Select From List  candidate_status  Available
+    Click Button  Save  
+    Unselect Frame 
+    Sleep  10s 
+    
+Mark Candidate as Placed in Bullhorn
+  [Arguments]  ${jobTitle}  ${candidateName}  ${frame}
+    Select Frame  ${frame}
+    Sleep  5s  
+    ${x}=  Get Text  xpath=//*[@title="ID"]                    # Get Job id which is part of page title
+    ${y}=  Fetch From Right  ${x}  \#     
+    Wait Until Keyword Succeeds  20  2  Click Element  xpath=//*[contains(@onclick,'NewPlacementWnd${y}')] 
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  Edit Internal Submission: 
+    Unselect Frame
+    Select Frame  addNewPlacementWnd${y}
+    Wait Until Keyword Succeeds  10  2  Click Element  xpath=//div[@class="Candidate picker"]       
+    Input Text  userID_userInput  ${candidate_name}
+    Sleep  2s                                                 # Waiting for auto-complete to populate matching candidate
+    Click Element  sendingUserID_userInput                    # Need to click outside the auto-complete element to select the suggested candidate
+    Sleep  2s
+    Click Button  Save
+    Confirm Action
+    Unselect Frame
+    Select Frame  addNewPlacementWnd${y}
+    Click Button  Save
+    Unselect Frame
+    
+
+    
+      
+    
+   
+  
+
+
+
+    
+
+        
+    
