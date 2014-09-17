@@ -58,7 +58,7 @@ Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
     
 Scenario: Test Candidate Rejection in TBE due to Placement Fee
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
-  [Tags]  REJECTSUBMISSION  
+  [Tags]  REJECTSUBMISSION  REGRESSION  
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
@@ -68,7 +68,7 @@ Scenario: Test Candidate Rejection in TBE due to Placement Fee
         
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
-  [Tags]  REJECTSUBMISSION  
+  [Tags]  REJECTSUBMISSION  REGRESSION  
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
@@ -79,7 +79,7 @@ Scenario: Test Candidate Rejection in TBE for Other Reason
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
   ...  Test feedback link
-  [Tags]  TBELINKS  REGRESSION
+  [Tags]  LINKS  REGRESSION
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE

@@ -80,15 +80,6 @@ Verify User is on Job Details Page
     Wait Until Keyword Succeeds  20  2  Page Should Contain  ${jobTitle}  
     Wait Until Page Contains  Overview  10  
     Wait Until Page Contains  Scout Staging  10    
-
-Test Feedback Link on Scout For Bullhorn Jobs Page  [Arguments]  ${feedback}
-    Wait Until Keyword Succeeds  5  2  Click Link  Got feedback?
-    Wait Until Page Contains  5  2  feedback-modal
-    Unselect Frame
-    # Select Frame  BHSWindow1717
-    Input Text  feedback-modal__feedback-textarea  ${feedback}
-    Click Button  feedback-modal__submit
-    # Unselect Frame
     
 Back to Search on Scout for Bullhorn
   [Documentation]  selects back to search button after importing a job from Scout into Bullhorn
@@ -191,8 +182,7 @@ Verify candidate has been submitted to job
   [Documentation]  Verifies that the candidate has been submitted to Scout
     Select Frames and Go to Scout Candidates Page  ${frame}
     Wait Until Keyword Succeeds  10  2  Table Should Contain  submissions  ${candidate_name}   
-    Unselect Frame                                            # Unselect frame iframeObj
-    # Unselect Frame                                            # Unselect frame BHSWindow1717
+    Unselect Frame                                           
     
 Test Feedback Link on Scout For Bullhorn Candidates Page  
   [Arguments]  ${feedback} 
@@ -204,7 +194,6 @@ Test Feedback Link on Scout For Bullhorn Candidates Page
     Input Text  feedback-modal__feedback-textarea  ${feedback}
     Click Button  feedback-modal__submit
     Unselect Frame
-    # Unselect Frame
 
 Select Frames and Go to Scout Candidates Page
   [Arguments]  ${frame} 
@@ -222,22 +211,21 @@ Go to Jobs List Page in Bullhorn
 Verify User is on Jobs List Page for Bullhorn
   [Documentation]  Verifies that the user is on jobs list page in Bullhorn 
     Page Should Contain  Jobs
-    Sleep  10s
-    # Wait Until Page Contains Element  keywords 
-    Select Frame  BHSWindow828   
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  keywords  
     
 Search for Job in Bullhorn  
   [Arguments]  ${jobTitle}
   [Documentation]  Once user is on jobs list page in Bullhorn
   ...  this keyword searches for the specified job in Bullhorn  
+    Select Frame  BHSWindow828
     Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
     Wait Until Keyword Succeeds  10  1  Click Button  xpath=//*[@class="search-toggle-btn"]
+    Wait Until Element is Visible  keywords
     Input Text  keywords  ${jobTitle} 
-    Sleep  2s
     Click Element  keywords
     Wait Until Page Contains Element  xpath=//*[contains(@class,"primary search")]       
     Click Button  xpath=//*[@class="primary search large"]
-    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${jobTitle}     
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${jobTitle}  
 
 Go to Candidates List Page in Bullhorn
   [Documentation]  Takes user to candidates list page in bullhorn-s if already logged in
@@ -249,8 +237,7 @@ Go to Candidates List Page in Bullhorn
 Verify User is on Candidates List Page for Bullhorn
   [Documentation]  Verifies that the user is on candidates list page in Bullhorn 
     Page Should Contain  Candidates
-    Sleep  10s
-    # Select Frame  BHSWindow814       
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  keywords  
     
 Search for Candidate in Bullhorn  
   [Arguments]  ${candidateName}
@@ -290,6 +277,7 @@ Verify User is on Candidate Details Page
 
 Update Candidate Status to Available 
   [Arguments]  ${candidateName}
+    Bullhorn Setup
     Go to Candidates List Page in Bullhorn
     Search for Candidate in Bullhorn  ${candidateName}
     Go to Candidate Details Page in Bullhorn  ${candidateName}
@@ -299,7 +287,7 @@ Update Candidate Status to Available
     Select From List  candidate_status  Available
     Click Button  Save  
     Unselect Frame 
-    Sleep  10s 
+    Verify User is on Candidate Details Page  ${candidateName}
     
 Mark Candidate as Placed in Bullhorn
   [Arguments]  ${jobTitle}  ${candidateName}  ${frame}

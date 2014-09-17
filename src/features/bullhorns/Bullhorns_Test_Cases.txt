@@ -6,7 +6,7 @@ Resource          ../../keywords/bullhorns/ui_bullhorns_keywords.txt
 Resource          ../../keywords/pcr/ui_pcr_keywords.txt 
 Resource          ../../resources/settings.txt  
 Test Setup       Bullhorn Setup
-Test Teardown    Close Browser
+Test Teardown    Close All Browsers
 Variables         ../../models/Requisition_Models.py
 Variables         ../../models/Candidate_Models.py
 
@@ -20,12 +20,10 @@ ${needhelp_bh}  Scout for Bullhorn - Go Scout Go
 ${needhelp_text}  Scout for Bullhorn
 
 *** Test Cases ***
-Scenario: Make Candidate Available
-  [Tags]  STATUS
-	Given Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
-	
-Scenario: Test Importing job in Bullhorn
-  [Tags]  JOBIMP  SMOKE
+Scenario: Test importing job and submitting candidate to Scout in Bullhorn
+  [Tags]  JOBIMP  SUBMISSION  SMOKE
+  [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
+           Bullhorn Setup   
     Given Go to Scout Staging Environment
     When Go to Search Jobs Page on Scout For Bullhorn
     Then Test Clear Button on Scout For Bullhorn
@@ -36,16 +34,19 @@ Scenario: Test Importing job in Bullhorn
     Then Verify candidate has been submitted to job  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${Scout_BH_Candidate_Frame}
     When Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate['name']}  ${BHS_Reject_Candidate['id']}  ${Scout_BH_Candidate_Frame}
     Then Verify candidate has been submitted to job  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate['name']}  ${Scout_BH_Candidate_Frame}
-    AND Test Contact Information is Blinded Before Acceptance  ${Scout_BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
+    And Test Contact Information is Blinded Before Acceptance  ${Scout_BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
       
 Scenario: Test submitting candidate to a job in Bullhorn  
-  [Tags]  SUBMISSION  
+  [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
+           Bullhorn Setup 
+  [Documentation]  Should not be run as part of Smoke or Regression
+  ...  This scenario can be run when candidate has to be submitted to an already imported job
 	Given Go to Jobs List Page in Bullhorn
 	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
 	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 
-	AND Submit two internal candidates in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Reject_Candidate['name']}  ${BH_Candidate_Frame}
+	And Submit two internal candidates in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Reject_Candidate['name']}  ${BH_Candidate_Frame}
 	Then Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Accept_Candidate['id']}  ${BH_Candidate_Frame}
-    AND Test Contact Information is Blinded Before Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
+    And Test Contact Information is Blinded Before Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
 	
 Scenario: Test Unblinding Feature
   [Tags]  UNBLINDING  SMOKE
@@ -78,24 +79,19 @@ Scenario: Test submitting candidate with no resume
 	Then Submit a Candidate to Scout Without Resume and Verify Errors  ${TBE_REQ1['title']}  ${BHS_No_Resume['name']}  ${BHS_No_Resume['id']}  ${BH_Candidate_Frame}
 			
 Scenario: Test Feedback Link on Bullhorn Candidates Page
-  [Tags]  LINKS  
+  [Tags]  LINKS  REGRESSION  
 	Given Go to Jobs List Page in Bullhorn
 	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
 	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 	
-	AND Select Frames and Go to Scout Candidates Page  ${BH_Candidate_Frame} 
-	Then Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-	And Unselect Frame
-	And Go to Scout Staging Environment
-	And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
-	And Sleep  2s
-	Then Then Test Feedback Link on Scout  ${feedback_candidates}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-
+	And Select Frames and Go to Scout Candidates Page  ${BH_Candidate_Frame} 
+	Then Test Feedback Link on Scout  ${feedback_candidates}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+	
 Scenario: Test Links on Bullhorn Jobs Page
-  [Tags]  LINKS  
+  [Tags]  LINKS  REGRESSION  
 	Given Go to Scout Staging Environment
 	And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
 	And Sleep  2s
-	Then Then Test Feedback Link on Scout  ${feedback_jobs}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+	Then Test Feedback Link on Scout  ${feedback_jobs}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
 	And Sleep  10s
 	And Test Need Help with Scout Link for PCR  ${needhelp_bh}  ${needhelp_text}
 

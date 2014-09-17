@@ -103,30 +103,34 @@ Verify User is on Scout Candidates Page for TBE
 Accept Candidate in TBE  
   [Arguments]  ${CandidateName}  ${jobTitle}
     Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
+    Select Frame in TBE
     Click Element  interested 
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 
     Element Should Contain  interested-modal  Would you like to import ${CandidateName} to the ${jobTitle} requisition?
     Click Element  interested-modal__submit
+    Unselect Frame
         
 Reject Candidate in TBE  
   [Arguments]  ${CandidateName}  ${reason}  ${comments}
     Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
+    Select Frame in TBE
     Click Element  not-interested
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
     Select Radio Button  not-interested-reason  ${reason}    
     Input Text  not-interested-modal__comments  ${comments}         
     Click Element  not-interested-modal__submit    
+    Unselect Frame
     
 Go to Candidate Details Page from Scout Candidates List
   [Arguments]  ${CandidateName} 
-    Select Frame  xpath=//iframe[contains(@src,'https://staging.talentpx.com')]
+    Select Frame in TBE
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="candidateList"]
     Click Link  ${CandidateName} 
-    Verify User is on Candidate Details Page       
+    Verify User is on Candidate Details Page 
+    Unselect Frame      
     
 Verify User is on Candidate Details Page
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  Candidate Profile     
     
 Verify User is on Job Details Page  
   [Arguments]  ${jobTitle} 
