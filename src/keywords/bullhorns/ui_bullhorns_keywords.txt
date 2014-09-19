@@ -19,14 +19,15 @@ Login to Bullhorn  [Arguments]  ${username}  ${password}
 Verify user is logged in to Bullhorn  
     Wait Until Keyword Succeeds  10  1  Title Should Be  Bullhorn S Release   
 
-Go to Scout Staging Environment 
+Go to Scout Environment 
+  [Arguments]  ${testEnv}  
   [Documentation]  Takes user to Scout iframe in Bullhorn if already logged in to Bullhorn
   ...  Expands menu bar in Bullhorn S if not opened already 
   ...  Clicks on Marketplace and then Scout Staging to go to Scout iframe
     ${elementVisible}=  Get Element Attribute  new-menu@class
     Run keyword If  '${elementVisible}' == 'menu-label-open'  Expand the Bullhorn menu bar
     Wait Until Keyword Succeeds  10  1  Click Element  sub-marketplace
-    Wait Until Keyword Succeeds  10  1  Click Link  Scout Staging
+    Wait Until Keyword Succeeds  10  1  Click Link  ${testEnv}
         
 Expand the Bullhorn menu bar 
   [Documentation]  Expands the main menu bar in Bullhorn S to provide user with options  
@@ -74,7 +75,7 @@ Go To View Imported Jobs for Bullhorn
     Click Button  import-confirm-close
     Unselect Frame
         
-Verify User is on Job Details Page  
+Verify User is on Job Details Page in Bullhorn  
   [Arguments]  ${jobTitle}  
   [Documentation]  Verifies that user is on job details page for the specified job in Bullhorn
     Wait Until Keyword Succeeds  20  2  Page Should Contain  ${jobTitle}  
@@ -93,7 +94,7 @@ Submit two internal candidates in Bullhorn
   [Documentation]  Once user is on job details page in Bullhorn 
   ...  it submits both the specified candidates to this job in Bullhorn
   ...  If only one candidate needs to be submitted pass the same candidate name twice
-    Verify User is on Job Details Page  ${jobTitle}
+    Verify User is on Job Details Page in Bullhorn  ${jobTitle}
     Select Frame  ${frame}                                     # Frame name is different if you get to this screen from Scout as opposed to BH directly 
     ${x}=  Get Text  xpath=//*[@title="ID"]                    # Get Job id which is part of page title
     ${y}=  Fetch From Right  ${x}  \#                          # Ignore text in the id
@@ -119,9 +120,8 @@ Submit a candidate to a Scout job successfully
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  This keyword submits the candidate to the job in Scout for Bullhorn
   ...  And verifies that the candidate is submitted successfully
-    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
-    Select Frame  ${frame}
-    Select Frame  iframeObj
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frames on Candidates Page  ${frame}
     Wait Until Keyword Succeeds  10  2  Element Should contain  xpath=//h3  Candidate submitted
     Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
     Table Should Contain  xpath=//table  ${candidate_name}    # Edit this once table has an id or name
@@ -129,9 +129,8 @@ Submit a candidate to a Scout job successfully
     
 Submit a Candidate to Scout Without Email and Verify Errors
   [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
-    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
-    Select Frame  ${frame}
-    Select Frame  iframeObj
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="alert-message error"]
     Wait Until Keyword Succeeds  10  2  Element Should Contain  xpath=//*[@class="alert-message error"]/span  This field is required.
@@ -139,18 +138,22 @@ Submit a Candidate to Scout Without Email and Verify Errors
     
 Submit a Candidate to Scout Without Resume and Verify Errors
   [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
-    Submit a candidate to a Scout job  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
-    Select Frame  ${frame}
-    Select Frame  iframeObj
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="control-group error"]
     Unselect Frame 
+
+Select Frames on Candidates Page
+  [Arguments]  ${frame} 
+    Select Frame  ${frame}  
+    Select Frame  iframeObj 
         
-Submit a candidate to a Scout job  
+Submit the candidate to Scout  
   [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  submits the candidate in Scout  
-    Verify User is on Job Details Page  ${jobTitle}
+    Verify User is on Job Details Page in Bullhorn  ${jobTitle}
     Select Frames and Go to Scout Candidates Page  ${frame}
     Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_name}
     Select Radio Button  id  ${candidate_id}
@@ -258,7 +261,7 @@ Go to Job Details Page in Bullhorn
   [Arguments]  ${jobTitle}  
   [Documentation]  Takes user to the specified job overview page from jobs list page in Bullhorn   
     Click Link  ${job_title}
-    Verify User is on Job Details Page  ${jobTitle}
+    Verify User is on Job Details Page in Bullhorn  ${jobTitle}
     
 Go to Candidate Details Page in Bullhorn  
   [Arguments]  ${candidateName}  
@@ -285,9 +288,9 @@ Update Candidate Status to Available
     Click Link  Edit
     Wait Until Keyword Succeeds  20  2  Page Should Contain Element  candidate_firstName
     Select From List  candidate_status  Available
-    Click Button  Save  
-    Unselect Frame 
+    Click Button  Save   
     Verify User is on Candidate Details Page  ${candidateName}
+    Unselect Frame
     
 Mark Candidate as Placed in Bullhorn
   [Arguments]  ${jobTitle}  ${candidateName}  ${frame}
@@ -310,6 +313,8 @@ Mark Candidate as Placed in Bullhorn
     Select Frame  addNewPlacementWnd${y}
     Click Button  Save
     Unselect Frame
+
+   
     
 
     
