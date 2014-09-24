@@ -3,7 +3,7 @@ Library           Selenium2Library
 Library           String
 Library           ImapLibrary
 Resource          ../../keywords/bullhorns/ui_bullhorns_keywords.txt
-Resource          ../../keywords/pcr/ui_pcr_keywords.txt 
+Resource          ../../keywords/common/ui_common_keywords.txt   
 Resource          ../../resources/settings.txt  
 Test Setup        Bullhorn Setup
 Test Teardown     Close All Browsers
@@ -93,8 +93,11 @@ Scenario: Test Links on Bullhorn Jobs Page
 	And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
 	And Sleep  2s
 	Then Test Feedback Link on Scout  ${feedback_jobs}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-	And Sleep  10s
-	And Test Need Help with Scout Link for PCR  ${needhelp_bh}  ${needhelp_text}
+	And Sleep  5s
+	And Test Need Help with Scout Link  ${needhelp_bh}  ${needhelp_text}
+
+
+    
 
 	
 	
