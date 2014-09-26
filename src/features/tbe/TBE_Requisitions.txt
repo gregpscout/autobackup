@@ -38,15 +38,16 @@ Scenario: Test Create Requisition in TBE
     Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
     
-Scenario: Test Candidate Acceptance in TBE
-  [Documentation]  Accepts candidates for a job in TBE
-  [Tags]  ACCEPTSUBMISSION  SMOKE
+Scenario: Test Candidate Sharing and Acceptance in TBE
+  [Documentation]  Shares candidate and accepts the same candidate in TBE
+  [Tags]  ACCEPTSUBMISSION  SMOKE  SHARE
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
+    And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL} 
+    And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
     
 Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
   [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
@@ -56,7 +57,7 @@ Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
     
 Scenario: Test Candidate Rejection in TBE due to Placement Fee
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
@@ -66,7 +67,7 @@ Scenario: Test Candidate Rejection in TBE due to Placement Fee
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
+    And Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
         
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
@@ -76,8 +77,8 @@ Scenario: Test Candidate Rejection in TBE for Other Reason
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}       
-     
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  
+    
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
   ...  Test feedback link
