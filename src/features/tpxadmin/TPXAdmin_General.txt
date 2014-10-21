@@ -7,6 +7,7 @@ Resource  ../../resources/settings.txt
 *** Test Cases ***
 Scenario: Test Login to Scout Admin and Activate and Deactivate User
   [Tags]  SMOKE  USER_TESTING
+  [Documentation]  User must be deactivated first	
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
@@ -14,10 +15,9 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 	Then Verify user is on TBE-Sandbox Users page
 	When Access User Page  57
 	And Verify User is in User Page
-	And Verify User is Inactive
 	And Click to Activate User 
-	And Verify User is Active
 	And Click to Deactivate User
+	And Verify User is Inactive
 	Then Click Link  /logout
 	And TPX Admin Login Page Should Be Open
 
@@ -78,7 +78,7 @@ Scenario: Edit Job Question Form
 	And Input Job Question Form
 
 Scenario: Add Scout+ Company and Provide Special Pricing
-  [Tags]  SMOKE SCOUTPLUS
+  [Tags]  SMOKE  SCOUTPLUS
   [Documentation]  Prior to running, confirm that BH-Sandbox2 a Scout+ Company for TBE
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
@@ -92,6 +92,7 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	And Turn Off Scout Plus Special Price Feature
 	And Verify Scout Plus Special Price is Turned Off
 	And Delete Scout+ Company
+	And Verify Scout+ Companies were Deleted
 	
 
 

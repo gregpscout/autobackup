@@ -57,6 +57,7 @@ Verify User is in Partners
 
 Verify User is in Reports
 	Title Should Be  Admin | Scout
+	Page Should Contain  Reports
 
 Access User Page
   [Arguments]  ${userId} 
@@ -73,11 +74,11 @@ Click to Deactivate User
 	Verify User is Active
 	Wait Until Keyword Succeeds  10  10  Click Link  Deactivate
 
-Verify User is Inactive
-	Page Should Contain Link  Activate
-
 Verify User is Active
 	Page Should Contain Link  Deactivate
+
+Verify User is Inactive
+	Wait Until Keyword Succeeds  20  10  Page Should Contain Link  Activate
 
 Go to Terms and Conditions Page
 	Click Link  Education
@@ -92,6 +93,8 @@ Go to Employer Validation
 
 Verify User is in Validation
 	Title Should be  Admin | Scout
+	Page Should Contain  Validation Test Finder
+	Page Should Contain  Go Live
 
 Go to FAQ
 	Click Link  Education
@@ -153,6 +156,9 @@ Delete Scout+ Company
 Verify Scout+ Company was Added
 	Wait Until Keyword Succeeds  10  10  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
 
+
+Verify Scout+ Companies were Deleted
+	Wait Until Keyword Succeeds  10  10  Element Should Not Be Visible  table table-striped table-condensed 
 
 Clear Job Question Form
 	Select Window  title=Scout
