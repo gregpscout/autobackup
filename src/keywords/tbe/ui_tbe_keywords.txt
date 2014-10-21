@@ -99,10 +99,21 @@ Verify User is on Scout Candidates Page for TBE
     Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
     Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
     Unselect Frame
+
+Share Candidate in TBE
+  [Arguments]  ${CandidateName}  ${email} 
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName} 
+    Select Frame in TBE  
+    Click Element  share-candidate-button
+    Wait Until Page Contains Element  share-modal
+    Input Text  share-modal__to  ${email}
+    Click Link  share-modal__send
+    Verify User is on Candidate Details Page 
+    Unselect Frame
     
 Accept Candidate in TBE  
   [Arguments]  ${CandidateName}  ${jobTitle}
-    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
+    Verify User is on Candidate Details Page
     Select Frame in TBE
     Click Element  interested 
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 

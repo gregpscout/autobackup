@@ -27,29 +27,29 @@ BHS_No_Resume = {
 }
 
 PCR_Accept_Candidate = {
-	"first_name": "Matt",
-	"last_name": "Bowmaster",
-	"full_name": "Matt Bowmaster",
-    "id": 'NA-6977227039'
+	"first_name": "Robot_Ben_Accept",
+	"last_name": "Jerry",
+	"full_name": "Robot_Ben_Accept Jerry",
+    "id": 'NA-1191709964'
 }
 
 PCR_Reject_Candidate = {
-	"first_name": "Annie",
-	"last_name": "Chung",
-	"full_name": "Annie Chung",
-    "id": 'NA-4291906218'
+	"first_name": "Robot_Kenny_Reject",
+	"last_name": "South",
+	"full_name": "Robot_Kenny_Reject South",
+    "id": 'NA-4985567095'
 }
 
 PCR_Candidate_Missing_Resume = {
-	"first_name": "Martha",
-	"last_name": "Noresume",
-	"full_name": "Martha Noresume",
-    "id": 'NA-2076815911'
+	"first_name": "Robot_Jingle",
+	"last_name": "NoResume",
+	"full_name": "Robot_Jingle NoResume",
+    "id": 'NA-8786423354'
 }
 
 PCR_Candidate_Missing_Email = {
-	"first_name": "Jennifer",
+	"first_name": "Robot_Jennifer",
 	"last_name": "NoEmail",
-	"full_name": "Jennifer NoEmail",
+	"full_name": "Robot_Jennifer NoEmail",
     "id": 'NA-8769226125'
 }

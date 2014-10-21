@@ -7,7 +7,7 @@ Resource          ../../keywords/tbe/ui_tbe_keywords.txt
 Resource          ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
 Resource          ../../keywords/db/sync_tasks.txt 
 Resource          ../../resources/settings.txt
-Resource          ../../keywords/pcr/ui_pcr_keywords.txt   
+Resource          ../../keywords/common/ui_common_keywords.txt   
 Variables         ../../models/Requisition_Models.py  
 Variables         ../../models/Candidate_Models.py
 Variables         ../../models/Candidate_Rejection.py
@@ -17,6 +17,8 @@ Suite Teardown    Close Browser
 ${syncTBEJobs}      ./manage.py --sync sync-taleo-requisitions
 ${feedback_input}  Robot Test Feedback in TBE
 ${feedback_subject}  Feedback: QA Scout at TALENTDRIVE2 (taleo)
+${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go    
+${needhelp_text}  Scout for Taleo Business Edition
 
 *** Test Cases ***
 
@@ -36,15 +38,16 @@ Scenario: Test Create Requisition in TBE
     Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
     
-Scenario: Test Candidate Acceptance in TBE
-  [Documentation]  Accepts candidates for a job in TBE
-  [Tags]  ACCEPTSUBMISSION  SMOKE
+Scenario: Test Candidate Sharing and Acceptance in TBE
+  [Documentation]  Shares candidate and accepts the same candidate in TBE
+  [Tags]  ACCEPTSUBMISSION  SMOKE  SHARE
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
+    And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL} 
+    And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
     
 Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
   [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
@@ -54,7 +57,7 @@ Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
     
 Scenario: Test Candidate Rejection in TBE due to Placement Fee
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
@@ -64,7 +67,7 @@ Scenario: Test Candidate Rejection in TBE due to Placement Fee
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
+    And Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
         
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
@@ -74,8 +77,8 @@ Scenario: Test Candidate Rejection in TBE for Other Reason
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}       
-     
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  
+    
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
   ...  Test feedback link
@@ -87,6 +90,8 @@ Scenario: Test Links in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
     Select Frame in TBE
     Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}    
+    And Sleep  5s
+    And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
     
 	
 	
