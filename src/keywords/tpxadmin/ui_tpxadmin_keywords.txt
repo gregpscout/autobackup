@@ -35,4 +35,156 @@ Verify user is on TBE-Sandbox Users page
 	Page Should Contain  Users	
 	
 Verify User is on Scout Admin Login Page
-	Title Should Be  Admin | Scout		
+	Title Should Be  Admin | Scout	
+
+Go to Home Page
+	Click Link  /admin/index.html
+	
+Go to Reports
+	Click Link  Account
+	Click Link  Reports
+	Wait Until Keyword Succeeds  10  10  CLick Link  Initial report
+	
+Go to Partners
+	Click Link  Account
+	Click Link  Partners
+
+Verify User is in Partners
+	Title Should be  Admin | Scout
+	Wait Until Keyword Succeeds  10  10  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  Partner Name 
+	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  2  Type of ATS
+	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  3  Share Percentage
+
+Verify User is in Reports
+	Title Should Be  Admin | Scout
+	Page Should Contain  Reports
+
+Access User Page
+  [Arguments]  ${userId} 
+	Click Link  /admin/account/taleo/TALENTDRIVE2/${userId}/
+
+Verify User is in User Page
+	Title Should be  Admin | Scout
+
+Click to Activate User
+	Verify User is Inactive
+	Wait Until Keyword Succeeds  10  10  Click Link  Activate
+
+Click to Deactivate User
+	Verify User is Active
+	Wait Until Keyword Succeeds  10  10  Click Link  Deactivate
+
+Verify User is Active
+	Page Should Contain Link  Deactivate
+
+Verify User is Inactive
+	Wait Until Keyword Succeeds  20  10  Page Should Contain Link  Activate
+
+Go to Terms and Conditions Page
+	Click Link  Education
+	Click Link  T&Cs	
+
+Verify User is in Terms and Conditions Page
+	Title Should be  Terms & Conditions | Admin | Scout
+
+Go to Employer Validation
+	Click Link  Onboard
+	Click Link  Employer Validation
+
+Verify User is in Validation
+	Title Should be  Admin | Scout
+	Page Should Contain  Validation Test Finder
+	Page Should Contain  Go Live
+
+Go to FAQ
+	Click Link  Education
+	Click Link  FAQ
+
+Verify User is in FAQ
+	Title Should be  Admin | Scout
+	Element Should Contain  faqpane  FAQ	What is Scout?
+
+Input Job Posting Notification Email
+	Input Text  scout_plus__notification_text  Scout_QA+1@talentdrive.com
+	Click Button  scout_plus__notification_save
+
+Verify Adding Single User for Job Notification
+	Textfield Should Contain  scout_plus__notification_text  Scout_QA+1@talentdrive.com  
+
+Verify Clearing Job Notification Field
+	Textfield Should Contain  scout_plus__notification_text  ${EMPTY}
+
+Verify Adding Multiple Users for Job Notification
+	Textfield Should Contain  scout_plus__notification_text  Scout_QA+1@talentdrive.com, Scout_QA+1002@talentdrive.com
+
+Turn On Diversity Option 
+	Verify Diversity Option is Turned Off
+	Wait Until Keyword Succeeds  10  10  Select Checkbox  info__diversity__switch--checkbox
+		
+	
+Turn Off Diversity Option 
+	Verify Diversity Option is Turned On
+	Wait Until Keyword Succeeds  10  10  Unselect Checkbox  info__diversity__switch--checkbox
+	
+
+Verify Diversity Option is Turned On
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-on")]
+
+Verify Diversity Option is Turned Off
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-off")]
+
+	
+Go to Job Form
+  [Arguments]  ${JobId}
+	Click Link  ${JobId} 
+
+Input Second Job Posting Notification Email
+	Input Text  scout_plus__notification_text  Scout_QA+1@talentdrive.com, Scout_QA+1002@talentdrive.com
+	Click Button  scout_plus__notification_save
+
+Clear Job Posting Notification Email
+	Input Text  scout_plus__notification_text  \ \  
+	Click Button  scout_plus__notification_save
+
+Add Scout+ Company
+	Input Text  scout_plus__add_exclusive__text  bullhorn-bhsandbox2
+	Click Button  scout_plus__add_exclusive__button
+	
+Delete Scout+ Company
+	Wait Until Keyword Succeeds  10  10  Click Link  Remove
+
+Verify Scout+ Company was Added
+	Wait Until Keyword Succeeds  10  10  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
+
+
+Verify Scout+ Companies were Deleted
+	Wait Until Keyword Succeeds  10  10  Element Should Not Be Visible  table table-striped table-condensed 
+
+Clear Job Question Form
+	Select Window  title=Scout
+	Input Text  xpath=//textarea[@tabindex="1"]  \ \
+	Click Button  job-form__save-button
+
+Input Job Question Form
+	Select Window  title=Scout
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  This is a new position in a new department in a growing company.
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="2"]  We are a fun start up!
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="3"]  You need to be driven
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="6"]  Medical Sales Experience marketing experience from a new company
+	Click Button  job-form__save-button
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  \ \
+	Click Button  job-form__save-button
+
+Turn On Scout Plus Special Price Feature
+	Verify Scout Plus Special Price is Turned Off
+	Wait Until Keyword Succeeds  20  10  Select Checkbox  scout_plus__exclusive_table__special_bullhorn-bhsandbox2 
+
+Turn Off Scout Plus Special Price Feature
+	Verify Scout Plus Special Price is Turned On
+	Wait Until Keyword Succeeds  20  10  Unselect Checkbox  scout_plus__exclusive_table__special_bullhorn-bhsandbox2 
+
+Verify Scout Plus Special Price is Turned On
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-on")]
+
+Verify Scout Plus Special Price is Turned Off
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-off")]
