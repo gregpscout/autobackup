@@ -6,7 +6,8 @@ User is on PCR Site  [Arguments]  ${url}  ${browser}
 	Open Browser  ${url}  ${browser}
 	Maximize Browser Window
 		
-Login to PCR  [Arguments]  ${username}  ${password}  ${databaseId}
+Login to PCR
+  [Arguments]  ${username}  ${password}  ${databaseId}
     Title Should be  PCRecruiter HTML Interface
     Select Frame  list
     Wait Until Keyword Succeeds  10  2  Element Should Be Visible  user
@@ -18,7 +19,7 @@ Login to PCR  [Arguments]  ${username}  ${password}  ${databaseId}
     Unselect Frame
 
 Verify successful login to PCR
-    Wait Until Keyword Succeeds  10  10  Title Should be  PCRecruiter (SCOUTUSER/SCOUTTEST1)
+    Wait Until Keyword Succeeds  10  2  Title Should be  PCRecruiter (SCOUTUSER/SCOUTTEST1)
 
 Go to Scout Iframe in PCR
   [Documentation]  Takes user to Scout iframe in PCR if already logged in to PCR
@@ -28,12 +29,12 @@ Go to Scout Iframe in PCR
     Click Link  Scout
     Unselect Frame
     Selecting ScoutFrame in PCR
-    Wait Until Page Contains  20  20  Scout
+    Wait Until Page Contains  20  2  Scout
     Unselect Frame
 
 Click Position Tab in PCR
     Select Frame  menu
-    Wait Until Keyword Succeeds  10  10  Click Link  myhref_4
+    Wait Until Keyword Succeeds  10  2  Click Link  myhref_4
     Unselect Frame
 
 Search Jobs Orders Tab on Scout For PCR
@@ -43,7 +44,7 @@ Search Jobs Orders Tab on Scout For PCR
     Verify User is on Search Jobs Page for Scout in PCR
 
 Verify User is on Search Jobs Page for Scout in PCR
-    Wait Until Keyword Succeeds  10  10  Element Should Be Visible  advanced-search
+    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  advanced-search
 
 Test Clear Button on Scout For PCR 
   [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
@@ -52,17 +53,19 @@ Test Clear Button on Scout For PCR
     Click Element  clear
     Textfield Should Contain  keyword  \
 
-Import Scout Job into PCR  [Arguments]  ${jobTitle}
+Import Scout Job into PCR
+  [Arguments]  ${jobTitle}
   [Documentation]  Searches and imports specified job from Scout iframe into PCR
     Search for Job by Title in Scout For PCR  ${jobTitle}
     Sleep  5s
     Select Checkbox  xpath=//*[@id="req-results-table"]/tbody/tr/td[1]/input
     Click Button  import-selected
-    Wait Until Keyword Succeeds  20  20  Element Should Be Visible  import-confirm
-    Wait Until Page Contains  2  2  imported-jobs
+    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  import-confirm
+    Wait Until Page Contains  5  1  imported-jobs
     Unselect Frame
 
-Search for Job by Title in Scout For PCR  [Arguments]  ${jobTitle}
+Search for Job by Title in Scout For PCR
+  [Arguments]  ${jobTitle}
   [Documentation]  Searches for specified job on Scout iframe
     Input Text  keyword  ${jobTitle} 
     Click Element  search-button
@@ -71,21 +74,27 @@ Search for Job by Title in Scout For PCR  [Arguments]  ${jobTitle}
 Back to Search on Scout for PCR
   [Documentation]  selects back to search button after importing a job from Scout into PCR
     Click Button  import-back-to-list   
-    Wait Until Keyword Succeeds  20  10  Verify User is on Search Jobs Page for Scout
+    Verify User is on Search Jobs Page for Scout
 
-Go To PCR Position Page to View Imported Job  [Arguments]  ${jobTitle}  ${status}
+Go To PCR Position Page to View Imported Job
+  [Arguments]  ${jobTitle}  ${status}
   [Documentation]  Goes back to Position page after importing a job from Scout into PCR to view the job
     Click Position Tab in PCR
     Select Frame  list
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  datainputa
     Input Text  datainputa  ${jobTitle}
     Select From List  dropdownc  Status (Dropdown)
     Select From List  datainputc  ${status}
     Click Link  myhref_2
-    Click Link  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  ${jobTitle}  
+    Unselect Frame
+    Select Frame  list
+    Wait Until Keyword Succeeds  10  5  Click Link  ${jobTitle}      
     Unselect Frame
     Verify the Job Selected is the Job Displayed in PCR  ${jobTitle}
 
-Verify the Job Selected is the Job Displayed in PCR  [Arguments]  ${jobTitle}
+Verify the Job Selected is the Job Displayed in PCR
+  [Arguments]  ${jobTitle}
     Select Frame  detail
     Textfield Should Contain  title  ${jobTitle}
     Unselect Frame
@@ -102,15 +111,19 @@ Click Candidate Tab in PCR
     Click Link  myhref_3
     Unselect Frame
 
-Search a Candidate in PCR  [Arguments]  ${candidate_firstname}  ${candidate_lastname}
+Search a Candidate in PCR
+  [Arguments]  ${candidate_firstname}  ${candidate_lastname}
     Select Frame  list
+    Wait Until Page Contains Element  datainputa  10  
     Input Text  datainputa  ${candidate_firstname}
     Input Text  datainputb  ${candidate_lastname}
+    Wait Until Page Contains Element  myhref_2
     Click Link  myhref_2
     Click Link  ${candidate_lastname}, ${candidate_firstname}
     Unselect Frame
 
-Edit Candidate Status Before Setting Up Interview  [Arguments]  ${candidate_firstname}  ${candidate_lastname}  ${candidate_id}
+Edit Candidate Status Before Setting Up Interview
+  [Arguments]  ${candidate_firstname}  ${candidate_lastname}  ${candidate_id}
     Click Candidate Tab in PCR
     Search a Candidate in PCR  ${candidate_firstname}  ${candidate_lastname}
     Select Frame  detail
@@ -119,13 +132,15 @@ Edit Candidate Status Before Setting Up Interview  [Arguments]  ${candidate_firs
     Click Link  myhref_4
     Unselect Frame
 
-Set Up Interview for Imported Job  [Arguments]  ${candidate_firstname}  ${candidate_lastname}
+Set Up Interview for Imported Job
+  [Arguments]  ${candidate_firstname}  ${candidate_lastname}
     Select Frame  detail
 # Confirm that the imported job defaults to 'Pending' status   
     Element Should Contain  status  Pending
     Mouse Over  myhref_24
     Click Link  myhref_25
     Click Link  myhref_3
+    Unselect Frame
     Sleep  2s
     Select Window  title=Search Results
     Input Text  xpath=//*[@tabindex="1"]  ${candidate_firstname}
@@ -134,13 +149,13 @@ Set Up Interview for Imported Job  [Arguments]  ${candidate_firstname}  ${candid
     Click Link  xpath=//*[@id="bodysendname"]/table[1]/tbody/tr[3]/td[1]/a
     Select From List  itype  11
     Input Text  stype  Scout
-    Click Link  xpath=//*[@id="bodysendout"]/a[1]
-    Sleep  2s
-    Select Window  PCR
-    Unselect Frame
+    Click Link  xpath=//*[@id="bodysendout"]/a[1]  
+    Sleep  5s
+    Select Window  PCR                             
 
-Test Employer Info is Blinded to the Recruiter After Candidate Submission  [Arguments]  ${jobTitle}
-    Select Frame  detail
+Test Employer Info is Blinded to the Recruiter After Candidate Submission
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Select Frame  detail
     Click Link  myhref_1
     Textfield Should Contain  title  ${jobTitle}
     Textfield Should Contain  contact  Scout
@@ -152,12 +167,12 @@ Test Employer Info is Un-blinded After Candidate gets Accepted by Employer
   [Arguments]  ${jobTitle}
     Select Frame  detail
     Textfield Should Contain  title  ${jobTitle}
-    Textfield Should Contain  contact  ${TBE_CONTACT_TEST}
-    Textfield Should Contain  phone  ${TBE_PHONE_TEST}
-    Textfield Should Contain  email  ${TBE_EMAIL_TEST}
+    Textfield Should Contain  contact  ${TBE_SCOUT_CONTACT}
+    Textfield Should Contain  email  ${TBE_SCOUT_EMAIL}
     Unselect Frame
 
-Place the Accepted Candidate  [Arguments]  ${candidate_fullname}  ${candidate_lastname}  ${candidate_firstname}
+Place the Accepted Candidate  
+  [Arguments]  ${candidate_fullname}  ${candidate_lastname}  ${candidate_firstname}
     Select Frame  detail
     Mouse Over  myhref_24
     Click Link  myhref_25
@@ -174,15 +189,17 @@ Place the Accepted Candidate  [Arguments]  ${candidate_fullname}  ${candidate_la
     Click Link  myhref_9
     Unselect Frame
 
-Delete Job from PCR  [Arguments]  ${jobTitle}
+Delete Job from PCR
+  [Arguments]  ${jobTitle}
     Select Frame  detail
     Sleep  5s
     Click Link  myhref_5
     Confirm Action
     Unselect Frame
 
-Test Links on Scout For PCR  [Arguments]  ${TEST_SCOUTLINK}
-    [Documentation]  PCR uses frames and because of that, the feedback modal submit button is getting hidden beneath the PCR detail frame. Since the test cannot view the modal, the workaround is to open the scout iframe in its own window and test the feedback link
+Test Links on Scout For PCR
+  [Arguments]  ${TEST_SCOUTLINK}
+  [Documentation]  PCR uses frames and because of that, the feedback modal submit button is getting hidden beneath the PCR detail frame. Since the test cannot view the modal, the workaround is to open the scout iframe in its own window and test the feedback link
     Go To  ${TEST_SCOUTLINK}
     Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
     Test Need Help with Scout Link  ${needhelp_pcr}  ${needhelp_text}
