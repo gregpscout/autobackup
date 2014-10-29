@@ -6,11 +6,13 @@ Bullhorn Setup
     User is on Bullhorn Site  ${BULLHORN_S}  ${BROWSER}
     Login to Bullhorn  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S}
 
-User is on Bullhorn Site  [Arguments]  ${url}  ${browser}  
-	Open Browser  ${url}  ${browser}
-	Maximize Browser Window
+User is on Bullhorn Site
+  [Arguments]  ${url}  ${browser}  
+	  Open Browser  ${url}  ${browser}
+	  Maximize Browser Window
 		
-Login to Bullhorn  [Arguments]  ${username}  ${password}
+Login to Bullhorn
+  [Arguments]  ${username}  ${password}
     Input Text  username  ${username}
     Input Text  password  ${password}
     Click Button  Log in to Bullhorn
@@ -53,7 +55,8 @@ Test Clear Button on Scout For Bullhorn
     Textfield Should Contain  keyword  \
     Unselect Frame
     
-Import Scout Job into Bullhorn  [Arguments]  ${jobTitle}
+Import Scout Job into Bullhorn
+  [Arguments]  ${jobTitle}
   [Documentation]  Searches and imports specified job from Scout iframe into Bullhorn
     Select Frame  BHSWindow1717
     Search for Job by Title in Scout For Bullhorn  ${jobTitle}
@@ -62,7 +65,8 @@ Import Scout Job into Bullhorn  [Arguments]  ${jobTitle}
     Wait Until Keyword Succeeds  20  10  Element Should Be Visible  xpath=//*[@id="import-back-to-list"] 
     Unselect Frame 
     
-Search for Job by Title in Scout For Bullhorn  [Arguments]  ${jobTitle}
+Search for Job by Title in Scout For Bullhorn
+  [Arguments]  ${jobTitle}
   [Documentation]  Searches for specified job on Scout iframe
     Input Text  keyword  ${jobTitle} 
     Sleep  2s                              # Added sleep to make sure search happens only after entering complete search string
@@ -222,7 +226,7 @@ Search for Job in Bullhorn
   ...  this keyword searches for the specified job in Bullhorn  
     Select Frame  BHSWindow828
     Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
-    Wait Until Keyword Succeeds  10  1  Click Button  xpath=//*[@class="search-toggle-btn"]
+    Wait Until Keyword Succeeds  20  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
     Wait Until Element is Visible  keywords
     Input Text  keywords  ${jobTitle} 
     Click Element  keywords
@@ -248,7 +252,7 @@ Search for Candidate in Bullhorn
   ...  this keyword searches for the specified candidate in Bullhorn  
     Select Frame  BHSWindow814
     Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
-    Wait Until Keyword Succeeds  10  1  Click Button  xpath=//*[@class="search-toggle-btn"]
+    Wait Until Keyword Succeeds  20  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
     Input Text  keywords  ${candidateName} 
     Sleep  2s
     Click Element  keywords
@@ -313,6 +317,13 @@ Mark Candidate as Placed in Bullhorn
     Select Frame  addNewPlacementWnd${y}
     Click Button  Save
     Unselect Frame
+
+
+
+      
+
+    
+
 
    
     

@@ -29,7 +29,7 @@ Go to Scout Iframe in PCR
     Click Link  Scout
     Unselect Frame
     Selecting ScoutFrame in PCR
-    Wait Until Page Contains  20  2  Scout
+    Wait Until Page Contains  Scout
     Unselect Frame
 
 Click Position Tab in PCR
@@ -60,7 +60,7 @@ Import Scout Job into PCR
     Sleep  5s
     Select Checkbox  xpath=//*[@id="req-results-table"]/tbody/tr/td[1]/input
     Click Button  import-selected
-    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  import-confirm
+    Wait Until Keyword Succeeds  30  2  Element Should Be Visible  import-confirm
     Wait Until Page Contains  5  1  imported-jobs
     Unselect Frame
 
