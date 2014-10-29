@@ -7,9 +7,9 @@ Bullhorn Setup
     Login to Bullhorn  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S}
 
 User is on Bullhorn Site
-  [Arguments]  ${url}  ${browser}  
-	  Open Browser  ${url}  ${browser}
-	  Maximize Browser Window
+  [Arguments]  ${url}  ${browser}
+    Open Browser  ${url}  ${browser}
+    Maximize Browser Window
 		
 Login to Bullhorn
   [Arguments]  ${username}  ${password}

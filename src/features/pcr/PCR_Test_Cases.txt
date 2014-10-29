@@ -1,7 +1,7 @@
 *** Settings ***
 Library           Selenium2Library
-Library 		      ImapLibrary
-Library 		      Screenshot
+Library           ImapLibrary
+Library           Screenshot
 Resource          ../../keywords/pcr/ui_pcr_keywords.txt
 Resource          ../../keywords/db/sync_tasks.txt
 Resource          ../../resources/settings.txt  
@@ -75,10 +75,10 @@ Scenario: PCR Cleanup
 
 Scenario: PCR Test links
   [Tags]  LINKS
-	  Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}   
-	  When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
-	  Go to Scout Iframe in PCR
-	  Test Links on Scout For PCR  ${TEST_SCOUTLINK}
+    Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}
+    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+    Go to Scout Iframe in PCR
+    Test Links on Scout For PCR  ${TEST_SCOUTLINK}
 
 Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
   [Documentation]  Testing PCR for the following
