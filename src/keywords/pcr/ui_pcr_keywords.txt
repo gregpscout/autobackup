@@ -10,7 +10,7 @@ Login to PCR
   [Arguments]  ${username}  ${password}  ${databaseId}
     Title Should be  PCRecruiter HTML Interface
     Select Frame  list
-    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  user
+    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  user
     Input Text  user  ${username}
     Input Password  pw  ${password}
     Select From List  db  ${databaseId}
@@ -212,7 +212,7 @@ Logout of PCR
 
 Selecting ScoutFrame in PCR
   [Documentation]  PCR needs frame selection to be able to verify and validate actions
-    Select Frame  list
-    Select Frame  scoutframe
+    Wait Until Keyword Succeeds  10  2  Select Frame  list
+    Wait Until Keyword Succeeds  10  2  Select Frame  scoutframe
 
 
