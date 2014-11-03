@@ -14,7 +14,6 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
-	When Access User Page  57
 	And Verify User is in User Page
 	And Click to Activate User 
 	And Click to Deactivate User
@@ -97,9 +96,9 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	
 #========== Ed Lee's Scenario ===========================
 Scenario: Adding a New User for KENEXA in Scout Admin
-   [Tags]  SMOKE  KX  SCOUT_ADMIN  NEW_USER
-   [Documentation]  This code will generate a new account that must be removed after running the automation
- 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
+  [Tags]  SMOKE  KX  SCOUT_ADMIN  NEW_USER
+  [Documentation]  This code will generate a new account that must be removed after running the automation
+	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
  	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
  	Then Verify user is logged in to Scout Admin
  	When Go To Kenexa New Company
@@ -111,7 +110,7 @@ Scenario: Adding a New User for KENEXA in Scout Admin
 
 Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
   [Tags]  SMOKE  KX  SCOUT_ADMIN  EDIT_USER
-   [Documentation]  1) This test suite relies on the recruiter "Tom A. Cruise" for editing. 2) Verifying Justin Stanizzi Test account
+  [Documentation]  1) This test suite relies on the recruiter "Tom A. Cruise" for editing. 2) "Justin Stanizzi Test" is the existing recruiter being checked
     Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
     Then Verify user is logged in to Scout Admin 
@@ -133,8 +132,8 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
     Then Verify TPX Admin is on the Placement Page
 
 Scenario: Deactivate User for Kenexa in Scout Admin
-   [Tags]  SMOKE  KX  SCOUT_ADMIN  DEACTIVATE_USER
-   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
+  [Tags]  SMOKE  KX  SCOUT_ADMIN  DEACTIVATE_USER
+  [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
  	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
     Then Verify user is logged in to Scout Admin 

@@ -1,35 +1,20 @@
 *** Settings ***
 Library    String
+Resource  ../../resources/settings.txt
+Variables  ../../models/Recruiter_Models.py
 
 *** Variables ***
-${recr_username}		robotTester
-${recr_name}			Robot Tester
-${recr_title}			Chief Automation Tester
-${recr_email}			@mailinator.com
-${recr_phone}			617-123-4567
-${recr_address_1}		711 Bolyston Street
-${recr_address_2}		Suite 5
-${recr_city}			Boston
-${recr_state}			MA
-${recr_zip}				02116	
-${new_recr_username}    tmcruise
-${new_recr_name}        Tom A. Cruise
-${new_recr_title}       Director of Action
-${new_recr_email}       tcruise@gmail.com
-${new_recr_phone}       785-548-6420
-${new_recr_address_1}   1899 Sigley Road
-${new_recr_address_2}	Suite 100
-${new_recr_city}		Everest
-${new_recr_state}		KS
-${new_recr_zip}			66424	
 ${Kenexa_ATS_ID}		kenexa-20048
 ${Kenexa_Co_ID}			5339d364ffd3db588cd4c112
-${Kenexa_User_URL}		https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
+${Kenexa_New_Co_URL}	https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
 ${THINKTALENT2_ATS_ID}	taleo-TALENTDRIVE2
 ${ThinkTalent2_Co_ID}   52fa9b9b3333cf0b42e93868
-${ThinkTalent2_User_URL}  https://staging.talentpx.com/admin/account/taleo/TALENTDRIVE2/ 
-${randname}
-
+${ThinkTalent2_Co_URL}  https://staging.talentpx.com/admin/account/taleo/TALENTDRIVE2/ 
+${TPX_Recruiter_URL}    https://staging.talentpx.com/admin/onboard/recruiter?company=
+${emailDomain}  @mailinator.com
+#${email}
+#${randname}
+	
 *** Keywords ***
 User is on Scout Admin Login Page
   [Arguments]  ${url}  ${BROWSER}  
@@ -233,11 +218,11 @@ Go To TalentDrive2
 	Click Link  TALENTDRIVE2
 
 Verify User is on Kenexa New Company Page & Users Section Exist 
-	Location Should be  https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
+	Location Should be  ${Kenexa_New_Co_URL}
 	Page Should Contain  Users
 
 Verify User is on THINKTALENT2 Page and Users Section Exist 
-	Location Should be  https://staging.talentpx.com/admin/account/taleo/TALENTDRIVE2/
+	Location Should be  ${ThinkTalent2_Co_URL}
 	Page Should Contain  Users	
 
 TPX Admin Go to "Add Recruiter" Page
@@ -245,28 +230,28 @@ TPX Admin Go to "Add Recruiter" Page
 
 Verify User is on Company Info Page 
 	[Arguments]  ${company}
-	Run Keyword If  "${company}"=="Kenexa"  Location Should Be  https://staging.talentpx.com/admin/onboard/recruiter?company=${Kenexa_Co_ID}
-	Run Keyword If  "${company}"=="TalentDrive2"  Location Should Be  https://staging.talentpx.com/admin/onboard/recruiter?company=${ThinkTalent2_Co_ID}
+	Run Keyword If  "${company}"=="Kenexa"  Location Should Be  ${TPX_Recruiter_URL}${Kenexa_Co_ID}
+	Run Keyword If  "${company}"=="TalentDrive2"  Location Should Be  ${TPX_Recruiter_URL}${ThinkTalent2_Co_ID}
 
 Generate Random Username
-    [Arguments]  ${input}
-    ${randnum}=  Generate Random String  4  [NUMBERS]abcdef
-    ${output}  Catenate  ${input}${randnum}
-    [return]  ${output}
+	[Arguments]  ${input}
+	${yr}  ${mo}  ${day}  ${hr}  ${min}  ${sec}=  Get Time  year,month,day,hour,min,sec
+	${output}  Catenate  ${input}${yr}${mo}${day}${hr}${min}${sec}
+	[return]  ${output}
 
 Create New Recruiter Profile
-	${randname}=  Generate Random Username  ${recr_username}
-	Set Suite Variable  ${email}  ${randname}${recr_email}
-	Input Text  recruiter-username  ${randname}
-	Input Text  recruiter-name  ${recr_name}
-	Input Text  recruiter-title  ${recr_title}
-	Input Text  recruiter-email  ${email}
-	Input Text  recruiter-phone  ${recr_phone}
-	Input Text  recruiter-street-address  ${recr_address_1}
-	Input Text  recruiter-address-additional  ${recr_address_2}
-	Input Text  recruiter-city  ${recr_city}
-	Input Text  recruiter-state  ${recr_state}
-	Input Text  recruiter-zip  ${recr_zip}
+	${randname}=  Generate Random Username  ${TPX_Recr1['username']}
+	Set Suite Variable  ${email}  ${randname}${emailDomain}
+	Input Text  //*[@id='recruiter-username']  ${randname}
+	Input Text  //*[@id='recruiter-name']  ${TPX_RECR1['fullname']}
+	Input Text  //*[@id='recruiter-title']  ${TPX_RECR1['title']}
+	Input Text  //*[@id='recruiter-email']  ${email}
+	Input Text  //*[@id='recruiter-phone']  ${TPX_RECR1['phone']}
+	Input Text  //*[@id='recruiter-street-address']  ${TPX_RECR1['address_1']}
+	Input Text  //*[@id='recruiter-address-additional']  ${TPX_RECR1['address_2']}
+	Input Text  //*[@id='recruiter-city']  ${TPX_RECR1['city']}
+	Input Text  //*[@id='recruiter-state']  ${TPX_RECR1['state']}
+	Input Text  //*[@id='recruiter-zip']  ${TPX_RECR1['zip']}
 	Select Radio Button  privilege  5
 	Click Element  //button[@type='submit']
 
@@ -274,10 +259,10 @@ Verify Success Message
 	Page Should Contain  An email has been sent to ${email} to confirm the email
 
 Verify User Has Been Added to the Table on the Company Page
-	Element Text Should Be  //div[@'main']/div/table.7.0  ${recr_name}
-	Element Text Should Be  //div[@'main']/div/table.7.1  ${recr_username}
-	Element Text Should Be  //div[@'main']/div/table.7.2  ${recr_phone}
-	Element Text Should Be  //div[@'main']/div/table.7.3  ${recr_email}
+	Element Text Should Be  //div[@'main']/div/table.7.0  ${TPX_RECR1['fullname']}
+	Element Text Should Be  //div[@'main']/div/table.7.1  ${TPX_RECR1['username']}
+	Element Text Should Be  //div[@'main']/div/table.7.2  ${TPX_RECR1['phone']}
+	Element Text Should Be  //div[@'main']/div/table.7.3  ${email}
 	Element Text Should Be  //div[@'main']/div/table.7.4  EMPLOYER, RECRUITER
 	Element Text Should Be  //div[@'main']/div/table/tbody/tr[7]/td[6]/span  Active
 	Element Text Should Be  //div[@'main']/div/table.8.6  Login | Impersonate
@@ -290,27 +275,28 @@ User Opens the Page for
 	Click Element  link=${link}
 
 Verify User is on the User Info Page
-	Element Text Should Be  css=ul.breadcrumb  Partners /kenexa / Kenexa New Company
+	Element Text Should Be  //*[@id='main']/div/ul  Partners /kenexa / Kenexa New Company
 
 User Edits the Account Profile
-	Click Element  link=${new_recr_name}
+	Click Element  link=${TPX_RECR2['fullname']}
 	Click Element  link=edit  
-	Wait Until Page Contains Element  css=#agent-username
-	Input Text  css=#agent-username  ${new_recr_username}
-	Input Text  css=#agent-name  ${new_recr_name}
-	Input Text  css=#agent-title  ${new_recr_title}
-	Input Text  css=#agent-phone  ${new_recr_phone}
-	Input Text  css=#agent-street-address  ${new_recr_address_1}
-	Input Text  css=#agent-address-additional  ${new_recr_address_2}
-	Input Text  css=#agent-zip  ${new_recr_zip}
-	Click Element  xpath=//*[@id="user-edit-modal"]/form/div[2]/div[2]/div/div/div/label[5]/label
-	Click Element  css=#user-edit-modal > form > div.modal-footer > button.btn.btn-primary
-	Element Text Should Be  css=div.alert.alert-message  Updated ${new_recr_username}
+	Wait Until Page Contains Element  //*[@id='agent-username']
+	Input Text  //*[@id='agent-username']  ${TPX_RECR2['username']}
+	Input Text  //*[@id='agent-name']  ${TPX_RECR2['fullname']}
+	Input Text  //*[@id='agent-title']  ${TPX_RECR2['title']}
+	Input Text  //*[@id='agent-phone']  ${TPX_RECR2['phone']}
+	Input Text  //*[@id='agent-street-address']  ${TPX_RECR2['address_1']}
+	Input Text  //*[@id='agent-address-additional']  ${TPX_RECR2['address_2']}
+	Input Text  //*[@id='agent-zip']  ${TPX_RECR2['zip']}
+	#click the Recruiter radio button
+	Click Element  //*[@id="user-edit-modal"]/form/div[2]/div[2]/div/div/div/label[5]/label
+	Click Element  //*[@id='user-edit-modal']/form/div[3]/button[1]
+	Element Text Should Be  //*[@id='main']/div/div[1]/div  Updated ${TPX_RECR2['username']}
 
 Verify User Account Info Has Been Updated
-	Element Text Should Be  css=dd  ${new_recr_name}
-	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[2]  ${new_recr_username}
-	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[3]  ${new_recr_phone}  
+	Element Text Should Be  css=dd  ${TPX_RECR2['fullname']}
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[2]  ${TPX_RECR2['username']}
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[3]  ${TPX_RECR2['phone']}  
 	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[5]  RECRUITER
 	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[6]  Active
 
@@ -335,7 +321,7 @@ User Logs Out of Scout Admin
 	Click Element  link=tpx-admin
 
 Verify User is Logged Out of Scout Admin	
-	Page Should Contain Element  css=#main > div.container
+	Element Should Not Be Visible  link=tpx-admin
 
 TPX Admin Can Access the Page: Partners Page
 	Go To  https://staging.talentpx.com/admin  
