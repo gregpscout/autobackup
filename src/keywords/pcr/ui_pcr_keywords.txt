@@ -198,10 +198,10 @@ Delete Job from PCR
     Unselect Frame
 
 Test Links on Scout For PCR
-  [Arguments]  ${TEST_SCOUTLINK}
+  [Arguments]  ${TEST_SCOUTLINK}  ${feedback}
   [Documentation]  PCR uses frames and because of that, the feedback modal submit button is getting hidden beneath the PCR detail frame. Since the test cannot view the modal, the workaround is to open the scout iframe in its own window and test the feedback link
     Go To  ${TEST_SCOUTLINK}
-    Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
+    Test Feedback Link on Scout  ${feedback}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
     Test Need Help with Scout Link  ${needhelp_pcr}  ${needhelp_text}
 
 Logout of PCR

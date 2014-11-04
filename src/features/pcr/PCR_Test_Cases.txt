@@ -8,19 +8,14 @@ Resource          ../../resources/settings.txt
 Suite Teardown    Close All Browsers
 Variables         ../../models/Requisition_Models.py
 Variables         ../../models/Candidate_Models.py
+Variables         ../../models/Email_Templates.py
 			
 *** Variables ***
 ${browser}                 googlechrome
-${feedback_input}          Robot Test Feedback in PCR
-${feedback_subject}        Feedback: Scout TestAccount at PCRClient (pcr)
 ${needhelp_pcr}            Scout for PCRecruiter - Go Scout Go  
 ${needhelp_text}           Scout for PCRecruiter
 ${status_pending}          P
 ${status_filled}           F
-${missing_email_subject}   ${PCR_Candidate_Missing_Email['full_name']}
-${missing_resume_subject}  ${PCR_Candidate_Missing_Resume['full_name']}
-${missing_resume_text}     Your candidate submission was unsuccessful because the candidate's resume is missing
-${missing_email_text}      Your candidate submission was unsuccessful because the candidate's email address is missing
 ${syncSubmissions}         ./manage.py --sync sync-pcr-submissions
 
 *** Test Cases ***
@@ -50,6 +45,8 @@ Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Emplo
     Go Back to Position View
     Set Up Interview for Imported Job  ${PCR_Reject_Candidate['first_name']}  ${PCR_Reject_Candidate['last_name']}
     Test Employer Info is Blinded to the Recruiter After Candidate Submission  ${TBE_REQ4['title']}
+    Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
+    Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_SUBMISSION}  ${TBE_REQ1['title']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
     Then Logout of PCR
 #Need to verify that the imported job does not exist after import (clean up script needed to be able to write/test this)
 
@@ -79,35 +76,31 @@ Scenario: PCR Test links
     Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go to Scout Iframe in PCR
-    Test Links on Scout For PCR  ${TEST_SCOUTLINK}
+    Test Links on Scout For PCR  ${TEST_SCOUTLINK}  ${PCR_FEEDBACK}
 
 Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
   [Documentation]  Testing PCR for the following
   ...  Submit Candidate with missing resume
+  ...  This expects TBE_REQ4 to be already imported
   [Tags]  REGRESSION  MISSINGRESUME
     Given User is on PCR Site  ${PCR_TEST}  ${browser}   
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
-    Go to Scout Iframe in PCR
-    Search Jobs Orders Tab on Scout For PCR
-    Import Scout Job into PCR  ${TBE_REQ4['title']}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Resume['first_name']}  ${PCR_Candidate_Missing_Resume['last_name']}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
-    Wait Until Keyword Succeeds  120  5  Validate Email Received  ${missing_resume_text}  ${missing_resume_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
+    Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_NO_RESUME}  ${PCR_Candidate_Missing_Resume['full_name']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
 
 Scenario: PCR Regression Test For Submitting Candidates with Missing Email
   [Documentation]  Testing PCR for the following
   ...  Submit Candidate with missing email
+  ...  This expects TBE_REQ4 to be already imported
   [Tags]  REGRESSION  MISSINGEMAIL
     Given User is on PCR Site  ${PCR_TEST}  ${browser}   
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
-    Go to Scout Iframe in PCR
-    Search Jobs Orders Tab on Scout For PCR
-    Import Scout Job into PCR  ${TBE_REQ4['title']}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Email['first_name']}  ${PCR_Candidate_Missing_Email['last_name']}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
-    Wait Until Keyword Succeeds  120  5  Validate Email Received  ${missing_email_text}  ${missing_email_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}
+    Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_NO_EMAIL}  ${PCR_Candidate_Missing_Email['full_name']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}
 
 
   
