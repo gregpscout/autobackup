@@ -10,7 +10,7 @@ Login to PCR
   [Arguments]  ${username}  ${password}  ${databaseId}
     Title Should be  PCRecruiter HTML Interface
     Select Frame  list
-    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  user
+    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  user
     Input Text  user  ${username}
     Input Password  pw  ${password}
     Select From List  db  ${databaseId}
@@ -29,7 +29,7 @@ Go to Scout Iframe in PCR
     Click Link  Scout
     Unselect Frame
     Selecting ScoutFrame in PCR
-    Wait Until Page Contains  20  2  Scout
+    Wait Until Page Contains  Scout
     Unselect Frame
 
 Click Position Tab in PCR
@@ -60,7 +60,7 @@ Import Scout Job into PCR
     Sleep  5s
     Select Checkbox  xpath=//*[@id="req-results-table"]/tbody/tr/td[1]/input
     Click Button  import-selected
-    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  import-confirm
+    Wait Until Keyword Succeeds  30  2  Element Should Be Visible  import-confirm
     Wait Until Page Contains  5  1  imported-jobs
     Unselect Frame
 
@@ -198,10 +198,10 @@ Delete Job from PCR
     Unselect Frame
 
 Test Links on Scout For PCR
-  [Arguments]  ${TEST_SCOUTLINK}
+  [Arguments]  ${TEST_SCOUTLINK}  ${feedback}
   [Documentation]  PCR uses frames and because of that, the feedback modal submit button is getting hidden beneath the PCR detail frame. Since the test cannot view the modal, the workaround is to open the scout iframe in its own window and test the feedback link
     Go To  ${TEST_SCOUTLINK}
-    Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
+    Test Feedback Link on Scout  ${feedback}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}
     Test Need Help with Scout Link  ${needhelp_pcr}  ${needhelp_text}
 
 Logout of PCR
@@ -212,7 +212,7 @@ Logout of PCR
 
 Selecting ScoutFrame in PCR
   [Documentation]  PCR needs frame selection to be able to verify and validate actions
-    Select Frame  list
-    Select Frame  scoutframe
+    Wait Until Keyword Succeeds  10  2  Select Frame  list
+    Wait Until Keyword Succeeds  10  2  Select Frame  scoutframe
 
 

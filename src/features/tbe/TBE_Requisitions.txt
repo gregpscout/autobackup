@@ -11,14 +11,15 @@ Resource          ../../keywords/common/ui_common_keywords.txt
 Variables         ../../models/Requisition_Models.py  
 Variables         ../../models/Candidate_Models.py
 Variables         ../../models/Candidate_Rejection.py
+Variables         ../../models/Email_Templates.py
 Suite Teardown    Close Browser
 
 *** Variables ***
 ${syncTBEJobs}      ./manage.py --sync sync-taleo-requisitions
-${feedback_input}  Robot Test Feedback in TBE
-${feedback_subject}  Feedback: QA Scout at TALENTDRIVE2 (taleo)
 ${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go    
 ${needhelp_text}  Scout for Taleo Business Edition
+${create_subject}  Your job has been posted to Scout for Taleo:
+${create_content}  Your job has been successfully posted to Scout for Taleo:
 
 *** Test Cases ***
 
@@ -27,15 +28,15 @@ Scenario: Test Create Requisition in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
   ...  Verifies that job is created in the database
   [Tags]  JOBCREATION  SMOKE
-	Given User is on TBE Site  ${TBE}  ${BROWSER}     
-	When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY} 
-	Then Verify user is logged in to TBE
-	When Create New Requisition in TBE  ${TBE_REQ1}
-	When Create New Requisition in TBE  ${TBE_REQ4}
+    Given User is on TBE Site  ${TBE}  ${BROWSER}
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Create New Requisition in TBE  ${TBE_REQ1}
+    When Create New Requisition in TBE  ${TBE_REQ4}
     ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
     Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
-    Sleep  4m
+    Sleep  5m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
     
 Scenario: Test Candidate Sharing and Acceptance in TBE
@@ -89,7 +90,7 @@ Scenario: Test Links in TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
     Select Frame in TBE
-    Test Feedback Link on Scout  ${feedback_input}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}    
+    Test Feedback Link on Scout  ${TBE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}     
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
     

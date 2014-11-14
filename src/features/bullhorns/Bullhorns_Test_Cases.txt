@@ -9,13 +9,11 @@ Test Setup        Bullhorn Setup
 Test Teardown     Close All Browsers
 Variables         ../../models/Requisition_Models.py
 Variables         ../../models/Candidate_Models.py
+Variables         ../../models/Email_Templates.py
 
 *** Variables ***
 ${Scout_BH_Candidate_Frame}  BHSWindow1717
 ${BH_Candidate_Frame}  JobPostingWnd
-${feedback_candidates}  Robot Test Feedback in BH Candidates Page
-${feedback_jobs}  Robot Test Feedback in BH Jobs Page
-${feedback_subject}  Feedback: Scout Test at bhsandbox2 (bullhorn)
 ${needhelp_bh}  Scout for Bullhorn - Go Scout Go    
 ${needhelp_text}  Scout for Bullhorn
 ${staging}  Scout Staging
@@ -85,14 +83,14 @@ Scenario: Test Feedback Link on Bullhorn Candidates Page
 	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
 	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 	
 	And Select Frames and Go to Scout Candidates Page  ${BH_Candidate_Frame} 
-	Then Test Feedback Link on Scout  ${feedback_candidates}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+	Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
 	
 Scenario: Test Links on Bullhorn Jobs Page
   [Tags]  LINKS  REGRESSION  
 	Given Go to Scout Environment  ${staging}
 	And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
 	And Sleep  2s
-	Then Test Feedback Link on Scout  ${feedback_jobs}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+	Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
 	And Sleep  5s
 	And Test Need Help with Scout Link  ${needhelp_bh}  ${needhelp_text}
 
