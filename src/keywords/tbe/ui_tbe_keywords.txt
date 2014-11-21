@@ -41,10 +41,10 @@ Enter Job Details for TBE
     Select From List  status  ${tbeReq['status']}
     Input Text  numOpen  ${tbeReq['numOpen']}  
     Select From List  duration  ${tbeReq['duration']}
-    Select Checkbox  ${tbeReq['abc']}
+    Select Checkbox  ${tbeReq['postToScout']}
     Checkbox Should Be Selected  CUSTOM_950
     Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
-    Input Text  xpath= //body[contains(@class,'cke_editable')]  Test Successful 
+    Input Text  xpath= //body[contains(@class,'cke_editable')]  ${tbeReq['description']} 
     Unselect Frame
     Click Button  update            
     	
@@ -86,24 +86,27 @@ TBE Login Page Should Be Open
 	Title Should Be  Log into Taleo Business Edition	
 	
 Go to Scout Candidates List for Job  
-  [Arguments]  ${jobTitle}
+  [Arguments]  ${jobTitle}  ${env}
     Search Job Requisition on TBE  ${jobTitle}
     Click Link  ${jobTitle}
-    Verify User is on Job Details Page  ${jobTitle}
-    Click Link  \#a185
-    Verify User is on Scout Candidates Page for TBE
+    Run keyword If  '${env}' == 'staging'  Verify User is on Job Details Page for Staging  ${jobTitle}
+    Run keyword If  '${env}' == 'test'  Verify User is on Job Details Page for Test  ${jobTitle}
+    Run keyword If  '${env}' == 'staging'  Click Link  \#a185
+    Run keyword If  '${env}' == 'test'  Click Link  \#a233
+    Verify User is on Scout Candidates Page for TBE  ${env}
     
 Verify User is on Scout Candidates Page for TBE
+  [Arguments]  ${env}
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
-    Select Frame in TBE
+    Select Frame in TBE  ${env}
     Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
     Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
     Unselect Frame
 
 Share Candidate in TBE
-  [Arguments]  ${CandidateName}  ${email} 
-    Go to Candidate Details Page from Scout Candidates List  ${CandidateName} 
-    Select Frame in TBE  
+  [Arguments]  ${CandidateName}  ${email}  ${env} 
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}  ${env} 
+    Select Frame in TBE  ${env}  
     Click Element  share-candidate-button
     Wait Until Page Contains Element  share-modal
     Input Text  share-modal__to  ${email}
@@ -112,9 +115,9 @@ Share Candidate in TBE
     Unselect Frame
     
 Accept Candidate in TBE  
-  [Arguments]  ${CandidateName}  ${jobTitle}
+  [Arguments]  ${CandidateName}  ${jobTitle}  ${env}
     Verify User is on Candidate Details Page
-    Select Frame in TBE
+    Select Frame in TBE  ${env}
     Click Element  interested 
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 
     Element Should Contain  interested-modal  Would you like to import ${CandidateName} to the ${jobTitle} requisition?
@@ -122,9 +125,9 @@ Accept Candidate in TBE
     Unselect Frame
         
 Reject Candidate in TBE  
-  [Arguments]  ${CandidateName}  ${reason}  ${comments}
-    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}
-    Select Frame in TBE
+  [Arguments]  ${CandidateName}  ${reason}  ${comments}  ${env}
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}  ${env}
+    Select Frame in TBE  ${env}
     Click Element  not-interested
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
     Select Radio Button  not-interested-reason  ${reason}    
@@ -133,8 +136,8 @@ Reject Candidate in TBE
     Unselect Frame
     
 Go to Candidate Details Page from Scout Candidates List
-  [Arguments]  ${CandidateName} 
-    Select Frame in TBE
+  [Arguments]  ${CandidateName}  ${env} 
+    Select Frame in TBE  ${env}
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="candidateList"]
     Click Link  ${CandidateName} 
     Verify User is on Candidate Details Page 
@@ -143,13 +146,23 @@ Go to Candidate Details Page from Scout Candidates List
 Verify User is on Candidate Details Page
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Candidate Profile     
     
-Verify User is on Job Details Page  
-  [Arguments]  ${jobTitle} 
+Verify User is on Job Details Page for Staging  
+  [Arguments]  ${jobTitle}
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a28  Posting Information 
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a185  Scout Candidates
 	
+Verify User is on Job Details Page for Test  
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a225  Posting Information 
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a233  Scout Candidates
+
 Select Frame in TBE
-    Select Frame  xpath=//iframe[contains(@src,'https://staging.talentpx.com')]
+  [Arguments]  ${env}
+    Select Frame  xpath=//iframe[contains(@src,'https://${env}.talentpx.com')]
+
+
+
+
 
 
 

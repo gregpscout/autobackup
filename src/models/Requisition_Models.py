@@ -8,9 +8,10 @@ TBE_REQ1 = {
     "location": '39',
     "jobCat": '114',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 1 for Bullhorn"    
 }
 
 TBE_REQ2 = {
@@ -19,9 +20,10 @@ TBE_REQ2 = {
     "location": '73',
     "jobCat": '122',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 2 for Bullhorn"    
 }
 
 TBE_REQ3 = {
@@ -30,9 +32,10 @@ TBE_REQ3 = {
     "location": '49',
     "jobCat": '121',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 3 for Bullhorn"    
 }
 
 TBE_REQ4 = {
@@ -41,9 +44,10 @@ TBE_REQ4 = {
     "location": '61',
     "jobCat": '116',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 1 for PCR"    
 }
 
 TBE_REQ5 = {
@@ -52,9 +56,10 @@ TBE_REQ5 = {
     "location": '38',
     "jobCat": '115',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 2 for PCR"    
 }
 
 TBE_REQ6 = {
@@ -63,7 +68,9 @@ TBE_REQ6 = {
     "location": '57',
     "jobCat": '113',
     "status": '2',
-    "numOpen": '2',
+    "numOpen": '1',
     "duration": '1',
-    "abc": 'CUSTOM_935'    
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 3 for PCR"    
 }
+

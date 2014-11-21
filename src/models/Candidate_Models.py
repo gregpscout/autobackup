@@ -30,6 +30,7 @@ PCR_Accept_Candidate = {
 	"first_name": "Robot_Ben_Accept",
 	"last_name": "Jerry",
 	"full_name": "Robot_Ben_Accept Jerry",
+    "mod_name": "Robot_Ben_Accept J.",
     "id": 'NA-1191709964'
 }
 
@@ -37,6 +38,7 @@ PCR_Reject_Candidate = {
 	"first_name": "Robot_Kenny_Reject",
 	"last_name": "South",
 	"full_name": "Robot_Kenny_Reject South",
+    "mod_name": "Robot_Kenny_Reject S.",
     "id": 'NA-4985567095'
 }
 

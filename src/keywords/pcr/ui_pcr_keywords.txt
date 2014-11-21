@@ -34,12 +34,14 @@ Go to Scout Iframe in PCR
 
 Click Position Tab in PCR
     Select Frame  menu
-    Wait Until Keyword Succeeds  10  2  Click Link  myhref_4
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  myhref_4 
+    Click Link  myhref_4
     Unselect Frame
 
 Search Jobs Orders Tab on Scout For PCR
   [Documentation]  Takes user to search jobs orders tab in Scout iframe. The frame unselection is done only after Import Scout Job into PCR keyword to avoid multiple frame select/unselect. 
     Selecting ScoutFrame in PCR
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  signals-search
     Click link  signals-search
     Verify User is on Search Jobs Page for Scout in PCR
 
@@ -81,10 +83,10 @@ Go To PCR Position Page to View Imported Job
   [Documentation]  Goes back to Position page after importing a job from Scout into PCR to view the job
     Click Position Tab in PCR
     Select Frame  list
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  datainputa
+    Wait Until Keyword Succeeds  20  2  Element Should Be Visible  datainputa
     Input Text  datainputa  ${jobTitle}
-    Select From List  dropdownc  Status (Dropdown)
-    Select From List  datainputc  ${status}
+    Wait Until Keyword Succeeds  20  5  Select From List  dropdownc  Status
+    Input Text  datainputc  ${status}
     Click Link  myhref_2
     Wait Until Keyword Succeeds  10  2  Page Should Contain  ${jobTitle}  
     Unselect Frame
@@ -180,7 +182,8 @@ Place the Accepted Candidate
     Click Link  myhref_11
     Click Link  myhref_2
     Click Element  xpath=//*[@id="bodyplace"]/table[2]/tbody/tr[2]/td[2]/table/tbody/tr/td[3]/table
-    Select Window  title=Dropdown List
+    Wait Until Keyword Succeeds  10  5  Select Window  title=Dropdown List
+    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  LOOKUP
     Input Text  LOOKUP  ${candidate_lastname}, ${candidate_firstname} 
     Click Element  INPUT
     Click Element  td1
