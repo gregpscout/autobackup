@@ -48,19 +48,13 @@ Scenario: Test submitting candidate to a job in Bullhorn
 	And Test Contact Information is Blinded Before Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
 	
 Scenario: Test Unblinding Feature
-  [Tags]  UNBLINDING  SMOKE
+  [Tags]  PLACEMENT  SMOKE 
 	Given Go to Jobs List Page in Bullhorn
 	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
 	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 	
 	Then Test Contact Information is Unblinded After Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${TBE_SCOUT_EMAIL}
+	And Mark Candidate as Placed in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BH_Candidate_Frame} 
 	
-Scenario: Place candidate to a job in Bullhorn  
-  [Tags]  PLACEMENT  SMOKE  
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 
-	Then Mark Candidate as Placed in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BH_Candidate_Frame}
-
 Scenario: Test submitting candidate with no email  
   [Tags]  REGRESSION  SUBMISSION  NO_EMAIL 
 	Given Go to Jobs List Page in Bullhorn

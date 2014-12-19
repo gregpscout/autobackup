@@ -15,7 +15,7 @@ Variables         ../../models/Email_Templates.py
 Suite Teardown    Close Browser
 
 *** Variables ***
-${syncTBEJobs}      ./manage.py --sync sync-taleo-requisitions
+${syncTBEJobs}  ./manage.py --sync sync-taleo-requisitions
 ${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go    
 ${needhelp_text}  Scout for Taleo Business Edition
 ${create_subject}  Your job has been posted to Scout for Taleo:
@@ -39,36 +39,47 @@ Scenario: Test Create Requisition in TBE
     Sleep  5m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
     
-Scenario: Test Candidate Sharing and Acceptance in TBE
+Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
   [Documentation]  Shares candidate and accepts the same candidate in TBE
-  [Tags]  ACCEPTSUBMISSION  SMOKE  SHARE
+  [Tags]  ACCEPTSUBMISSION_BH  SMOKE  SHARE
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL} 
-    And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']} 
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging 
+    And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}  staging
+
+Scenario: Test Candidate Sharing and Acceptance in TBE Test for PCR
+  [Documentation]  Shares candidate and accepts the same candidate in TBE
+  [Tags]  ACCEPTSUBMISSION_PCR  SMOKE  SHARE
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test 
+    And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test     
     
-Scenario: Test Candidate Rejection in TBE for Candidate Qualifications
+Scenario: Test Candidate Rejection in TBE for Candidate Qualifications for Bullhorn
   [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
-  [Tags]  REJECTSUBMISSION  SMOKE
+  [Tags]  REJECTSUBMISSION_BH  SMOKE
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}       
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}  staging       
     
-Scenario: Test Candidate Rejection in TBE due to Placement Fee
+Scenario: Test Candidate Rejection in TBE due to Placement Fee for PCR
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
-  [Tags]  REJECTSUBMISSION  REGRESSION  
+  [Tags]  REJECTSUBMISSION_PCR  REGRESSION  
     Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    When Login to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    And Reject Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}       
+    Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Reject Candidate in TBE  ${PCR_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}  test       
         
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
@@ -77,8 +88,8 @@ Scenario: Test Candidate Rejection in TBE for Other Reason
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  staging  
     
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
@@ -88,8 +99,8 @@ Scenario: Test Links in TBE
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}
-    Select Frame in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    Select Frame in TBE  staging
     Test Feedback Link on Scout  ${TBE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}     
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}

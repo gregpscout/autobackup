@@ -2,7 +2,7 @@
 Library         MongoDBLibrary
 
 *** Variables ***
-${dbHost}      dbstgusec01.talentpx.com
+${dbHost}      dbstgusea01.talentpx.com
 ${dbPort}      ${27017}
 ${dbname}      tpx
 ${coll}        position_profile

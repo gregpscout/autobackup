@@ -69,7 +69,7 @@ Search for Job by Title in Scout For Bullhorn
   [Arguments]  ${jobTitle}
   [Documentation]  Searches for specified job on Scout iframe
     Input Text  keyword  ${jobTitle} 
-    Sleep  2s                              # Added sleep to make sure search happens only after entering complete search string
+    Sleep  5s                              # Added sleep to make sure search happens only after entering complete search string
     Click Element  review
     Wait Until Keyword Succeeds  20  2  Table Row Should Contain  req-search-table  1  ${jobTitle}
 
@@ -218,7 +218,7 @@ Go to Jobs List Page in Bullhorn
 Verify User is on Jobs List Page for Bullhorn
   [Documentation]  Verifies that the user is on jobs list page in Bullhorn 
     Page Should Contain  Jobs
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  keywords  
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  keywords  
     
 Search for Job in Bullhorn  
   [Arguments]  ${jobTitle}
@@ -226,13 +226,14 @@ Search for Job in Bullhorn
   ...  this keyword searches for the specified job in Bullhorn  
     Select Frame  BHSWindow828
     Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
-    Wait Until Keyword Succeeds  20  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
+    Wait Until Keyword Succeeds  30  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
     Wait Until Element is Visible  keywords
     Input Text  keywords  ${jobTitle} 
+    Sleep  2s
     Click Element  keywords
     Wait Until Page Contains Element  xpath=//*[contains(@class,"primary search")]       
     Click Button  xpath=//*[@class="primary search large"]
-    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${jobTitle}  
+    Wait Until Keyword Succeeds  30  2  Page Should Contain Link  ${jobTitle}  
 
 Go to Candidates List Page in Bullhorn
   [Documentation]  Takes user to candidates list page in bullhorn-s if already logged in
@@ -244,7 +245,7 @@ Go to Candidates List Page in Bullhorn
 Verify User is on Candidates List Page for Bullhorn
   [Documentation]  Verifies that the user is on candidates list page in Bullhorn 
     Page Should Contain  Candidates
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  keywords  
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  keywords  
     
 Search for Candidate in Bullhorn  
   [Arguments]  ${candidateName}
@@ -252,13 +253,13 @@ Search for Candidate in Bullhorn
   ...  this keyword searches for the specified candidate in Bullhorn  
     Select Frame  BHSWindow814
     Wait Until Keyword Succeeds  20  2  Select Frame  xpath=//*[@id="bhBody"]/iframe
-    Wait Until Keyword Succeeds  20  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
+    Wait Until Keyword Succeeds  30  5  Click Button  xpath=//*[contains(@class,"search-toggle-btn")]
     Input Text  keywords  ${candidateName} 
     Sleep  2s
     Click Element  keywords
     Wait Until Page Contains Element  xpath=//*[contains(@class,"primary search")]       
     Click Button  xpath=//*[@class="primary search large"]
-    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  ${candidateName}  
+    Wait Until Keyword Succeeds  30  2  Page Should Contain Link  ${candidateName}  
     Unselect Frame
         
 Go to Job Details Page in Bullhorn  
