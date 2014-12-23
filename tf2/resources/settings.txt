@@ -1,0 +1,61 @@
+*** Variables ***
+${BROWSER}                  Firefox
+
+${HOST_STAGING}             appstguseb01.talentpx.com
+${HOST_TEST}	            apptstuseb01.talentpx.com
+${USERNAME}         		tpxapp
+${PASSWORD}			        # specify your password to login to staging
+${KEYFILE}                  # specify path to keyfile /Users/username/.ssh/id_dsa
+
+${BULLHORN}                 https://cls4.bullhornstaffing.com
+${USERNAME_BULLHORN}        jeffrey.simmons.sb  
+${PASSWORD_BULLHORN}        jsimmons@litl
+
+${BULLHORN_S}               https://bhnext.bullhornstaffing.com
+${USERNAME_BULLHORN_S}      talentdrive.admin  
+${PASSWORD_BULLHORN_S}      talentfilter123!
+${BH_FEEDBACK_TEXT}         Testing feedback from Bullhorn 
+
+${CB_username}  	RDBWebTest@talentdrive.com
+${CB_password}	6QUWW9X8
+
+${KEYWORD}		          Manager
+
+${GOOGLE}			http://www.google.com
+
+${TF2_DEV}			https://td-dev-app2.talentfilter.biz/direct/talentdrive.admin/talentfilter123!/bullhorn
+
+${PCR_TEST}					https://rc2.pcrecruiter.net
+${USERNAME_PCR}				SCOUTUSER
+${PASSWORD_PCR}				a8kjlLk2
+${DATABASEID_PCR}			ScoutTest1
+
+${TBE}                      https://tbe.taleo.net/login
+${TBE_USERNAME}             qa_scout
+${TBE_PASSWORD}             qa_scout
+${TBE_COMPANY}              TALENTDRIVE2
+${TBE_CONTACT}				QA Scout
+
+${TBE_USERNAME_TEST}        pparker
+${TBE_PASSWORD_TEST}        spiderman2013
+${TBE_PHONE_TEST}			(617) 535-5030
+${TBE_CONTACT_TEST}			Peter Parker
+${TBE_EMAIL_TEST}			scout_qa@goscoutgo.com
+
+${TPXADMIN_STG}             https://staging.talentpx.com/admin/login
+${USERNAME_TPXADMIN_STG}    scout_support@goscoutgo.com
+${PASSWORD_TPXADMIN_STG}    password1
+
+${TEST_EMAIL_ID}			sent-email-test@talentdrive.com
+${TEST_EMAIL_PWD}			Noreply2014$
+${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com
+${SCOUT_QA_EMAIL}			scout_qa@talentdrive.com
+${STAGING_EMAIL_ID}			sent-email-stage@talentdrive.com
+${STAGING_EMAIL_PWD}		Noreply2014$
+${NOREPLY_STAGING_EMAIL}	no-reply-stage@goscoutgo.com
+
+${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended
+
+${SCOUT_EMAIL}              scout_support@goscoutgo.com
+${TBE_SCOUT_CONTACT}        QA Scout
+${TBE_SCOUT_EMAIL}          scout_qa+tbeautomation@goscoutgo.com
