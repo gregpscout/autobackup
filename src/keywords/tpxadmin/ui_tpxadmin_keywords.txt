@@ -60,7 +60,7 @@ Go to Home Page
 Go to Reports
 	Click Link  Account
 	Click Link  Reports
-	Wait Until Keyword Succeeds  10  10  CLick Link  Initial report
+	Wait Until Keyword Succeeds  10  2  CLick Link  Initial report
 	
 Go to Partners
 	Click Link  Account
@@ -68,7 +68,7 @@ Go to Partners
 
 Verify User is in Partners
 	Title Should be  Admin | Scout
-	Wait Until Keyword Succeeds  10  10  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  Partner Name 
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  Partner Name 
 	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  2  Type of ATS
 	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  3  Share Percentage
 
@@ -85,11 +85,11 @@ Verify User is in User Page
 
 Click to Activate User
 	Verify User is Inactive
-	Wait Until Keyword Succeeds  10  10  Click Link  Activate
+	Wait Until Keyword Succeeds  10  2  Click Link  Activate
 
 Click to Deactivate User
 	Verify User is Active
-	Wait Until Keyword Succeeds  10  10  Click Link  Deactivate
+	Wait Until Keyword Succeeds  10  2  Click Link  Deactivate
 
 Verify User is Active
 	Page Should Contain Link  Deactivate
@@ -136,12 +136,12 @@ Verify Adding Multiple Users for Job Notification
 
 Turn On Diversity Option 
 	Verify Diversity Option is Turned Off
-	Wait Until Keyword Succeeds  10  10  Select Checkbox  info__diversity__switch--checkbox
+	Wait Until Keyword Succeeds  10  2  Select Checkbox  info__diversity__switch--checkbox
 		
 	
 Turn Off Diversity Option 
 	Verify Diversity Option is Turned On
-	Wait Until Keyword Succeeds  10  10  Unselect Checkbox  info__diversity__switch--checkbox
+	Wait Until Keyword Succeeds  10  2  Unselect Checkbox  info__diversity__switch--checkbox
 	
 
 Verify Diversity Option is Turned On
@@ -150,7 +150,6 @@ Verify Diversity Option is Turned On
 Verify Diversity Option is Turned Off
 	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-off")]
 
-	
 Go to Job Form
   [Arguments]  ${JobId}
 	Click Link  ${JobId} 
@@ -168,28 +167,26 @@ Add Scout+ Company
 	Click Button  scout_plus__add_exclusive__button
 	
 Delete Scout+ Company
-	Wait Until Keyword Succeeds  10  10  Click Link  Remove
+	Wait Until Keyword Succeeds  10  2  Click Link  Remove
 
 Verify Scout+ Company was Added
-	Wait Until Keyword Succeeds  10  10  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
 
 
 Verify Scout+ Companies were Deleted
-	Wait Until Keyword Succeeds  10  10  Element Should Not Be Visible  table table-striped table-condensed 
+	Wait Until Keyword Succeeds  10  2  Element Should Not Be Visible  table table-striped table-condensed 
 
-Clear Job Question Form
+Clear Job Form
 	Select Window  title=Scout
 	Input Text  xpath=//textarea[@tabindex="1"]  \ \
 	Click Button  job-form__save-button
 
-Input Job Question Form
+Input Job Form
 	Select Window  title=Scout
 	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  This is a new position in a new department in a growing company.
 	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="2"]  We are a fun start up!
 	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="3"]  You need to be driven
 	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="6"]  Medical Sales Experience marketing experience from a new company
-	Click Button  job-form__save-button
-	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  \ \
 	Click Button  job-form__save-button
 
 Turn On Scout Plus Special Price Feature

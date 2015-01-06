@@ -14,6 +14,7 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
+	When Access User Page  57
 	And Verify User is in User Page
 	And Click to Activate User 
 	And Click to Deactivate User
@@ -56,30 +57,32 @@ Scenario: Job Notification Testing
 
 Scenario: Test Diversity Feature
   [Tags]  SMOKE  DIVERSITY 
-  [Documentation]  Diversity Feature Must be Turned Off First	  
+  [Documentation]  Diversity Feature Must be Turned On First	  
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
-	And Turn On Diversity Option
-	And Verify Diversity Option is Turned On
 	And Turn Off Diversity Option
 	Verify Diversity Option is Turned Off
+	And Turn On Diversity Option
+	And Verify Diversity Option is Turned On
 	 
-Scenario: Edit Job Question Form
-  [Tags]  SMOKE 
+Scenario: Edit Job Question Form in Scout Admin
+  [Tags]  SMOKE  QUESTIONFRM
+  [Documentation]  Job Test Job for Automation must be Open
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
-	And Go to Job Form  Personal Assistant
-	And Input Job Question Form
+	When Go to Job Form  ${jobTitle}
+	And Clear Job Form
+	And Input Job Form
 
 Scenario: Add Scout+ Company and Provide Special Pricing
   [Tags]  SMOKE  SCOUTPLUS
-  [Documentation]  Prior to running, confirm that BH-Sandbox2 a Scout+ Company for TBE
+  [Documentation]  Prior to running, confirm that BH-Sandbox2 is not a Scout+ Company for TBE
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
@@ -94,9 +97,10 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	And Delete Scout+ Company
 	And Verify Scout+ Companies were Deleted
 	
+
 #========== Ed Lee's Scenario ===========================
 Scenario: Adding a New User for KENEXA in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  NEW_USER
+  [Tags]  SMOKEE  KX  SCOUT_ADMIN  NEW_USER
   [Documentation]  This code will generate a new account that must be removed after running the automation
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
  	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
@@ -109,7 +113,7 @@ Scenario: Adding a New User for KENEXA in Scout Admin
  	Then Verify Success Message
 
 Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  EDIT_USER
+  [Tags]  SMOKEE  KX  SCOUT_ADMIN  EDIT_USER
   [Documentation]  1) This test suite relies on the recruiter "Tom A. Cruise" for editing. 2) "Justin Stanizzi Test" is the existing recruiter being checked. 3) Checking the Scout Logo for returning to home page. 4) Checking the FAQ page.
     Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
@@ -136,7 +140,7 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
     Then Verify User Has Landed on FAQ Page
 
 Scenario: Deactivate User for Kenexa in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  DEACTIVATE_USER
+  [Tags]  SMOKEE  KX  SCOUT_ADMIN  DEACTIVATE_USER
   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
  	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}

@@ -160,8 +160,34 @@ Select Frame in TBE
   [Arguments]  ${env}
     Select Frame  xpath=//iframe[contains(@src,'https://${env}.talentpx.com')]
 
+#-- NEW RAYMOND
+Verify Diversity Icon is on Candidate Page
+  [Arguments]  ${env} 	
+	Select Frame in TBE  ${env} 
+	Wait Until Keyword Succeeds  20  2  Page Should Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+	#Wait Until Keyword Succeeds  20  2  Page Should Contain Image  xpath=//textarea[@src="/static/images/diversity.png]
+        #Wait Until Keyword Succeeds  20  2  Page Should Contain  Agency specializing in diversity
+	
+Verify Diversity Icon is Not on Candidate Page
+   [Arguments]  ${env} 
+	Select Frame in TBE  ${env}  
+	Wait Until Keyword Succeeds  20  2  Page Should Not Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+        #Wait Until Keyword Succeeds  20  2  Page Should Not Contain  Agency specializing in diversity
 
+Go to Job Form in Scout Candidates TBE Tab
+   [Arguments]  ${jobId}  ${env}
+	Select Frame in TBE  ${env}  
+	Wait Until Keyword Succeeds  20  2  Click Link  /common/job-details/taleo-TALENTDRIVE2/${jobId}
 
+Input Job Question Form
+	Select Window  title=Scout
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  This is a new position in a new department in a growing company.
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="2"]  We are a fun start up!
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="3"]  You need to be driven
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="6"]  Medical Sales Experience marketing experience from a new company
+	Click Button  job-form__save-button
+	Wait Until Keyword Succeeds  20  10  Input Text  xpath=//textarea[@tabindex="1"]  \ \
+	Click Button  job-form__save-button
 
 
 

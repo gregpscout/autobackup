@@ -4,8 +4,8 @@ ${BROWSER}                  Firefox
 ${HOST_STAGING}             appstguseb01.talentpx.com
 ${HOST_TEST}	            apptstuseb01.talentpx.com
 ${USERNAME}         		tpxapp
-${PASSWORD}			        # specify your password to login to staging
-${KEYFILE}                  # specify path to keyfile /Users/username/.ssh/id_dsa
+${PASSWORD}			XXXXXX
+${KEYFILE}                  /Users/rwong/.ssh/id_rsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  
@@ -52,3 +52,5 @@ ${TEST_SCOUTLINK}			https://test.talentpx.com/pcr/#recommended
 ${SCOUT_EMAIL}              scout_support@goscoutgo.com
 ${TBE_SCOUT_CONTACT}        QA Scout
 ${TBE_SCOUT_EMAIL}          scoutautomation@goscoutgo.com 
+
+${jobTitle}		Test Job for Automation

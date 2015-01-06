@@ -22,6 +22,9 @@ ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
 
 *** Test Cases ***
+Scenario: Apple
+  [Tags]  GRAPE
+  Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
 
 Scenario: Test Create Requisition in TBE
   [Documentation]  Creates job in TBE
@@ -105,6 +108,34 @@ Scenario: Test Links in TBE
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
     
-	
+#--NEW---RAYMOND
+Scenario: Test Diversity for Bullhorn
+  [Documentation]  Confirm that BHSandbox2 shows the Diversity icon.  Diversity must be turned on for BHSandbox2 and Talentdrive2
+  [Tags]  DIVERSITY_BH  REGRESSION
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    #And Go to Candidate Details Page from Scout Candidates List  ${BHS_Accept_Candidate['mod_name']}  ${env}
+    And Verify Diversity Icon is on Candidate Page  staging
+
+Scenario: Test Diversity for PCR
+  [Documentation]  Confirm that PCR does not shows the Diversity icon.  Diversity must be turned off PCR in Scout Admin
+  [Tags]  DIVERSITY_PCR  REGRESSION
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Verify Diversity Icon is Not on Candidate Page  test  
+
+Scenario: Edit Job Question Form in TBE Scout Candidates Page
+  [Tags]  MOINFO  REGRESSION
+	Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    	When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
+    	And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+	And Input Job Question Form
+
 	
 
