@@ -160,7 +160,6 @@ Select Frame in TBE
   [Arguments]  ${env}
     Select Frame  xpath=//iframe[contains(@src,'https://${env}.talentpx.com')]
 
-#-- NEW RAYMOND
 Verify Diversity Icon is on Candidate Page
   [Arguments]  ${env} 	
 	Select Frame in TBE  ${env} 

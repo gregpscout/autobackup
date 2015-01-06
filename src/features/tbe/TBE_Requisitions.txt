@@ -22,10 +22,6 @@ ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
 
 *** Test Cases ***
-Scenario: Apple
-  [Tags]  GRAPE
-  Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-
 Scenario: Test Create Requisition in TBE
   [Documentation]  Creates job in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
@@ -108,7 +104,6 @@ Scenario: Test Links in TBE
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
     
-#--NEW---RAYMOND
 Scenario: Test Diversity for Bullhorn
   [Documentation]  Confirm that BHSandbox2 shows the Diversity icon.  Diversity must be turned on for BHSandbox2 and Talentdrive2
   [Tags]  DIVERSITY_BH  REGRESSION

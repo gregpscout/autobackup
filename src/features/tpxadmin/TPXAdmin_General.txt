@@ -97,10 +97,8 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	And Delete Scout+ Company
 	And Verify Scout+ Companies were Deleted
 	
-
-#========== Ed Lee's Scenario ===========================
 Scenario: Adding a New User for KENEXA in Scout Admin
-  [Tags]  SMOKEE  KX  SCOUT_ADMIN  NEW_USER
+  [Tags]  SMOKE  KX  SCOUT_ADMIN  NEW_USER
   [Documentation]  This code will generate a new account that must be removed after running the automation
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
  	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
@@ -113,7 +111,7 @@ Scenario: Adding a New User for KENEXA in Scout Admin
  	Then Verify Success Message
 
 Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
-  [Tags]  SMOKEE  KX  SCOUT_ADMIN  EDIT_USER
+  [Tags]  SMOKE  KX  SCOUT_ADMIN  EDIT_USER
   [Documentation]  1) This test suite relies on the recruiter "Tom A. Cruise" for editing. 2) "Justin Stanizzi Test" is the existing recruiter being checked. 3) Checking the Scout Logo for returning to home page. 4) Checking the FAQ page.
     Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
@@ -140,7 +138,7 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
     Then Verify User Has Landed on FAQ Page
 
 Scenario: Deactivate User for Kenexa in Scout Admin
-  [Tags]  SMOKEE  KX  SCOUT_ADMIN  DEACTIVATE_USER
+  [Tags]  SMOKE  KX  SCOUT_ADMIN  DEACTIVATE_USER
   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
  	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
