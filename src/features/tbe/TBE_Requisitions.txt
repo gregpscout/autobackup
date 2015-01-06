@@ -23,21 +23,35 @@ ${create_content}  Your job has been successfully posted to Scout for Taleo:
 
 *** Test Cases ***
 
-Scenario: Test Create Requisition in TBE
-  [Documentation]  Creates job in TBE
+Scenario: Test Create Requisition in TBE for Bullhorn
+  [Documentation]  Creates jobs for Bullhorn testing in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
   ...  Verifies that job is created in the database
-  [Tags]  JOBCREATION  SMOKE
+  [Tags]  JOBCREATION_BH  SMOKE
     Given User is on TBE Site  ${TBE}  ${BROWSER}
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Create New Requisition in TBE  ${TBE_REQ1}
-    When Create New Requisition in TBE  ${TBE_REQ4}
+    When Create New Requisition in TBE  ${TBE_REQ2}
     ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-    Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
-    Sleep  5m
+    Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
+
+Scenario: Test Create Requisition in TBE for PCR
+  [Documentation]  Creates jobs for PCR testing in TBE
+  ...  Runs sync and waits for 4 mins for the sync to complete
+  ...  Verifies that job is created in the database
+  [Tags]  JOBCREATION_PCR  SMOKE
+    Given User is on TBE Site  ${TBE}  ${BROWSER}
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Create New Requisition in TBE  ${TBE_REQ4}
+    When Create New Requisition in TBE  ${TBE_REQ5}
+    ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
+    Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
+    Sleep  4m
+    Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}    
     
 Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
   [Documentation]  Shares candidate and accepts the same candidate in TBE
@@ -104,6 +118,45 @@ Scenario: Test Links in TBE
     Test Feedback Link on Scout  ${TBE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}     
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
+
+Scenario: Test Placing Job on Hold in TBE
+  [Tags]  JOBHOLD
+    Given User is on TBE Site  ${TBE}  ${BROWSER}
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Create New Requisition in TBE  ${TBE_REQ3}
+    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs}
+    Sleep  4m
+    ${jobId}  Place Existing Requisition on Hold in TBE  ${TBE_REQ3['title']} 
+    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
+    Sleep  4m
+    Verify Job is on Hold in Mongodb  ${jobId}
+
+
+# Before running any of the tests below, make sure that job requisitions TBE_REQ1 and TBE_REQ2 already exist in TBE
+# If not, run "JOBCREATION_BH" before running any of the following tests    
+
+Scenario: Test Editing Non Closure fields for a Job in TBE
+  [Tags]  JOB_EDIT  EDIT_NON_CLOSURE
+    Given User is on TBE Site  ${TBE}  ${BROWSER}
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    ${jobId}=  Edit Job Title Location and Education for an Existing Job in TBE  ${TBE_REQ1['title']}  ${EDIT_REQ1} 
+    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
+    Sleep  4m
+    Verify Job Title in Mongodb  ${jobId}  ${EDIT_REQ1['title']}  1
+
+Scenario: Test Editing Closure fields for a Job in TBE
+  [Tags]  JOB_EDIT  EDIT_CLOSURE
+    Given User is on TBE Site  ${TBE}  ${BROWSER}
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    ${jobId}=  Change Placement Fee for an Existing TBE Requisition  ${TBE_REQ2['title']}  27% 
+    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs}
+    Sleep  4m 
+    Verify Edited Job is Reopened in Scout  ${jobId}  ${TBE_REQ2['title']}
+
+
     
 	
 	

@@ -46,7 +46,8 @@ Enter Job Details for TBE
     Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
     Input Text  xpath= //body[contains(@class,'cke_editable')]  ${tbeReq['description']} 
     Unselect Frame
-    Click Button  update            
+    Click Button  update
+    Sleep  10s             # Adding sleep to make sure it gets updated in TBE database for verification            
     	
 Get Job Req Id
   [Arguments]  ${jobTitle}
@@ -63,7 +64,6 @@ Search Job Requisition on TBE
   [Arguments]  ${jobTitle}
   [Documentation]  Returns job id on TBE when user is on Requisitions page
     Input Text  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[2]  ${jobTitle}
-    Sleep  5S
     Click Button  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[3]
     Click Link  Last Updated
     Click Link  Last Updated
@@ -159,6 +159,54 @@ Verify User is on Job Details Page for Test
 Select Frame in TBE
   [Arguments]  ${env}
     Select Frame  xpath=//iframe[contains(@src,'https://${env}.talentpx.com')]
+
+Place Existing Requisition on Hold in TBE
+  [Arguments]  ${jobTitle}
+    # Go to Requisitions Page in TBE
+    ${jobId}=  Get Job Req Id  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle}
+    Select From List  status  5
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Go to Edit Requisition on TBE
+  [Arguments]  ${jobTitle}
+    Click Link  ${jobTitle}
+    Click Link  Edit.btn.top
+    Verify User is on Edit Requisition Page  ${jobTitle}
+
+Verify User is on Edit Requisition Page
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  Requisition Owner(s):
+    Page Should Contain  Requisition Information:
+    TextField Should Contain  title  ${jobTitle}    
+
+Edit Job Title Location and Education for an Existing Job in TBE
+  [Arguments]  ${jobTitle}  ${jobModel}
+    Go to Requisitions Page in TBE
+    ${jobId}=  Get Job Req Id  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle} 
+    Input Text  title  ${jobModel['title']} 
+    Select From List  CUSTOM_1019  ${jobModel['education']}
+    Select From List  location  ${jobModel['location']}
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Change Placement Fee for an Existing TBE Requisition
+  [Arguments]  ${jobTitle}  ${placementFee}
+    Go to Requisitions Page in TBE
+    ${jobId}=  Search Job Requisition on TBE  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle} 
+    Select From List  CUSTOM_936  ${placementFee}
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Verify Edited Job is Reopened in Scout
+  [Arguments]  ${jobId}  ${jobTitle}
+  [Documentation]  Verifies that there are two copies of jobs, one closed and one open
+    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  0        # Verify Job with passed title and jobId is closed
+    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  1        # Verify Job with passed title and jobId is open
+
 
 
 

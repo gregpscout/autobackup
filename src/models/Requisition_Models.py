@@ -74,3 +74,9 @@ TBE_REQ6 = {
     "description": "TBE Job Requisition Test Description 3 for PCR"    
 }
 
+EDIT_REQ1 = {
+    "title": "robot_Edited_TBE_Job1",
+    "education": '820',
+    "location": '49',
+    "description": "TBE Edited Job Requisition 1 for Bullhorn"
+}
