@@ -68,7 +68,7 @@ Scenario: Test Diversity Feature
 	And Turn On Diversity Option
 	And Verify Diversity Option is Turned On
 	 
-Scenario: Edit Job Question Form in Scout Admin
+Scenario: Validate Job Question Form in Scout Admin
   [Tags]  SMOKE  QUESTIONFRM
   [Documentation]  Job Test Job for Automation must be Open
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
@@ -76,9 +76,10 @@ Scenario: Edit Job Question Form in Scout Admin
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
-	When Go to Job Form  ${jobTitle}
-	And Clear Job Form
-	And Input Job Form
+	When Go to Job Form in Admin  ${jobTitle}
+	And Clear and Input Job Question Form in Admin
+	And Validate Job Form Information in Admin
+
 
 Scenario: Add Scout+ Company and Provide Special Pricing
   [Tags]  SMOKE  SCOUTPLUS
@@ -145,3 +146,16 @@ Scenario: Deactivate User for Kenexa in Scout Admin
     Then Verify user is logged in to Scout Admin 
     Given User Navigates to Page and Deactivates Account
     Then Verify User has been Deactivated
+
+Scenario: Fill Out Placement Form for BH User
+  [Tags]  SMOKE  PLACEMENT
+  [Documentation]  Job Test Job for Automation must be Open
+	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
+	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
+	Then Verify user is logged in to Scout Admin
+	When Go To TBE-Sandbox
+	Then Verify user is on TBE-Sandbox Users page
+	When Open Placement Form
+	Then Fill Out Placement Form
+
+
