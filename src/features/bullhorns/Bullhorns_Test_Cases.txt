@@ -21,7 +21,7 @@ ${staging}  Scout Staging
 *** Test Cases ***
 Scenario: Test importing job and submitting candidate to Scout in Bullhorn
   [Tags]  JOBIMP  SUBMISSION  SMOKE
-  [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
+  [Setup]  # Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
            Bullhorn Setup   
     Given Go to Scout Environment  ${staging}
     When Go to Search Jobs Page on Scout For Bullhorn
@@ -29,9 +29,9 @@ Scenario: Test importing job and submitting candidate to Scout in Bullhorn
     When Import Scout Job into Bullhorn  ${TBE_REQ1['title']} 
     Then Go To View Imported Jobs for Bullhorn
     When Submit two internal candidates in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Reject_Candidate['name']}  ${Scout_BH_Candidate_Frame}
-    And Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Accept_Candidate['id']}  ${Scout_BH_Candidate_Frame}
+    And Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate}  ${Scout_BH_Candidate_Frame}   
     Then Verify candidate has been submitted to job  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${Scout_BH_Candidate_Frame}
-    When Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate['name']}  ${BHS_Reject_Candidate['id']}  ${Scout_BH_Candidate_Frame}
+    When Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate}  ${Scout_BH_Candidate_Frame}
     Then Verify candidate has been submitted to job  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate['name']}  ${Scout_BH_Candidate_Frame}
     And Test Contact Information is Blinded Before Acceptance  ${Scout_BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
       

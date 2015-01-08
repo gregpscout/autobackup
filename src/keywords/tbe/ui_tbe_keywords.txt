@@ -94,7 +94,13 @@ Go to Scout Candidates List for Job
     Run keyword If  '${env}' == 'staging'  Click Link  \#a185
     Run keyword If  '${env}' == 'test'  Click Link  \#a233
     Verify User is on Scout Candidates Page for TBE  ${env}
-    
+
+Verify Fee Percentage for the candidate submitted in TBE
+  [Arguments]  ${candidate_obj}  ${env}
+    Select Frame in TBE  ${env}
+    Table Column Should contain  xpath=//*[@id="main"]/div[3]/div[2]/div/table  5  ${candidate_obj['fee']}%
+    Unselect Frame
+
 Verify User is on Scout Candidates Page for TBE
   [Arguments]  ${env}
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo

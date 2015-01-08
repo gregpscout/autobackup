@@ -120,15 +120,15 @@ Selecting Candidate on Bullhorn Submission Page
     Sleep  2s      
       
 Submit a candidate to a Scout job successfully 
-  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  This keyword submits the candidate to the job in Scout for Bullhorn
   ...  And verifies that the candidate is submitted successfully
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_obj}  ${frame}
     Select Frames on Candidates Page  ${frame}
     Wait Until Keyword Succeeds  10  2  Element Should contain  xpath=//h3  Candidate submitted
     Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
-    Table Should Contain  xpath=//table  ${candidate_name}    # Edit this once table has an id or name
+    Table Should Contain  xpath=//table  ${candidate_obj['name']}    # Edit this once table has an id or name
     Unselect Frame    
     
 Submit a Candidate to Scout Without Email and Verify Errors
@@ -154,15 +154,16 @@ Select Frames on Candidates Page
     Select Frame  iframeObj 
         
 Submit the candidate to Scout  
-  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  submits the candidate in Scout  
     Verify User is on Job Details Page in Bullhorn  ${jobTitle}
     Select Frames and Go to Scout Candidates Page  ${frame}
-    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_name}
-    Select Radio Button  id  ${candidate_id}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_obj['name']}
+    Select Radio Button  id  ${candidate_obj['id']}
     Click Button  Submit Selected Candidate
-    Wait Until Keyword Succeeds  10  2  Verify User is on Candidate Submission Page for Scout   
+    Wait Until Keyword Succeeds  10  2  Verify User is on Candidate Submission Page for Scout 
+    Select From List  fee  ${candidate_obj['fee']}   
     Click Button  submit-candidate
     Unselect Frame
     

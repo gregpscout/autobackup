@@ -135,7 +135,7 @@ Edit Candidate Status Before Setting Up Interview
     Unselect Frame
 
 Set Up Interview for Imported Job
-  [Arguments]  ${candidate_firstname}  ${candidate_lastname}
+  [Arguments]  ${candidate_obj}
     Select Frame  detail
 # Confirm that the imported job defaults to 'Pending' status   
     Element Should Contain  status  Pending
@@ -145,12 +145,13 @@ Set Up Interview for Imported Job
     Unselect Frame
     Sleep  2s
     Select Window  title=Search Results
-    Input Text  xpath=//*[@tabindex="1"]  ${candidate_firstname}
-    Input Text  xpath=//*[@tabindex="2"]  ${candidate_lastname}
+    Input Text  xpath=//*[@tabindex="1"]  ${candidate_obj['first_name']}
+    Input Text  xpath=//*[@tabindex="2"]  ${candidate_obj['last_name']}
     Click Link  myhref_1
     Click Link  xpath=//*[@id="bodysendname"]/table[1]/tbody/tr[3]/td[1]/a
     Select From List  itype  11
     Input Text  stype  Scout
+    Select From List  scoutplacementfee  ${candidate_obj['fee']}
     Click Link  xpath=//*[@id="bodysendout"]/a[1]  
     Sleep  5s
     Select Window  PCR                             

@@ -41,9 +41,9 @@ Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Emplo
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}  
     Edit Candidate Status Before Setting Up Interview  ${PCR_Accept_Candidate['first_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['id']}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
-    Set Up Interview for Imported Job  ${PCR_Accept_Candidate['first_name']}  ${PCR_Accept_Candidate['last_name']}
+    Set Up Interview for Imported Job  ${PCR_Accept_Candidate}
     Go Back to Position View
-    Set Up Interview for Imported Job  ${PCR_Reject_Candidate['first_name']}  ${PCR_Reject_Candidate['last_name']}
+    Set Up Interview for Imported Job  ${PCR_Reject_Candidate}
     Test Employer Info is Blinded to the Recruiter After Candidate Submission  ${TBE_REQ4['title']}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
     Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_SUBMISSION}  ${TBE_REQ1['title']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
@@ -86,7 +86,7 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
     Given User is on PCR Site  ${PCR_TEST}  ${browser}   
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
-    Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Resume['first_name']}  ${PCR_Candidate_Missing_Resume['last_name']}
+    Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Resume}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
     Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_NO_RESUME}  ${PCR_Candidate_Missing_Resume['full_name']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
 
@@ -98,7 +98,7 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Email
     Given User is on PCR Site  ${PCR_TEST}  ${browser}   
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
-    Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Email['first_name']}  ${PCR_Candidate_Missing_Email['last_name']}
+    Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Email}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
     Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_NO_EMAIL}  ${PCR_Candidate_Missing_Email['full_name']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}
 

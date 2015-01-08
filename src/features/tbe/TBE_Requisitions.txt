@@ -61,6 +61,7 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Accept_Candidate}  staging  
     And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging 
     And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}  staging
 
@@ -72,6 +73,7 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Test for PCR
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Accept_Candidate}  test
     And Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test 
     And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test     
     
@@ -83,6 +85,7 @@ Scenario: Test Candidate Rejection in TBE for Candidate Qualifications for Bullh
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Reject_Candidate}  staging
     And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}  staging       
     
 Scenario: Test Candidate Rejection in TBE due to Placement Fee for PCR
@@ -93,6 +96,7 @@ Scenario: Test Candidate Rejection in TBE due to Placement Fee for PCR
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Reject_Candidate}  test
     And Reject Candidate in TBE  ${PCR_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}  test       
         
 Scenario: Test Candidate Rejection in TBE for Other Reason

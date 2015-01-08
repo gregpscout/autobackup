@@ -5,13 +5,15 @@ now = dt.datetime.now()
 BHS_Accept_Candidate = {
     "name": "Robot_Accept_BHS Kruger",  
     "mod_name": "Robot_Accept_BHS K.",
-    "id": '85'
+    "id": '85',
+    "fee": '27' 
 }
 
 BHS_Reject_Candidate = {
     "name": "Robot_Reject_BHS Candidate2",  
     "mod_name": "Robot_Reject_BHS C.",
-    "id": '112'
+    "id": '112',
+    "fee": '18'
 }
 
 BHS_No_Email = {
@@ -31,7 +33,8 @@ PCR_Accept_Candidate = {
 	"last_name": "Jerry",
 	"full_name": "Robot_Ben_Accept Jerry",
     "mod_name": "Robot_Ben_Accept J.",
-    "id": 'NA-1191709964'
+    "id": 'NA-1191709964',
+    "fee": '18%'
 }
 
 PCR_Reject_Candidate = {
@@ -39,7 +42,8 @@ PCR_Reject_Candidate = {
 	"last_name": "South",
 	"full_name": "Robot_Kenny_Reject South",
     "mod_name": "Robot_Kenny_Reject S.",
-    "id": 'NA-4985567095'
+    "id": 'NA-4985567095',
+    "fee": '27%'
 }
 
 PCR_Candidate_Missing_Resume = {
