@@ -431,9 +431,7 @@ Verify User Has Landed on FAQ Page
     Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[14]/h4  If an employer modifies (or closes) a Scout job order, what happens to the candidates that have already been submitted
     Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[15]/h4  Can employers hire a candidate that was submitted through Scout with the agent outside of Scout?
 
-
 #------------
-
 
 Open Placement Form
         Click Link  xpath=//*[@id="main"]/div/div[6]/div/table[4]/tbody/tr/td[5]/a
@@ -449,24 +447,26 @@ Go to Job Form in Admin
   [Arguments]  ${JobId}
 	Click Link  ${JobTitle} 
 
-Clear and Input Job Question Form in Admin
+Clear and Input Job Question Form
+	[Arguments]  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
 	Select Window  title=Scout
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  \ \
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  This is a new position in a new department in a growing company.
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  We are a fun start up!
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  You need to be driven
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  Medical Sales Experience marketing experience from a new company
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  ${job_form_question_1}
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  ${job_form_question_2}
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  ${job_form_question_3}
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  ${job_form_question_6}
 	Wait Until Keyword Succeeds  20  2   Click Button  job-form__save-button
-	${dog}=  Get Window Names
-	Select Window  title=Admin | Scout
-	#Wait Until Keyword Succeeds  20  2   Close Window
 	
-Validate Job Form Information in Admin
+Select Partner Page Window
+  	Select Window  title=Admin | Scout
+	
+Validate Job Form Information
+	[Arguments]  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
 	Select Window  title=Scout
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="1"]  This is a new position in a new department in a growing company.
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  We are a fun start up!
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  You need to be driven
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  Medical Sales Experience marketing experience from a new company
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="1"]  ${job_form_question_1}
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${job_form_question_2}
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${job_form_question_3}
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${job_form_question_6}

@@ -4,6 +4,7 @@ Library           Selenium2Library
 Library           MongoDBLibrary
 Library           ImapLibrary
 Resource          ../../keywords/tbe/ui_tbe_keywords.txt    
+Resource  	  ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt   
 Resource          ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
 Resource          ../../keywords/db/sync_tasks.txt 
 Resource          ../../resources/settings.txt
@@ -20,6 +21,12 @@ ${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go
 ${needhelp_text}  Scout for Taleo Business Edition
 ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
+${jobTitle}	 Test Job for Automation
+${job_form_question_1}	This is a new position in a new department in a growing company.
+${job_form_question_2}	We are a fun start up!
+${job_form_question_3}	You need to be driven
+${job_form_question_6}	Medical Sales Experience marketing experience from a new company
+
 
 *** Test Cases ***
 Scenario: Test Create Requisition in TBE
@@ -113,9 +120,10 @@ Scenario: Edit Job Question Form in TBE Scout Candidates Page
 	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     	And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
 	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	Clear and Input Job Question Form
+	And Clear and Input Job Question Form  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
+	And Select TBE Window
 	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	And Verify Job Form Information
+	And Validate Job Form Information  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
 	
 
 	
