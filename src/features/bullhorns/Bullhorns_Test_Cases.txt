@@ -21,7 +21,7 @@ ${staging}  Scout Staging
 *** Test Cases ***
 Scenario: Test importing job and submitting candidate to Scout in Bullhorn
   [Tags]  JOBIMP  SUBMISSION  SMOKE
-  [Setup]  # Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
+  [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
            Bullhorn Setup   
     Given Go to Scout Environment  ${staging}
     When Go to Search Jobs Page on Scout For Bullhorn
