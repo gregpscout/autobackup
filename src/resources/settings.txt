@@ -4,8 +4,8 @@ ${BROWSER}                  Firefox
 ${HOST_STAGING}             appstguseb01.talentpx.com
 ${HOST_TEST}	            apptstuseb01.talentpx.com
 ${USERNAME}         		tpxapp
-${PASSWORD}			enter password here
-${KEYFILE}                  example: /Users/XXXX/.ssh/id_rsa
+#${PASSWORD}			enter password here
+#${KEYFILE}                  example: /Users/XXXX/.ssh/id_rsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
 ${USERNAME_BULLHORN}        jeffrey.simmons.sb  

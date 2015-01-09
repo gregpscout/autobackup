@@ -4,13 +4,10 @@ Suite Teardown    Close All Browsers
 Resource  ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt
 Resource  ../../resources/settings.txt
 Suite Setup  Set Selenium speed  0.1s
+Variables         ../../models/Requisition_Models.py  
 
 *** Variables  ***
 ${jobTitle}	 Test Job for Automation
-${job_form_question_1}	This is a new position in a new department in a growing company.
-${job_form_question_2}	We are a fun start up!
-${job_form_question_3}	You need to be driven
-${job_form_question_6}	Medical Sales Experience marketing experience from a new company
 
 *** Test Cases ***
 Scenario: Test Login to Scout Admin and Activate and Deactivate User
@@ -84,10 +81,9 @@ Scenario: Validate Job Question Form in Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	When Go to Job Form in Admin  ${jobTitle}
-	And Clear and Input Job Question Form  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
+	And Clear and Input Job Question Form     		
 	And Select Partner Page Window
-	And Validate Job Form Information  ${job_form_question_1}  ${job_form_question_2}  ${job_form_question_3}  ${job_form_question_6}
-
+	And Validate Job Form Information   
 
 Scenario: Add Scout+ Company and Provide Special Pricing
   [Tags]  SMOKE  SCOUTPLUS
@@ -156,7 +152,7 @@ Scenario: Deactivate User for Kenexa in Scout Admin
     Then Verify User has been Deactivated
 
 Scenario: Fill Out Placement Form for BH User
-  [Tags]  SMOKE  PLACEMENT
+  [Tags]  SMOKE  PLACEMENTFRM
   [Documentation]  Job Test Job for Automation must be Open
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
