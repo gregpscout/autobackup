@@ -98,7 +98,7 @@ Go to Scout Candidates List for Job
 Verify Fee Percentage for the candidate submitted in TBE
   [Arguments]  ${candidate_obj}  ${env}
     Select Frame in TBE  ${env}
-    Table Column Should contain  xpath=//*[@id="main"]/div[3]/div[2]/div/table  5  ${candidate_obj['fee']}%
+    Table Column Should contain  xpath=//*[@id="main"]/div[3]/div[2]/div/table  5  ${candidate_obj['fee']}
     Unselect Frame
 
 Verify User is on Scout Candidates Page for TBE

@@ -48,7 +48,7 @@ Scenario: Test Create Requisition in TBE for PCR
     Then Verify user is logged in to TBE
     When Create New Requisition in TBE  ${TBE_REQ4}
     When Create New Requisition in TBE  ${TBE_REQ5}
-    ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
+    ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
     Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
     Sleep  4m
     Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}    
