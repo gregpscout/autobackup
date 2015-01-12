@@ -115,11 +115,9 @@ Scenario: Edit Job Question Form in TBE Scout Candidates Page
 	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     	And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
 	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	And Clear and Input Job Question Form     	
-
-
-And Select TBE Window
+	And Clear and Input Job Question Form  ${JOB_QUESTIONS}     	
+	And Select TBE Window
 	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	And Validate Job Form Information  	
+	And Validate Job Form Information  ${JOB_QUESTIONS}       	
 	
 

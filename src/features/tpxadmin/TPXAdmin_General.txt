@@ -81,9 +81,9 @@ Scenario: Validate Job Question Form in Scout Admin
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	When Go to Job Form in Admin  ${jobTitle}
-	And Clear and Input Job Question Form     		
+	And Clear and Input Job Question Form  ${JOB_QUESTIONS}     		
 	And Select Partner Page Window
-	And Validate Job Form Information   
+	And Validate Job Form Information  ${JOB_QUESTIONS}   
 
 Scenario: Add Scout+ Company and Provide Special Pricing
   [Tags]  SMOKE  SCOUTPLUS

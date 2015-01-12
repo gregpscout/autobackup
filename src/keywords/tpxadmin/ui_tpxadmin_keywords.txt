@@ -448,23 +448,25 @@ Go to Job Form in Admin
 	Click Link  ${JobTitle} 
 
 Clear and Input Job Question Form
+  [Arguments]  ${job_form_model}
 	Select Window  title=Scout
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  \ \
 	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  \ \
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  ${JOB_QUESTIONS['job_form_question_1']} 
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  ${JOB_QUESTIONS['job_form_question_2']} 
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  ${JOB_QUESTIONS['job_form_question_3']} 
-	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  ${JOB_QUESTIONS['job_form_question_6']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  ${job_form_model['job_form_question_1']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 
 	Wait Until Keyword Succeeds  20  2   Click Button  job-form__save-button
 	
 Select Partner Page Window
   	Select Window  title=Admin | Scout
 	
 Validate Job Form Information
+  [Arguments]  ${job_form_model}
 	Select Window  title=Scout
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="1"]  ${JOB_QUESTIONS['job_form_question_1']} 
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${JOB_QUESTIONS['job_form_question_2']} 
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${JOB_QUESTIONS['job_form_question_3']} 
-	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${JOB_QUESTIONS['job_form_question_6']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="1"]  ${job_form_model['job_form_question_1']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 
