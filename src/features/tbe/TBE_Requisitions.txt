@@ -4,6 +4,7 @@ Library           Selenium2Library
 Library           MongoDBLibrary
 Library           ImapLibrary
 Resource          ../../keywords/tbe/ui_tbe_keywords.txt    
+Resource  	  ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt   
 Resource          ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
 Resource          ../../keywords/db/sync_tasks.txt 
 Resource          ../../resources/settings.txt
@@ -20,9 +21,9 @@ ${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go
 ${needhelp_text}  Scout for Taleo Business Edition
 ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
+${jobTitle}	 Test Job for Automation
 
 *** Test Cases ***
-
 Scenario: Test Create Requisition in TBE
   [Documentation]  Creates job in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
@@ -47,6 +48,7 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Verify Diversity Icon is on Candidate Page  staging	
     And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging 
     And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}  staging
 
@@ -58,6 +60,7 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Test for PCR
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE
     Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    And Verify Diversity Icon is Not on Candidate Page  test  
     And Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test 
     And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test     
     
@@ -105,6 +108,16 @@ Scenario: Test Links in TBE
     And Sleep  5s
     And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
     
-	
+Scenario: Edit Job Question Form in TBE Scout Candidates Page
+  [Tags]  MOINFO  REGRESSION
+	Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    	When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
+    	And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+	And Clear and Input Job Question Form  ${JOB_QUESTIONS}     	
+	And Select TBE Window
+	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+	And Validate Job Form Information  ${JOB_QUESTIONS}       	
 	
 

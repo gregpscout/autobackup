@@ -126,7 +126,7 @@ Submit a candidate to a Scout job successfully
   ...  And verifies that the candidate is submitted successfully
     Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
     Select Frames on Candidates Page  ${frame}
-    Wait Until Keyword Succeeds  10  2  Element Should contain  xpath=//h3  Candidate submitted
+    Wait Until Keyword Succeeds  20  2  Element Should contain  xpath=//h3  Candidate submitted
     Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
     Table Should Contain  xpath=//table  ${candidate_name}    # Edit this once table has an id or name
     Unselect Frame    
