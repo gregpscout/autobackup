@@ -21,17 +21,19 @@ Go to Create Requisition Form in TBE
     Wait Until Page Contains  New Requisition
     Wait Until Element is Visible  xpath=/html/body/div[4]/div/div/ul/li[2]/ul/li[2]/a
     Click Link  New Requisition	
-    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a    	
-	
+    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a  
+    
 User is on Create Requisition Page for TBE
     Page Should Contain  Requisitions: New Requisition 
     
-Create New Requisition in TBE  [Arguments]  ${tbeReq} 
+Create New Requisition in TBE  
+  [Arguments]  ${tbeReq} 
     Go to Create Requisition Form in TBE
     User is on Create Requisition Page for TBE 
     Enter Job Details for TBE  ${tbeReq}
     
-Enter Job Details for TBE  [Arguments]  ${tbeReq}    
+Enter Job Details for TBE  
+  [Arguments]  ${tbeReq}    
     Input Text  openedDate  ${tbeReq['openDate']}
     Input Text  title  ${tbeReq['title']} 
     Select From List  location  ${tbeReq['location']}
@@ -39,33 +41,38 @@ Enter Job Details for TBE  [Arguments]  ${tbeReq}
     Select From List  status  ${tbeReq['status']}
     Input Text  numOpen  ${tbeReq['numOpen']}  
     Select From List  duration  ${tbeReq['duration']}
-    Select Checkbox  ${tbeReq['abc']}
+    Select Checkbox  ${tbeReq['postToScout']}
     Checkbox Should Be Selected  CUSTOM_950
     Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
-    Input Text  xpath= //body[contains(@class,'cke_editable')]  Test Successful 
+    Input Text  xpath= //body[contains(@class,'cke_editable')]  ${tbeReq['description']} 
     Unselect Frame
-    Click Button  update        
+    Click Button  update
+    Sleep  10s             # Adding sleep to make sure it gets updated in TBE database for verification            
     	
 Get Job Req Id
   [Arguments]  ${jobTitle}
   [Documentation]  Returns job id when searched by title on TBE  
-    Click Link  Requisitions
-    Verify User is on TBE Requisitions Page
+    Go to Requisitions Page in TBE
     ${jobId}=  Search Job Requisition on TBE  ${jobTitle}
     [return]  ${jobId.strip()}
+    
+Go to Requisitions Page in TBE 
+    Click Link  Requisitions 
+    Verify User is on TBE Requisitions Page 
   
 Search Job Requisition on TBE
   [Arguments]  ${jobTitle}
   [Documentation]  Returns job id on TBE when user is on Requisitions page
     Input Text  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[2]  ${jobTitle}
-    Sleep  5S
     Click Button  //*[@id="content"]/table/tbody/tr[1]/td/div/form/input[3]
     Click Link  Last Updated
     Click Link  Last Updated
+    Wait until Page Contains Element  REQUS_0 
     ${jobId}=  Get Table Cell  REQUS_0  2  3  
     [return]  ${jobId}
     
-Delete Job from TBE  [Arguments]  ${jobId}
+Delete Job from TBE
+  [Arguments]  ${jobId}
     Select Checkbox  ${jobId}
     Click Button  Delete    
  
@@ -78,9 +85,153 @@ Verify User is on TBE Requisitions Page
 		
 TBE Login Page Should Be Open
 	Title Should Be  Log into Taleo Business Edition	
-		
 	
+Go to Scout Candidates List for Job  
+  [Arguments]  ${jobTitle}  ${env}
+    Search Job Requisition on TBE  ${jobTitle}
+    Click Link  ${jobTitle}
+    Run keyword If  '${env}' == 'staging'  Verify User is on Job Details Page for Staging  ${jobTitle}
+    Run keyword If  '${env}' == 'test'  Verify User is on Job Details Page for Test  ${jobTitle}
+    Run keyword If  '${env}' == 'staging'  Click Link  \#a185
+    Run keyword If  '${env}' == 'test'  Click Link  \#a233
+    Verify User is on Scout Candidates Page for TBE  ${env}
+
+Verify Fee Percentage for the candidate submitted in TBE
+  [Arguments]  ${candidate_obj}  ${env}
+    Select Frame in TBE  ${env}
+    Table Column Should contain  xpath=//*[@id="main"]/div[3]/div[2]/div/table  5  ${candidate_obj['fee']}
+    Unselect Frame
+
+Verify User is on Scout Candidates Page for TBE
+  [Arguments]  ${env}
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
+    Select Frame in TBE  ${env}
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
+    Unselect Frame
+
+Share Candidate in TBE
+  [Arguments]  ${CandidateName}  ${email}  ${env} 
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}  ${env} 
+    Select Frame in TBE  ${env}  
+    Click Element  share-candidate-button
+    Wait Until Page Contains Element  share-modal
+    Input Text  share-modal__to  ${email}
+    Click Link  share-modal__send
+    Verify User is on Candidate Details Page 
+    Unselect Frame
+    
+Accept Candidate in TBE  
+  [Arguments]  ${CandidateName}  ${jobTitle}  ${env}
+    Verify User is on Candidate Details Page
+    Select Frame in TBE  ${env}
+    Click Element  interested 
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 
+    Element Should Contain  interested-modal  Would you like to import ${CandidateName} to the ${jobTitle} requisition?
+    Click Element  interested-modal__submit
+    Unselect Frame
+        
+Reject Candidate in TBE  
+  [Arguments]  ${CandidateName}  ${reason}  ${comments}  ${env}
+    Go to Candidate Details Page from Scout Candidates List  ${CandidateName}  ${env}
+    Select Frame in TBE  ${env}
+    Click Element  not-interested
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
+    Select Radio Button  not-interested-reason  ${reason}    
+    Input Text  not-interested-modal__comments  ${comments}         
+    Click Element  not-interested-modal__submit    
+    Unselect Frame
+    
+Go to Candidate Details Page from Scout Candidates List
+  [Arguments]  ${CandidateName}  ${env} 
+    Select Frame in TBE  ${env}
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="candidateList"]
+    Click Link  ${CandidateName} 
+    Verify User is on Candidate Details Page 
+    Unselect Frame      
+    
+Verify User is on Candidate Details Page
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  Candidate Profile     
+    
+Verify User is on Job Details Page for Staging  
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a28  Posting Information 
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a185  Scout Candidates
 	
+Verify User is on Job Details Page for Test  
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a225  Posting Information 
+    Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a233  Scout Candidates
+
+Select Frame in TBE
+  [Arguments]  ${env}
+    Select Frame  xpath=//iframe[contains(@src,'https://${env}.talentpx.com')]
+
+Place Existing Requisition on Hold in TBE
+  [Arguments]  ${jobTitle}
+    # Go to Requisitions Page in TBE
+    ${jobId}=  Get Job Req Id  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle}
+    Select From List  status  5
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Go to Edit Requisition on TBE
+  [Arguments]  ${jobTitle}
+    Click Link  ${jobTitle}
+    Click Link  Edit.btn.top
+    Verify User is on Edit Requisition Page  ${jobTitle}
+
+Verify User is on Edit Requisition Page
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  Requisition Owner(s):
+    Page Should Contain  Requisition Information:
+    TextField Should Contain  title  ${jobTitle}    
+
+Edit Job Title Location and Education for an Existing Job in TBE
+  [Arguments]  ${jobTitle}  ${jobModel}
+    Go to Requisitions Page in TBE
+    ${jobId}=  Get Job Req Id  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle} 
+    Input Text  title  ${jobModel['title']} 
+    Select From List  CUSTOM_1019  ${jobModel['education']}
+    Select From List  location  ${jobModel['location']}
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Change Placement Fee for an Existing TBE Requisition
+  [Arguments]  ${jobTitle}  ${placementFee}
+    Go to Requisitions Page in TBE
+    ${jobId}=  Search Job Requisition on TBE  ${jobTitle}
+    Go to Edit Requisition on TBE  ${jobTitle} 
+    Select From List  CUSTOM_936  ${placementFee}
+    Click Button  update
+    [return]  ${jobId.strip()}
+
+Verify Edited Job is Reopened in Scout
+  [Arguments]  ${jobId}  ${jobTitle}  ${fee}
+  [Documentation]  Verifies that there are two copies of jobs, one closed and one open
+    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  0        # Verify job with passed title and jobId is closed
+    Verify Job Fee Percentage in Mongodb  ${jobId}  1  ${fee}    # verify new job is opened with the changed fee
+
+Close Job in TBE
+  [Arguments]  ${jobTitle}
+    Search Job Requisition on TBE  ${jobTitle}
+    Select Checkbox  toggleChk
+    Sleep  2s
+    Click Button  xpath=//button[contains(@id,'nextStatus')]
+    Sleep  2s
+    Wait Until Element is Visible  StatusChangeButton6.top
+    Click Link  Closed
+    Wait Until Page Contains  Change Requisitions to Closed ?
+    Input Text  comment  Closing Automation Test Jobs in TBE
+    Click Button  update 
+
+
+
+
+
+
 
 
 

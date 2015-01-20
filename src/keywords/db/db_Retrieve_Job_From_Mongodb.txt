@@ -2,7 +2,7 @@
 Library         MongoDBLibrary
 
 *** Variables ***
-${dbHost}      dbstguseb01.talentpx.com
+${dbHost}      dbstgusea01.talentpx.com
 ${dbPort}      ${27017}
 ${dbname}      tpx
 ${coll}        position_profile
@@ -16,6 +16,33 @@ Retrieve JobId With Desired Fields From Mongodb  [Arguments]  ${PassJobId}  ${Jo
     Should Contain   ${allResults}  title
     Should Contain   ${allResults}  ${JobTitle}
     Disconnect From MongoDB
+
+Verify Job is on Hold in Mongodb  
+  [Arguments]  ${PassJobId}  
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}"}  _status  ${false}
+    Log    ${allResults}
+    Should Contain   ${allResults}  _status
+    Should Contain   ${allResults}  2
+    Disconnect From MongoDB
+
+Verify Job Title in Mongodb  
+  [Arguments]  ${PassJobId}  ${title}  ${status}
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  title  ${false}
+    Log    ${allResults}
+    Should Contain  ${allResults}  title
+    Should Contain  ${allResults}  ${title}
+    Disconnect From MongoDB
+
+Verify Job Fee Percentage in Mongodb
+  [Arguments]  ${PassJobId}  ${status}  ${fee}
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  _fee_pct  ${false}
+    Log    ${allResults}
+    Should Contain  ${allResults}  _fee_pct
+    Should Contain  ${allResults}  ${fee}
+    Disconnect From MongoDB    
     
 Delete Desired Objects From Mongodb  [Arguments]  ${PassJobId}  
     Comment  Connect to MongoDB Server

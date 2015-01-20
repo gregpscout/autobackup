@@ -4,14 +4,17 @@ Resource    ../../resources/settings.txt
 
 
 *** Keywords ***
-Open connection and log in  [Arguments]  ${HOST}
+Open connection and log in
+  [Arguments]  ${HOST}
   [Documentation]  SSH into the specified host with given credentials
     Open Connection  ${HOST}
     Login With Public Key  ${USERNAME}  ${KEYFILE}  ${PASSWORD}
     
-Run Sync Jobs  [Arguments]  ${HOST}  ${sync}
+Run Sync Jobs
+  [Arguments]  ${HOST}  ${sync}
   [Documentation]  Logs into staging environment and runs manage.py command to sync taleo requisitions 
     Open connection and log in  ${HOST}
     Write  cd current   
     Write  source virtualenv/bin/activate 
     Write  ${sync}
+
