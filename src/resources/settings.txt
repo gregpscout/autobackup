@@ -4,7 +4,7 @@ ${BROWSER}                  Firefox
 ${HOST_STAGING}             appstguseb01.talentpx.com
 ${HOST_TEST}	            apptstuseb01.talentpx.com
 ${USERNAME}         		tpxapp
-${PASSWORD}	             # specify your password to login to staging
+${PASSWORD}	                # specify your password to login to staging
 ${KEYFILE}                  # specify path to keyfile /Users/username/.ssh/id_dsa
 
 ${BULLHORN}                 https://cls4.bullhornstaffing.com
