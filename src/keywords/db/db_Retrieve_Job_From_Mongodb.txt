@@ -31,9 +31,18 @@ Verify Job Title in Mongodb
     Connect To MongoDB  ${dbHost}  ${dbPort}
     ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  title  ${false}
     Log    ${allResults}
-    Should Contain   ${allResults}  title
-    Should Contain   ${allResults}  ${title}
-    Disconnect From MongoDB          
+    Should Contain  ${allResults}  title
+    Should Contain  ${allResults}  ${title}
+    Disconnect From MongoDB
+
+Verify Job Fee Percentage in Mongodb
+  [Arguments]  ${PassJobId}  ${status}  ${fee}
+    Connect To MongoDB  ${dbHost}  ${dbPort}
+    ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  _fee_pct  ${false}
+    Log    ${allResults}
+    Should Contain  ${allResults}  _fee_pct
+    Should Contain  ${allResults}  ${fee}
+    Disconnect From MongoDB    
     
 Delete Desired Objects From Mongodb  [Arguments]  ${PassJobId}  
     Comment  Connect to MongoDB Server

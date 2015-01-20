@@ -71,7 +71,8 @@ Search Job Requisition on TBE
     ${jobId}=  Get Table Cell  REQUS_0  2  3  
     [return]  ${jobId}
     
-Delete Job from TBE  [Arguments]  ${jobId}
+Delete Job from TBE
+  [Arguments]  ${jobId}
     Select Checkbox  ${jobId}
     Click Button  Delete    
  
@@ -208,10 +209,23 @@ Change Placement Fee for an Existing TBE Requisition
     [return]  ${jobId.strip()}
 
 Verify Edited Job is Reopened in Scout
-  [Arguments]  ${jobId}  ${jobTitle}
+  [Arguments]  ${jobId}  ${jobTitle}  ${fee}
   [Documentation]  Verifies that there are two copies of jobs, one closed and one open
-    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  0        # Verify Job with passed title and jobId is closed
-    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  1        # Verify Job with passed title and jobId is open
+    Verify Job Title in Mongodb  ${jobId}  ${jobTitle}  0        # Verify job with passed title and jobId is closed
+    Verify Job Fee Percentage in Mongodb  ${jobId}  1  ${fee}    # verify new job is opened with the changed fee
+
+Close Job in TBE
+  [Arguments]  ${jobTitle}
+    Search Job Requisition on TBE  ${jobTitle}
+    Select Checkbox  toggleChk
+    Sleep  2s
+    Click Button  xpath=//button[contains(@id,'nextStatus')]
+    Sleep  2s
+    Wait Until Element is Visible  StatusChangeButton6.top
+    Click Link  Closed
+    Wait Until Page Contains  Change Requisitions to Closed ?
+    Input Text  comment  Closing Automation Test Jobs in TBE
+    Click Button  update 
 
 
 

@@ -155,10 +155,19 @@ Scenario: Test Editing Closure fields for a Job in TBE
     Given User is on TBE Site  ${TBE}  ${BROWSER}
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
-    ${jobId}=  Change Placement Fee for an Existing TBE Requisition  ${TBE_REQ2['title']}  27% 
+    ${jobId}=  Change Placement Fee for an Existing TBE Requisition  ${TBE_REQ2['title']}  27%
     Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs}
     Sleep  4m 
-    Verify Edited Job is Reopened in Scout  ${jobId}  ${TBE_REQ2['title']}
+    Verify Edited Job is Reopened in Scout  ${jobId}  ${TBE_REQ2['title']}  27
+
+Scenario: Close Test Jobs in TBE
+  [Documentation]  Close all jobs starting with robot_TBE in TBE after test execution
+  [Tags]  CLEANUP_TBE
+    Given User is on TBE Site  ${TBE}  ${BROWSER} 
+    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Then Verify user is logged in to TBE
+    When Go to Requisitions Page in TBE   
+    Then Close Job in TBE  robot_TBE
 
 
     

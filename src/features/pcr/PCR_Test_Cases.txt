@@ -71,7 +71,7 @@ Scenario: PCR Cleanup
       Delete Job from PCR  ${TBE_REQ4['title']}
       Then Logout of PCR
 
-Scenario: PCR Test links
+Scenario: PCR Test Links
   [Tags]  LINKS
     Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
