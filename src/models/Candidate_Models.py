@@ -29,33 +29,33 @@ BHS_No_Resume = {
 }
 
 PCR_Accept_Candidate = {
-	"first_name": "Robot_Ben_Accept",
-	"last_name": "Jerry",
-	"full_name": "Robot_Ben_Accept Jerry",
+    "first_name": "Robot_Ben_Accept",
+    "last_name": "Jerry",
+    "full_name": "Robot_Ben_Accept Jerry",
     "mod_name": "Robot_Ben_Accept J.",
     "id": 'NA-1191709964',
     "fee": '18%'
 }
 
 PCR_Reject_Candidate = {
-	"first_name": "Robot_Kenny_Reject",
-	"last_name": "South",
-	"full_name": "Robot_Kenny_Reject South",
+    "first_name": "Robot_Kenny_Reject",
+    "last_name": "South",
+    "full_name": "Robot_Kenny_Reject South",
     "mod_name": "Robot_Kenny_Reject S.",
     "id": 'NA-4985567095',
     "fee": '27%'
 }
 
 PCR_Candidate_Missing_Resume = {
-	"first_name": "Robot_Jingle",
-	"last_name": "NoResume",
-	"full_name": "Robot_Jingle NoResume",
+    "first_name": "Robot_Jingle",
+    "last_name": "NoResume",
+    "full_name": "Robot_Jingle NoResume",
     "id": 'NA-8786423354'
 }
 
 PCR_Candidate_Missing_Email = {
-	"first_name": "Robot_Jennifer",
-	"last_name": "NoEmail",
-	"full_name": "Robot_Jennifer NoEmail",
+    "first_name": "Robot_Jennifer",
+    "last_name": "NoEmail",
+    "full_name": "Robot_Jennifer NoEmail",
     "id": 'NA-8769226125'
 }
