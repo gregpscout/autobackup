@@ -106,7 +106,7 @@ Verify User is on Scout Candidates Page for TBE
   [Arguments]  ${env}
     Wait Until Keyword Succeeds  10  2  Page Should Contain  Scout for Taleo
     Select Frame in TBE  ${env}
-    Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="faq"]
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Link  xpath=//*[@class="faq"]
     Wait Until Keyword Succeeds  10  2  Page Should Contain Link  xpath=//*[@class="feedback-link"]      
     Unselect Frame
 
@@ -227,16 +227,24 @@ Close Job in TBE
     Input Text  comment  Closing Automation Test Jobs in TBE
     Click Button  update 
 
+Verify Diversity Icon is on Candidate Page
+  [Arguments]  ${env} 	
+	Select Frame in TBE  ${env} 
+	Wait Until Keyword Succeeds  20  2  Page Should Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+	Unselect Frame
+	
+Verify Diversity Icon is Not on Candidate Page
+   [Arguments]  ${env} 
+	Select Frame in TBE  ${env}  
+	Page Should Not Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+	Unselect Frame
 
+Go to Job Form in Scout Candidates TBE Tab
+   [Arguments]  ${jobId}  ${env}
+	Select Frame in TBE  ${env}  
+	Wait Until Keyword Succeeds  20  2  Click Link  /common/job-details/taleo-TALENTDRIVE2/${jobId}
+	Unselect Frame
 
-
-
-
-
-
-
-
-
-
-
+Select TBE Window
+	Select Window  title=Taleo Business Edition ~ Premium
 

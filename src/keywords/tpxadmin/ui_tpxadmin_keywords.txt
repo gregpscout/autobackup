@@ -1,3 +1,20 @@
+*** Settings ***
+Library    String
+Resource  ../../resources/settings.txt
+Variables  ../../models/Recruiter_Models.py
+
+*** Variables ***
+${Kenexa_ATS_ID}		kenexa-20048
+${Kenexa_Co_ID}			5339d364ffd3db588cd4c112
+${Kenexa_New_Co_URL}	https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
+${THINKTALENT2_ATS_ID}	taleo-TALENTDRIVE2
+${ThinkTalent2_Co_ID}   52fa9b9b3333cf0b42e93868
+${ThinkTalent2_Co_URL}  https://staging.talentpx.com/admin/account/taleo/TALENTDRIVE2/ 
+${TPX_Recruiter_URL}    https://staging.talentpx.com/admin/onboard/recruiter?company=
+${emailDomain}  @mailinator.com
+#${email}
+#${randname}
+	
 *** Keywords ***
 User is on Scout Admin Login Page
   [Arguments]  ${url}  ${BROWSER}  
@@ -35,4 +52,421 @@ Verify user is on TBE-Sandbox Users page
 	Page Should Contain  Users	
 	
 Verify User is on Scout Admin Login Page
-	Title Should Be  Admin | Scout		
+	Title Should Be  Admin | Scout	
+
+Go to Home Page
+	Click Link  /admin/index.html
+	
+Go to Reports
+	Click Link  Account
+	Click Link  Reports
+	Wait Until Keyword Succeeds  10  2  CLick Link  Initial report
+	
+Go to Partners
+	Click Link  Account
+	Click Link  Partners
+
+Verify User is in Partners
+	Title Should be  Admin | Scout
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  Partner Name 
+	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  2  Type of ATS
+	Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  3  Share Percentage
+
+Verify User is in Reports
+	Title Should Be  Admin | Scout
+	Page Should Contain  Reports
+
+Access User Page
+  [Arguments]  ${userId} 
+	Click Link  /admin/account/taleo/TALENTDRIVE2/${userId}/
+
+Verify User is in User Page
+	Title Should be  Admin | Scout
+
+Click to Activate User
+	Verify User is Inactive
+	Wait Until Keyword Succeeds  10  2  Click Link  Activate
+
+Click to Deactivate User
+	Verify User is Active
+	Wait Until Keyword Succeeds  10  2  Click Link  Deactivate
+
+Verify User is Active
+	Page Should Contain Link  Deactivate
+
+Verify User is Inactive
+	Wait Until Keyword Succeeds  20  10  Page Should Contain Link  Activate
+
+Go to Terms and Conditions Page
+	Click Link  Education
+	Click Link  T&Cs	
+
+Verify User is in Terms and Conditions Page
+	Title Should be  Terms & Conditions | Admin | Scout
+
+Go to Employer Validation
+	Click Link  Onboard
+	Click Link  Employer Validation
+
+Verify User is in Validation
+	Title Should be  Admin | Scout
+	Page Should Contain  Validation Test Finder
+	Page Should Contain  Go Live
+
+Go to FAQ
+	Click Link  Education
+	Click Link  FAQ
+
+Verify User is in FAQ
+	Title Should be  Admin | Scout
+	Element Should Contain  faqpane  FAQ	What is Scout?
+
+Input Job Posting Notification Email
+	Input Text  scout_plus__notification_text  Scout_QA+1@talentdrive.com
+	Click Button  scout_plus__notification_save
+
+Verify Adding Single User for Job Notification
+	Textfield Should Contain  scout_plus__notification_text  Scout_QA+1@talentdrive.com  
+
+Verify Clearing Job Notification Field
+	Textfield Should Contain  scout_plus__notification_text  ${EMPTY}
+
+Verify Adding Multiple Users for Job Notification
+	Textfield Should Contain  scout_plus__notification_text  Scout_QA+1@talentdrive.com, Scout_QA+1002@talentdrive.com
+
+Turn On Diversity Option 
+	Verify Diversity Option is Turned Off
+	Wait Until Keyword Succeeds  10  2  Select Checkbox  info__diversity__switch--checkbox
+		
+Turn Off Diversity Option 
+	Verify Diversity Option is Turned On
+	Wait Until Keyword Succeeds  10  2  Unselect Checkbox  info__diversity__switch--checkbox
+	
+Verify Diversity Option is Turned On
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-on")]
+
+Verify Diversity Option is Turned Off
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-off")]
+
+Input Second Job Posting Notification Email
+	Input Text  scout_plus__notification_text  Scout_QA+1@talentdrive.com, Scout_QA+1002@talentdrive.com
+	Click Button  scout_plus__notification_save
+
+Clear Job Posting Notification Email
+	Input Text  scout_plus__notification_text  \ \  
+	Click Button  scout_plus__notification_save
+
+Add Scout+ Company
+	Input Text  scout_plus__add_exclusive__text  bullhorn-bhsandbox2
+	Click Button  scout_plus__add_exclusive__button
+	
+Delete Scout+ Company
+	Wait Until Keyword Succeeds  10  2  Click Link  Remove
+
+Verify Scout+ Company was Added
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
+
+Verify Scout+ Companies were Deleted
+	Wait Until Keyword Succeeds  10  2  Element Should Not Be Visible  table table-striped table-condensed 
+
+Turn On Scout Plus Special Price Feature
+	Verify Scout Plus Special Price is Turned Off
+	Wait Until Keyword Succeeds  20  10  Select Checkbox  scout_plus__exclusive_table__special_bullhorn-bhsandbox2 
+
+Turn Off Scout Plus Special Price Feature
+	Verify Scout Plus Special Price is Turned On
+	Wait Until Keyword Succeeds  20  10  Unselect Checkbox  scout_plus__exclusive_table__special_bullhorn-bhsandbox2 
+
+Verify Scout Plus Special Price is Turned On
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-on")]
+
+Verify Scout Plus Special Price is Turned Off
+	Page Should Contain Element  xpath=//*[contains(@class,"bootstrap-switch-off")]
+
+Go To Kenexa New Company
+    Go to Partner "kenexa" page
+	Wait Until Page Contains  Add Employer
+	Click Link  Kenexa New Company
+
+Go To TalentDrive2
+	Go to Partner "taleo" page
+	Wait Until Page Contains  Add Employer
+	Click Link  TALENTDRIVE2
+
+Verify User is on Kenexa New Company Page & Users Section Exist 
+	Location Should be  ${Kenexa_New_Co_URL}
+	Page Should Contain  Users
+
+Verify User is on THINKTALENT2 Page and Users Section Exist 
+	Location Should be  ${ThinkTalent2_Co_URL}
+	Page Should Contain  Users	
+
+TPX Admin Go to "Add Recruiter" Page
+	Click Link  Add Recruiter
+
+Verify User is on Company Info Page 
+	[Arguments]  ${company}
+	Run Keyword If  "${company}"=="Kenexa"  Location Should Be  ${TPX_Recruiter_URL}${Kenexa_Co_ID}
+	Run Keyword If  "${company}"=="TalentDrive2"  Location Should Be  ${TPX_Recruiter_URL}${ThinkTalent2_Co_ID}
+
+Generate Random Username
+	[Arguments]  ${input}
+	${yr}  ${mo}  ${day}  ${hr}  ${min}  ${sec}=  Get Time  year,month,day,hour,min,sec
+	${output}  Catenate  ${input}${yr}${mo}${day}${hr}${min}${sec}
+	[return]  ${output}
+
+Create New Recruiter Profile
+	${randname}=  Generate Random Username  ${TPX_Recr1['username']}
+	Set Suite Variable  ${email}  ${randname}${emailDomain}
+	Input Text  //*[@id='recruiter-username']  ${randname}
+	Input Text  //*[@id='recruiter-name']  ${TPX_RECR1['fullname']}
+	Input Text  //*[@id='recruiter-title']  ${TPX_RECR1['title']}
+	Input Text  //*[@id='recruiter-email']  ${email}
+	Input Text  //*[@id='recruiter-phone']  ${TPX_RECR1['phone']}
+	Input Text  //*[@id='recruiter-street-address']  ${TPX_RECR1['address_1']}
+	Input Text  //*[@id='recruiter-address-additional']  ${TPX_RECR1['address_2']}
+	Input Text  //*[@id='recruiter-city']  ${TPX_RECR1['city']}
+	Input Text  //*[@id='recruiter-state']  ${TPX_RECR1['state']}
+	Input Text  //*[@id='recruiter-zip']  ${TPX_RECR1['zip']}
+	Select Radio Button  privilege  5
+	Click Element  //button[@type='submit']
+
+Verify Success Message
+	Page Should Contain  An email has been sent to ${email} to confirm the email
+
+Verify User Has Been Added to the Table on the Company Page
+	Element Text Should Be  //div[@'main']/div/table.7.0  ${TPX_RECR1['fullname']}
+	Element Text Should Be  //div[@'main']/div/table.7.1  ${TPX_RECR1['username']}
+	Element Text Should Be  //div[@'main']/div/table.7.2  ${TPX_RECR1['phone']}
+	Element Text Should Be  //div[@'main']/div/table.7.3  ${email}
+	Element Text Should Be  //div[@'main']/div/table.7.4  EMPLOYER, RECRUITER
+	Element Text Should Be  //div[@'main']/div/table/tbody/tr[7]/td[6]/span  Active
+	Element Text Should Be  //div[@'main']/div/table.8.6  Login | Impersonate
+
+User is on the Kenexa User Account Page
+	Open Browser  ${Kenexa_User_URL}  ${BROWSER}
+
+User Opens the Page for
+	[Arguments]  ${link}
+	Click Element  link=${link}
+
+Verify User is on the User Info Page
+	Element Text Should Be  //*[@id='main']/div/ul  Partners /kenexa / Kenexa New Company
+
+User Edits the Account Profile
+	Click Element  link=${TPX_RECR2['fullname']}
+	Click Element  link=edit  
+	Wait Until Page Contains Element  //*[@id='agent-username']
+	Input Text  //*[@id='agent-username']  ${TPX_RECR2['username']}
+	Input Text  //*[@id='agent-name']  ${TPX_RECR2['fullname']}
+	Input Text  //*[@id='agent-title']  ${TPX_RECR2['title']}
+	Input Text  //*[@id='agent-phone']  ${TPX_RECR2['phone']}
+	Input Text  //*[@id='agent-street-address']  ${TPX_RECR2['address_1']}
+	Input Text  //*[@id='agent-address-additional']  ${TPX_RECR2['address_2']}
+	Input Text  //*[@id='agent-zip']  ${TPX_RECR2['zip']}
+	#click the Recruiter radio button
+	Click Element  //*[@id="user-edit-modal"]/form/div[2]/div[2]/div/div/div/label[5]/label
+	Click Element  //*[@id='user-edit-modal']/form/div[3]/button[1]
+	Element Text Should Be  //*[@id='main']/div/div[1]/div  Updated ${TPX_RECR2['username']}
+
+Verify User Account Info Has Been Updated
+	Element Text Should Be  css=dd  ${TPX_RECR2['fullname']}
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[2]  ${TPX_RECR2['username']}
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[3]  ${TPX_RECR2['phone']}  
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[5]  RECRUITER
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[6]  Active
+
+User Navigates to Page and Deactivates Account
+	Click Element  css=#main > div > table > tbody > tr:nth-child(2) > td:nth-child(1) > a  #click on kenexa
+	Click Element  css=#main > div > table > tbody > tr:nth-child(2) > td.company > a  #click on Kenexa New Company
+	Click Element  link=Raymond Wong  #click on Raymond Wong
+	Click Element  link=Deactivate  
+	Wait Until Page Contains Element  css=#main > div > div.alerts > div
+	Page Should Contain Element  css=#main > div > div.alerts > div  
+
+Check if the User is Deactive
+	${temp}  Get Text  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(12)
+	Run Keyword If  "${temp}"=="Inactive"  Click Element  link=Activate
+
+Verify User has been Deactivated
+	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[6]  Inactive
+	Click Element  css=#main > div > div.row.info.info--user > div.span4.rightCol > div > a.btn.btn-primary  #reactivate user
+	Element Should Be Visible  css=#main > div > div.alerts > div
+
+User Logs Out of Scout Admin
+	Click Element  link=tpx-admin
+
+Verify User is Logged Out of Scout Admin	
+	Element Should Not Be Visible  link=tpx-admin
+
+TPX Admin Can Access the Page: Partners Page
+	Go To  https://staging.talentpx.com/admin  
+	Input Text  email  scout_support@goscoutgo.com
+	Input Text  password  password1
+	Click Element  css=#submit
+
+Verify TPX Admin is on the Partners Page
+	Location Should be  https://staging.talentpx.com/admin/account/partners
+	Element Should Be Visible  css=#main > div > table
+	Element Text Should Be  link=TPX  TPX
+	Element Text Should Be  link=kenexa  kenexa
+	Element Text Should Be  link=taleo  taleo
+	Element Text Should Be  link=sendouts  sendouts
+	Element Text Should Be  link=bullhorn  bullhorn
+	Element Text Should Be  link=tee  tee
+	Element Text Should Be  link=pcr  pcr
+
+TPX Admin Can Access the Page: Partner Information
+	Click Element  link=kenexa
+
+Verify TPX Admin is on the Partner Information
+	Location Should Be    https://staging.talentpx.com/admin/account/kenexa/
+	Element Text Should Be  css=p.info__header  Partner Information
+	Element Text Should Be  css=dd  kenexa
+	Element Text Should Be  css=#main > div > div.row.info.info--partner > div > dl > dd:nth-child(4)  HIRING
+	Element Text Should Be  css=#main > div > div.row.info.info--partner > div > dl > dd:nth-child(6)  12.5%
+	Element Should Be Visible  css=h2  
+	Element Should Be Visible  css=#main > div > table > thead > tr > th.company  Company Name
+	Element Text Should Be  link=Kenexa New Company  Kenexa New Company
+	Element Text Should Be  link=Add Employer  Add Employer
+
+TPX Admin Can Access the Page: Company Information
+	Click Element  link=Kenexa New Company
+
+Verify TPX Admin is on the Company Information
+	Location Should Be  https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
+	Element Text Should Be  css=p.info__header  Company Information
+	Element Text Should Be  css=dd  Kenexa New Company
+	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(1) > dl > dd:nth-child(4)  kenexa-20048
+	Element Should Be Visible  link=View Company Metadata  
+	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(2) > p.info__header  Terms and Conditions
+	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(2) > p:nth-child(2)  Raymond Wong accepted Terms and Conditions on 03/31/2014.
+	Element Text Should Be  css=p.info__diversity__header  Diversity Information
+	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(3) > div > p.info__diversity__text  Do you want to be notified of staffing agencies that specialize in diversity recruiting?
+	Element Should Be Visible  css=span.bootstrap-switch-handle-on.bootstrap-switch-primary
+	Element Text Should Be  css=div.container > h3  Users
+	Element Should Be Visible  css=#main > div > table:nth-child(7) 
+	Element Should Be Visible  link=Add Recruiter  
+	Element Text Should Be  css=#main > div > div:nth-child(8) > h3  Search Firms for Job Exclusivity
+	Element Should Be Visible  css=#scout_plus__exclusive_table
+	Element Should Be Visible  scout_plus__add_exclusive__text  
+	Element Should Be Visible  scout_plus__add_exclusive__button  
+	Element Text Should Be  css=#scout_plus__notification_div > h3  Job Posting Notification
+	Element Should Be Visible  scout_plus__notification_text  
+	Element Text Should Be  css=#main > div > h3:nth-child(10)  Open Positions
+	Element Should Be Visible  css=#main > div > table:nth-child(11)
+
+TPX Admin Can Access the Page: User Information
+	Click Element  link=Justin Stanizzi Test
+
+Verify TPX Admin is on the User Information
+	Location Should Be  https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/this_is_it/
+	Element Text Should Be  css=ul.breadcrumb  Partners /kenexa / Kenexa New Company / Justin Stanizzi Test
+	Element Text Should Be  css=p.info__header  User Information edit
+	Element Should Be Visible  link=edit  
+	Element Should Be Visible  css=dt  #Name
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(2)  Justin Stanizzi Test
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(3)  #Username
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(4)  this_is_it
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(5)  #Phone
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(6)  9817813214
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(7)  #Email
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(8)  Scout_QA+13424@talentdrive.com
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(9)  #Priviledge
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(10)  EMPLOYER, RECRUITER
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(11)  #Status
+	## Verifies if the account is deactivated, if it is then reactivate the account
+	Check if the User is Deactive
+	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(12)  Active
+	Element Text Should Be  css=p.info__actions__header  Actions
+	Element Should Be Visible  link=Deactivate  
+	Element Should Be Visible  link=Login  
+	Element Should Be Visible  link=Impersonate  
+
+TPX Admin Can Access the Page: Placement
+	Click Element  link=Account
+	Click Element  link=My Placements
+	Wait Until Page Contains  Placements
+	
+Verify TPX Admin is on the Placement Page
+	Location Should Be  https://staging.talentpx.com/admin/account/TPX/TPX/tpx-admin/#placements
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8  #User Information
+	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span4.rightCol > div  #Action Section for activate/deactivate
+	Element Text Should Be  css=#placements  Placements
+	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(2) > caption > h3  Status: Waiting
+	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(2)  #Status Waiting Table
+	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(3) > caption > h3  Status: Not Interested
+	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(3)  #Status Not Interested Table
+	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(4) > caption > h3  Status: Interested
+	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(4)  #Status Interested Table
+	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(5) > caption > h3  Status: Imported
+	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(5)  #Status Imported Table
+
+User Navigates to KX ATS Page and Returns to Home Page By Clicking Scout Logo
+	Click Element  link=Scout
+	
+Verify User Has Returned to the Home Page
+    Location Should Be  https://staging.talentpx.com/admin/account/partners
+
+User Navigates to the FAQ Page
+	Click Element  link=Education
+	Click Element  link=FAQ
+
+Verify User Has Landed on FAQ Page
+	Location Should Be  https://staging.talentpx.com/admin/education/faq
+	Element Text Should Be  xpath=.//*[@id='main']/div/h1  Frequently Asked Questions
+	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[1]/h4  What is Scout?
+	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[2]/h4  What are the benefits of utilizing Scout?
+	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[3]/h4  How do staffing agents sign up for Scout?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[4]/h4  What is the cost to use Scout?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[5]/h4  What are the services that Scout provides to staffing agencies?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[6]/h4  What candidate information is available to the employer? Is the submittal blinded or confidential?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[7]/h4  How does Scout handle duplicate submittals?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[8]/h4  What if an agent submits a candidate to Scout that is already in the employer's candidate database?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[9]/h4  How does an agent contact an employer working with Scout?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[10]/h4  What is a recommended job order?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[11]/h4  What is the "open for bid" feature?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[12]/h4  Does Scout provide a guarantee period for each hire? 
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[13]/h4  How does Scout handle the invoice and collection process?
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[14]/h4  If an employer modifies (or closes) a Scout job order, what happens to the candidates that have already been submitted
+    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[15]/h4  Can employers hire a candidate that was submitted through Scout with the agent outside of Scout?
+
+#------------
+
+Open Placement Form
+        Click Link  xpath=//*[@id="main"]/div/div[6]/div/table[4]/tbody/tr/td[5]/a
+
+Fill Out Placement Form
+	Wait Until Keyword Succeeds  20  2  Input Text  hire_date  '05/05/1999'
+	Wait Until Keyword Succeeds  20  2  Input Text  start_date  '06/05/1999'
+	Wait Until Keyword Succeeds  20  2  Input Text  annual-salary  50000
+	Wait Until Keyword Succeeds  20  2  Click Button  Submit
+	Wait Until Keyword Succeeds  20  2  Page Should Contain  Placement Complete
+	
+Go to Job Form in Admin
+  [Arguments]  ${JobId}
+	Click Link  ${JobTitle} 
+
+Clear and Input Job Question Form
+  [Arguments]  ${job_form_model}
+	Select Window  title=Scout
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  \ \
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  \ \
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  \ \
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  \ \
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="1"]  ${job_form_model['job_form_question_1']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
+	Wait Until Keyword Succeeds  20  2  Input Text  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 
+	Wait Until Keyword Succeeds  20  2   Click Button  job-form__save-button
+	
+Select Partner Page Window
+  	Select Window  title=Admin | Scout
+	
+Validate Job Form Information
+  [Arguments]  ${job_form_model}
+	Select Window  title=Scout
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="1"]  ${job_form_model['job_form_question_1']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
+	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 

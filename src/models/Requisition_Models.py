@@ -80,3 +80,10 @@ EDIT_REQ1 = {
     "location": '49',
     "description": "TBE Edited Job Requisition 1 for Bullhorn"
 }
+
+JOB_QUESTIONS = {
+    "job_form_question_1": 'This is a new position in a new department in a growing company.',
+    "job_form_question_2": 'We are a fun start up!',
+    "job_form_question_3": 'You need to be driven',
+    "job_form_question_6": 'Medical Sales Experience marketing experience from a new company'
+}
