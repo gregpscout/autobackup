@@ -42,3 +42,8 @@ Validate Email Received for Candidate Submission
     ${content}=  Should Contain  ${payload}  ${email_temp['content2']}
     Close Mailbox    
 
+Generate Random Number
+    [Arguments]  ${input}
+    ${mo}  ${day}  ${min}  ${sec}=  Get Time  month,day,min,sec
+    ${output}  Catenate  ${input}${mo}${day}${min}${sec}
+    [return]  ${output}
