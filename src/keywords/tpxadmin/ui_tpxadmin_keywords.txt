@@ -1,9 +1,11 @@
 *** Settings ***
 Library    String
 Resource  ../../resources/settings.txt
+Resource  ../../keywords/common/ui_common_keywords.txt
 Variables  ../../models/Recruiter_Models.py
 
 *** Variables ***
+${Staging_Admin_URL}	https://staging.talentpx.com/
 ${Kenexa_ATS_ID}		kenexa-20048
 ${Kenexa_Co_ID}			5339d364ffd3db588cd4c112
 ${Kenexa_New_Co_URL}	https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
@@ -12,8 +14,7 @@ ${ThinkTalent2_Co_ID}   52fa9b9b3333cf0b42e93868
 ${ThinkTalent2_Co_URL}  https://staging.talentpx.com/admin/account/taleo/TALENTDRIVE2/ 
 ${TPX_Recruiter_URL}    https://staging.talentpx.com/admin/onboard/recruiter?company=
 ${emailDomain}  @mailinator.com
-#${email}
-#${randname}
+
 	
 *** Keywords ***
 User is on Scout Admin Login Page
@@ -214,14 +215,8 @@ Verify User is on Company Info Page
 	Run Keyword If  "${company}"=="Kenexa"  Location Should Be  ${TPX_Recruiter_URL}${Kenexa_Co_ID}
 	Run Keyword If  "${company}"=="TalentDrive2"  Location Should Be  ${TPX_Recruiter_URL}${ThinkTalent2_Co_ID}
 
-Generate Random Username
-	[Arguments]  ${input}
-	${yr}  ${mo}  ${day}  ${hr}  ${min}  ${sec}=  Get Time  year,month,day,hour,min,sec
-	${output}  Catenate  ${input}${yr}${mo}${day}${hr}${min}${sec}
-	[return]  ${output}
-
 Create New Recruiter Profile
-	${randname}=  Generate Random Username  ${TPX_Recr1['username']}
+	${randname}=  Generate Random Number  ${TPX_Recr1['username']}
 	Set Suite Variable  ${email}  ${randname}${emailDomain}
 	Input Text  //*[@id='recruiter-username']  ${randname}
 	Input Text  //*[@id='recruiter-name']  ${TPX_RECR1['fullname']}
@@ -282,36 +277,32 @@ Verify User Account Info Has Been Updated
 	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[6]  Active
 
 User Navigates to Page and Deactivates Account
-	Click Element  css=#main > div > table > tbody > tr:nth-child(2) > td:nth-child(1) > a  #click on kenexa
-	Click Element  css=#main > div > table > tbody > tr:nth-child(2) > td.company > a  #click on Kenexa New Company
-	Click Element  link=Raymond Wong  #click on Raymond Wong
-	Click Element  link=Deactivate  
-	Wait Until Page Contains Element  css=#main > div > div.alerts > div
-	Page Should Contain Element  css=#main > div > div.alerts > div  
-
-Check if the User is Deactive
-	${temp}  Get Text  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(12)
-	Run Keyword If  "${temp}"=="Inactive"  Click Element  link=Activate
+	Click link  kenexa  #click on kenexa
+	Click link  Kenexa New Company  #click on Kenexa New Company
+	Click link  Raymond Wong  #click on Raymond Wong
+	Click link  Deactivate  
+	Wait Until Page Contains Element  xpath=.//*[@id='main']/div/div[1]/div
+	Page Should Contain Element  xpath=.//*[@id='main']/div/div[1]/div 
 
 Verify User has been Deactivated
 	Element Text Should Be  //div[@id='main']/div/div[2]/div/dl/dd[6]  Inactive
-	Click Element  css=#main > div > div.row.info.info--user > div.span4.rightCol > div > a.btn.btn-primary  #reactivate user
-	Element Should Be Visible  css=#main > div > div.alerts > div
+	Click Element  xpath=.//*[@id='main']/div/div[2]/div[2]/div/a[1]  #reactivate user
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[1]/div  User activated
 
 User Logs Out of Scout Admin
-	Click Element  link=tpx-admin
+	Click link  tpx-admin
 
 Verify User is Logged Out of Scout Admin	
 	Element Should Not Be Visible  link=tpx-admin
 
 TPX Admin Can Access the Page: Partners Page
-	Go To  https://staging.talentpx.com/admin  
+	Go To  ${Staging_Admin_URL}admin  
 	Input Text  email  scout_support@goscoutgo.com
 	Input Text  password  password1
 	Click Element  css=#submit
 
 Verify TPX Admin is on the Partners Page
-	Location Should be  https://staging.talentpx.com/admin/account/partners
+	Location Should be  ${Staging_Admin_URL}admin/account/partners
 	Element Should Be Visible  css=#main > div > table
 	Element Text Should Be  link=TPX  TPX
 	Element Text Should Be  link=kenexa  kenexa
@@ -322,103 +313,107 @@ Verify TPX Admin is on the Partners Page
 	Element Text Should Be  link=pcr  pcr
 
 TPX Admin Can Access the Page: Partner Information
-	Click Element  link=kenexa
+	Click link  kenexa
 
 Verify TPX Admin is on the Partner Information
-	Location Should Be    https://staging.talentpx.com/admin/account/kenexa/
-	Element Text Should Be  css=p.info__header  Partner Information
-	Element Text Should Be  css=dd  kenexa
-	Element Text Should Be  css=#main > div > div.row.info.info--partner > div > dl > dd:nth-child(4)  HIRING
-	Element Text Should Be  css=#main > div > div.row.info.info--partner > div > dl > dd:nth-child(6)  12.5%
-	Element Should Be Visible  css=h2  
-	Element Should Be Visible  css=#main > div > table > thead > tr > th.company  Company Name
+	Location Should Be    ${Staging_Admin_URL}admin/account/kenexa/
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div/p  Partner Information
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div/dl/dd[1]  kenexa
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div/dl/dd[2]  HIRING
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div/dl/dd[3]  12.5%
+	Element Should Be Visible  xpath=.//*[@id='main']/div/h2  
+	Element Should Be Visible  xpath=.//*[@id='main']/div/table
 	Element Text Should Be  link=Kenexa New Company  Kenexa New Company
 	Element Text Should Be  link=Add Employer  Add Employer
 
 TPX Admin Can Access the Page: Company Information
-	Click Element  link=Kenexa New Company
+	Click link  Kenexa New Company
 
 Verify TPX Admin is on the Company Information
-	Location Should Be  https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/
-	Element Text Should Be  css=p.info__header  Company Information
-	Element Text Should Be  css=dd  Kenexa New Company
-	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(1) > dl > dd:nth-child(4)  kenexa-20048
+	Location Should Be  ${Staging_Admin_URL}admin/account/kenexa/Kenexa%20New%20Company/
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[1]/p  Company Information
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[1]/dl/dd[1]  Kenexa New Company
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[1]/dl/dd[2]  kenexa-20048
 	Element Should Be Visible  link=View Company Metadata  
-	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(2) > p.info__header  Terms and Conditions
-	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(2) > p:nth-child(2)  Raymond Wong accepted Terms and Conditions on 03/31/2014.
-	Element Text Should Be  css=p.info__diversity__header  Diversity Information
-	Element Text Should Be  css=#main > div > div.row.info.info--company > div:nth-child(3) > div > p.info__diversity__text  Do you want to be notified of staffing agencies that specialize in diversity recruiting?
-	Element Should Be Visible  css=span.bootstrap-switch-handle-on.bootstrap-switch-primary
-	Element Text Should Be  css=div.container > h3  Users
-	Element Should Be Visible  css=#main > div > table:nth-child(7) 
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[2]/p[1]  Terms and Conditions
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[2]/p[2]  Raymond Wong accepted Terms and Conditions on 03/31/2014.
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[3]/div[1]/p[1]  Diversity Information
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div[3]/div[1]/p[2]  Do you want to be notified of staffing agencies that specialize in diversity recruiting?
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div[3]/div[1]/div
+	Element Text Should Be  xpath=.//*[@id='main']/div/h3[1]  Users
+	Element Should Be Visible  xpath=.//*[@id='main']/div/table[1] 
 	Element Should Be Visible  link=Add Recruiter  
-	Element Text Should Be  css=#main > div > div:nth-child(8) > h3  Search Firms for Job Exclusivity
-	Element Should Be Visible  css=#scout_plus__exclusive_table
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[4]/h3  Search Firms for Job Exclusivity
+	Element Should Be Visible  xpath=.//*[@id='scout_plus__exclusive_table']
 	Element Should Be Visible  scout_plus__add_exclusive__text  
 	Element Should Be Visible  scout_plus__add_exclusive__button  
-	Element Text Should Be  css=#scout_plus__notification_div > h3  Job Posting Notification
+	Element Text Should Be  xpath=.//*[@id='scout_plus__notification_div']/h3  Job Posting Notification
 	Element Should Be Visible  scout_plus__notification_text  
-	Element Text Should Be  css=#main > div > h3:nth-child(10)  Open Positions
-	Element Should Be Visible  css=#main > div > table:nth-child(11)
+	Element Text Should Be  xpath=.//*[@id='main']/div/h3[2]  Open Positions
+	Element Should Be Visible  xpath=.//*[@id='main']/div/table[2]
 
 TPX Admin Can Access the Page: User Information
-	Click Element  link=Justin Stanizzi Test
+	Click link  Justin Stanizzi Test
+
+Check if the User is Deactive
+	${temp}  Get Text  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[6]
+	Run Keyword If  "${temp}"=="Inactive"  Click link  Activate
 
 Verify TPX Admin is on the User Information
-	Location Should Be  https://staging.talentpx.com/admin/account/kenexa/Kenexa%20New%20Company/this_is_it/
-	Element Text Should Be  css=ul.breadcrumb  Partners /kenexa / Kenexa New Company / Justin Stanizzi Test
-	Element Text Should Be  css=p.info__header  User Information edit
+	Location Should Be  ${Staging_Admin_URL}admin/account/kenexa/Kenexa%20New%20Company/this_is_it/
+	Element Text Should Be  xpath=.//*[@id='main']/div/ul  Partners /kenexa / Kenexa New Company / Justin Stanizzi Test
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/p  User Information edit
 	Element Should Be Visible  link=edit  
-	Element Should Be Visible  css=dt  #Name
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(2)  Justin Stanizzi Test
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(3)  #Username
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(4)  this_is_it
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(5)  #Phone
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(6)  9817813214
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(7)  #Email
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(8)  Scout_QA+13424@talentdrive.com
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(9)  #Priviledge
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(10)  EMPLOYER, RECRUITER
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8 > dl > dt:nth-child(11)  #Status
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[1]  #NameLabel
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[1]  Justin Stanizzi Test
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[2]  #UsernameLabel
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[2]  this_is_it
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[3]  #PhoneLabel
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[3]  9817813214
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[4]  #EmailLabel
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[4]  Scout_QA+13424@talentdrive.com
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[5]  #PriviledgeLabel
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[5]  EMPLOYER, RECRUITER
+	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dt[6]  #Statuslabel
 	## Verifies if the account is deactivated, if it is then reactivate the account
 	Check if the User is Deactive
-	Element Text Should Be  css=#main > div > div.row.info.info--user > div.span8 > dl > dd:nth-child(12)  Active
-	Element Text Should Be  css=p.info__actions__header  Actions
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[1]/dl/dd[6]  Active
+	Element Text Should Be  xpath=.//*[@id='main']/div/div[2]/div[2]/div/p  Actions
 	Element Should Be Visible  link=Deactivate  
 	Element Should Be Visible  link=Login  
 	Element Should Be Visible  link=Impersonate  
 
 TPX Admin Can Access the Page: Placement
-	Click Element  link=Account
-	Click Element  link=My Placements
+	Click link  Account
+	Click link  My Placements
 	Wait Until Page Contains  Placements
 	
 Verify TPX Admin is on the Placement Page
-	Location Should Be  https://staging.talentpx.com/admin/account/TPX/TPX/tpx-admin/#placements
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span8  #User Information
-	Element Should Be Visible  css=#main > div > div.row.info.info--user > div.span4.rightCol > div  #Action Section for activate/deactivate
-	Element Text Should Be  css=#placements  Placements
-	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(2) > caption > h3  Status: Waiting
-	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(2)  #Status Waiting Table
-	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(3) > caption > h3  Status: Not Interested
-	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(3)  #Status Not Interested Table
-	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(4) > caption > h3  Status: Interested
-	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(4)  #Status Interested Table
-	Element Text Should Be  css=#main > div > div:nth-child(4) > div > table:nth-child(5) > caption > h3  Status: Imported
-	Element Should Be Visible  css=#main > div > div:nth-child(4) > div > table:nth-child(5)  #Status Imported Table
+	Location Should Be  ${Staging_Admin_URL}admin/account/TPX/TPX/tpx-admin/#placements
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/p  #User Information Label
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[2]/div/p  #Action Section for activate/deactivate Label
+    Element Text Should Be  xpath=.//*[@id='placements']  Placements
+    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[1]/caption/h3  Status: Waiting
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[1]  #Status Waiting Table
+    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[2]/caption/h3  Status: Not Interested
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[2]  #Status Not Interested Table
+    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[3]/caption/h3  Status: Interested
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[3]  #Status Interested Table
+    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[4]/caption/h3  Status: Imported
+    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[4]  #Status Imported Table
 
-User Navigates to KX ATS Page and Returns to Home Page By Clicking Scout Logo
-	Click Element  link=Scout
+User Returns to Scout Home Page
+	Click link  Scout
 	
 Verify User Has Returned to the Home Page
-    Location Should Be  https://staging.talentpx.com/admin/account/partners
+    Location Should Be  ${Staging_Admin_URL}admin/account/partners
 
 User Navigates to the FAQ Page
-	Click Element  link=Education
-	Click Element  link=FAQ
+	Click link  Education
+	Click link  FAQ
 
 Verify User Has Landed on FAQ Page
-	Location Should Be  https://staging.talentpx.com/admin/education/faq
+	Location Should Be  ${Staging_Admin_URL}admin/education/faq
 	Element Text Should Be  xpath=.//*[@id='main']/div/h1  Frequently Asked Questions
 	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[1]/h4  What is Scout?
 	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[2]/h4  What are the benefits of utilizing Scout?

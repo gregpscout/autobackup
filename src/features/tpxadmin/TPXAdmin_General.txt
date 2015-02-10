@@ -37,7 +37,7 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 	And TPX Admin Login Page Should Be Open
 
 Scenario: Validate Page Links
-  [Tags]  SMOKE  
+  [Tags]  SMOKE  LINKS
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
@@ -113,7 +113,7 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	And Verify Scout+ Companies were Deleted
 	
 Scenario: Adding a New User for KENEXA in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  NEW_USER
+  [Tags]  SMOKE  KX  NEW_USER
   [Documentation]  This code will generate a new account that must be removed after running the automation
 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
  	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
@@ -126,8 +126,10 @@ Scenario: Adding a New User for KENEXA in Scout Admin
  	Then Verify Success Message
 
 Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  EDIT_USER
-  [Documentation]  1) This test suite relies on the recruiter "Tom A. Cruise" for editing. 2) "Justin Stanizzi Test" is the existing recruiter being checked. 3) Checking the Scout Logo for returning to home page. 4) Checking the FAQ page.
+  [Tags]  SMOKE  KX  EDIT_USER
+  [Documentation]  Scenario break-down: 
+    ...  1) This test suite relies on the recruiter "Tom A. Cruise" for editing 
+  	...  2) "Justin Stanizzi Test" is the existing recruiter being checked
     Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
     Then Verify user is logged in to Scout Admin 
@@ -147,13 +149,9 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
     Then Verify TPX Admin is on the User Information
     Given TPX Admin Can Access the Page: Placement
     Then Verify TPX Admin is on the Placement Page
-    Given User Navigates to KX ATS Page and Returns to Home Page By Clicking Scout Logo
-    Then Verify User Has Returned to the Home Page
-    Given User Navigates to the FAQ Page
-    Then Verify User Has Landed on FAQ Page
 
 Scenario: Deactivate User for Kenexa in Scout Admin
-  [Tags]  SMOKE  KX  SCOUT_ADMIN  DEACTIVATE_USER
+  [Tags]  SMOKE  KX  DEACTIVATE_USER
   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
  	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
     And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
@@ -171,5 +169,3 @@ Scenario: Fill Out Placement Form for BH User
 	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	When Open Placement Form
 	Then Fill Out Placement Form
-
-
