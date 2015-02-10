@@ -72,7 +72,7 @@ Scenario: PCR Cleanup
       Then Logout of PCR
 
 Scenario: PCR Test Links
-  [Tags]  LINKS
+  [Tags]  LINKS  QUICK
     Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}
     When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go to Scout Iframe in PCR

@@ -4,7 +4,7 @@ Library           Selenium2Library
 Library           MongoDBLibrary
 Library           ImapLibrary
 Resource          ../../keywords/tbe/ui_tbe_keywords.txt    
-Resource  	  ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt   
+Resource  	      ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt   
 Resource          ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
 Resource          ../../keywords/db/sync_tasks.txt 
 Resource          ../../resources/settings.txt
@@ -16,12 +16,12 @@ Variables         ../../models/Email_Templates.py
 Suite Teardown    Close Browser
 
 *** Variables ***
-${syncTBEJobs}  ./manage.py --sync sync-taleo-requisitions
-${needhelp_tbe}  Scout for Taleo Business Edition - Go Scout Go    
-${needhelp_text}  Scout for Taleo Business Edition
+${syncTBEJobs}     ./manage.py --sync sync-taleo-requisitions
+${needhelp_tbe}    Scout for Taleo Business Edition - Go Scout Go    
+${needhelp_text}   Scout for Taleo Business Edition
 ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
-${jobTitle}	 Test Job for Automation
+${jobTitle}        Test Job for Automation
 
 *** Test Cases ***
 
@@ -34,7 +34,7 @@ Scenario: Test Create Requisition in TBE for Bullhorn
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Create New Requisition in TBE  ${TBE_REQ1}
-    When Create New Requisition in TBE  ${TBE_REQ2}
+    And Create New Requisition in TBE  ${TBE_REQ2}
     ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
     Sleep  4m
@@ -49,7 +49,7 @@ Scenario: Test Create Requisition in TBE for PCR
     When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     Then Verify user is logged in to TBE
     When Create New Requisition in TBE  ${TBE_REQ4}
-    When Create New Requisition in TBE  ${TBE_REQ5}
+    And Create New Requisition in TBE  ${TBE_REQ5}
     ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
     Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
     Sleep  4m
@@ -140,7 +140,6 @@ Scenario: Test Placing Job on Hold in TBE
     Sleep  4m
     Verify Job is on Hold in Mongodb  ${jobId}
 
-
 # Before running any of the tests below, make sure that job requisitions TBE_REQ1 and TBE_REQ2 already exist in TBE
 # If not, run "JOBCREATION_BH" before running any of the following tests    
 
@@ -172,8 +171,6 @@ Scenario: Close Test Jobs in TBE
     Then Verify user is logged in to TBE
     When Go to Requisitions Page in TBE   
     Then Close Job in TBE  robot_TBE
-
-
     
 Scenario: Edit Job Question Form in TBE Scout Candidates Page
   [Tags]  MOINFO  REGRESSION
