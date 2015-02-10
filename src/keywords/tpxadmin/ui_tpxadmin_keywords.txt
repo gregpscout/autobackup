@@ -49,7 +49,12 @@ Go to Company "${company}" page
     Click Link  /admin/account/taleo/${company}/   	
 	
 Verify user is on TBE-Sandbox Users page
+  [Arguments]  ${companyName}
+    Page Should Contain  ${companyName}
 	Page Should Contain  Users	
+	Page Should Contain  Terms and Conditions
+	Page Should Contain Element  xpath= //*[@class="info__diversity"]
+
 	
 Verify User is on Scout Admin Login Page
 	Title Should Be  Admin | Scout	

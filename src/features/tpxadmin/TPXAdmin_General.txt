@@ -10,6 +10,16 @@ Variables         ../../models/Requisition_Models.py
 ${jobTitle}	 Test Job for Automation
 
 *** Test Cases ***
+
+Scenario: Validate Scout Admin is up to ensure build stability 
+  [Tags]  QUICK
+  [Documentation]  User must be deactivated first	
+	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
+	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
+	Then Verify user is logged in to Scout Admin
+	When Go To TBE-Sandbox
+	Then Verify user is on TBE-Sandbox Users page  ${TBE_COMPANY}
+
 Scenario: Test Login to Scout Admin and Activate and Deactivate User
   [Tags]  SMOKE  USER_TESTING
   [Documentation]  User must be deactivated first	
@@ -17,7 +27,7 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	When Access User Page  57
 	And Verify User is in User Page
 	And Click to Activate User 
@@ -50,7 +60,7 @@ Scenario: Job Notification Testing
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	And Input Job Posting Notification Email
 	And Verify Adding Single User for Job Notification
 	And Clear Job Posting Notification Email
@@ -66,7 +76,7 @@ Scenario: Test Diversity Feature
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	And Turn Off Diversity Option
 	Verify Diversity Option is Turned Off
 	And Turn On Diversity Option
@@ -79,7 +89,7 @@ Scenario: Validate Job Question Form in Scout Admin
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	When Go to Job Form in Admin  ${jobTitle}
 	And Clear and Input Job Question Form  ${JOB_QUESTIONS}     		
 	And Select Partner Page Window
@@ -92,7 +102,7 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	And Add Scout+ Company
 	And Verify Scout+ Company was Added
 	And Turn On Scout Plus Special Price Feature
@@ -158,7 +168,7 @@ Scenario: Fill Out Placement Form for BH User
 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
 	Then Verify user is logged in to Scout Admin
 	When Go To TBE-Sandbox
-	Then Verify user is on TBE-Sandbox Users page
+	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	When Open Placement Form
 	Then Fill Out Placement Form
 
