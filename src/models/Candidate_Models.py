@@ -19,13 +19,15 @@ BHS_Reject_Candidate = {
 BHS_No_Email = {
     "name": "Robot_BHS_No Email",  
     "mod_name": "Robot_BHS_No E.",
-    "id": '114'
+    "id": '114',
+    "fee": '22'
 }
 
 BHS_No_Resume = {
     "name": "Robot_BHS No_Resume",  
     "mod_name": "Robot_BHS N.",
-    "id": '115'
+    "id": '115',
+    "fee": '15'
 }
 
 PCR_Accept_Candidate = {
@@ -50,12 +52,14 @@ PCR_Candidate_Missing_Resume = {
     "first_name": "Robot_Jingle",
     "last_name": "NoResume",
     "full_name": "Robot_Jingle NoResume",
-    "id": 'NA-8786423354'
+    "id": 'NA-8786423354',
+    "fee": '15'
 }
 
 PCR_Candidate_Missing_Email = {
     "first_name": "Robot_Jennifer",
     "last_name": "NoEmail",
     "full_name": "Robot_Jennifer NoEmail",
-    "id": 'NA-8769226125'
+    "id": 'NA-8769226125',
+    "fee": '24'
 }

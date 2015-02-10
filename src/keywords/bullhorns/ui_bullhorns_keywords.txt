@@ -38,7 +38,7 @@ Expand the Bullhorn menu bar
 Go to Search Jobs Page on Scout For Bullhorn  
   [Documentation]  Takes user to search jobs page in Scout iframe when already in iframe
     Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
-    Wait Until Keyword Succeeds  5  5  Click Link  signals-search
+    Wait Until Keyword Succeeds  5  1  Click Link  signals-search
     Verify User is on Search Jobs Page for Scout
     Unselect Frame
 
@@ -62,7 +62,7 @@ Import Scout Job into Bullhorn
     Search for Job by Title in Scout For Bullhorn  ${jobTitle}
     Wait Until Keyword Succeeds  20  2  Select Checkbox  xpath=//*[@id="req-search-table"]/tbody/tr[1]/td[1]/input   
     Click Button  import-selected 
-    Wait Until Keyword Succeeds  20  10  Element Should Be Visible  xpath=//*[@id="import-back-to-list"] 
+    Wait Until Keyword Succeeds  20  5  Element Should Be Visible  xpath=//*[@id="import-back-to-list"] 
     Unselect Frame 
     
 Search for Job by Title in Scout For Bullhorn
@@ -104,7 +104,7 @@ Submit two internal candidates in Bullhorn
     ${y}=  Fetch From Right  ${x}  \#                          # Ignore text in the id
     Wait Until Keyword Succeeds  5  1  Click Button  Add Internal Submission
     Unselect Frame
-    Select Frame  PlacementWnd${y}
+    Select Frame  addPlacementWnd${y}  
     Wait Until Page Contains  Add Internal Submission: 
     Wait Until Keyword Succeeds  5  1  Click Element  xpath=//div[@class="picker-multi Candidate picker"]       
     Selecting Candidate on Bullhorn Submission Page  ${candidate_name1}
@@ -132,8 +132,8 @@ Submit a candidate to a Scout job successfully
     Unselect Frame    
     
 Submit a Candidate to Scout Without Email and Verify Errors
-  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame} 
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}
     Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="alert-message error"]
@@ -141,8 +141,8 @@ Submit a Candidate to Scout Without Email and Verify Errors
     Unselect Frame        
     
 Submit a Candidate to Scout Without Resume and Verify Errors
-  [Arguments]  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame} 
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_name}  ${candidate_id}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame} 
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}
     Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="control-group error"]
@@ -163,7 +163,7 @@ Submit the candidate to Scout
     Select Radio Button  id  ${candidate_obj['id']}
     Click Button  Submit Selected Candidate
     Wait Until Keyword Succeeds  10  2  Verify User is on Candidate Submission Page for Scout 
-    Select From List  fee  ${candidate_obj['fee']}   
+    Select From List  fee  ${candidate_obj['fee']}         # Updating fee to test open to bid option
     Click Button  submit-candidate
     Unselect Frame
     
