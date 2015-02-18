@@ -1,0 +1,29 @@
+*** Settings ***
+Library           SSHLibrary
+Library           Selenium2Library
+Library           MongoDBLibrary
+Library           ImapLibrary
+Resource          ../../keywords/tee/ui_tee_keywords.txt
+Resource          ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt
+Resource          ../../resources/settings.txt
+Variables         ../../models/Email_Templates.py
+
+
+*** Variables ***
+${needhelp_tee}    Scout for Taleo Enterprise Edition - Go Scout Go    
+${needhelp_text}   Scout for Taleo Enterprise Edition
+${TEE_UserId}      53ad83e5ffd3db15d3ac387a
+
+*** Test Cases ***
+
+Scenario: Test Feedback and Help Links in TEE
+  [Tags]  LINKS  REGRESSION
+    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
+    And Go to Scout iframe in TEE after Impersonation
+    And Test Feedback Link on Scout  ${TEE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+    And Test Need Help with Scout Link  ${needhelp_tee}  ${needhelp_text}        
+
+
+
+
