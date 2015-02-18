@@ -33,6 +33,10 @@ ${TBE_PHONE_TEST}			(617) 535-5030
 ${TBE_CONTACT_TEST}			Peter Parker
 ${TBE_EMAIL_TEST}			scout_qa@goscoutgo.com
 
+${TEE}                      https://ptrthinktalent.taleo.net
+${TEE_USERNAME}             ScoutQA
+${TEE_PASSWORD}             taleo123
+
 ${TPXADMIN_STG}             https://staging.talentpx.com/admin/login
 ${USERNAME_TPXADMIN_STG}    scout_support@goscoutgo.com
 ${PASSWORD_TPXADMIN_STG}    password1

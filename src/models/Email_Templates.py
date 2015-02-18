@@ -31,3 +31,8 @@ TBE_FEEDBACK= {
     "subject": "Feedback: QA Scout at TALENTDRIVE2 (taleo)",
     "content": "Robot Test Feedback in TBE"
 }
+
+TEE_FEEDBACK= {
+    "subject": "Feedback: Scout QA at Think Talent (tee)",
+    "content": "Robot Test Feedback in TEE"
+}

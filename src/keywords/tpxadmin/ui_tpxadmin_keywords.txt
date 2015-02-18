@@ -18,16 +18,19 @@ ${emailDomain}  @mailinator.com
 	
 *** Keywords ***
 User is on Scout Admin Login Page
-  [Arguments]  ${url}  ${BROWSER}  
+  [Arguments]  ${url} 
 	Open Browser  ${url}  ${BROWSER}
 	Maximize Browser Window
 	TPX Admin Login Page Should Be Open
 	
 TPX Admin Login Page Should Be Open
 	Title Should Be  Admin | Scout	
-	
-Verify User is on Scout Admin Login Page
-	Title Should Be  Admin | Scout	
+
+Login to Scout Admin
+  [Arguments]  ${url}  ${username}  ${password}
+    User is on Scout Admin Login Page  ${url}
+    Enter login details  ${username}  ${password}
+    Verify user is logged in to Scout Admin       		
 	
 Enter login details
   [Arguments]  ${username}  ${password}
@@ -37,23 +40,45 @@ Enter login details
     
 Verify user is logged in to Scout Admin
 	Element Should Contain  //*[@id="main"]/div/h1  Partners 
-	
+
+Impersonate User ${userId} in Ats ${ats} and Company ${company}
+    Go To ATS Page  ${ats}
+    Go to Company "${company}" page  
+    Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[@href="\/admin\/impersonate\?user_id=${userId}"]
+
+Go to Scout iframe in TEE after Impersonation
+    Wait Until Keyword Succeeds  10  2  TPX Admin Login Page Should Be Open
+    Go To  https://staging.talentpx.com/tee/#/positions
+    Verify User is on Scout Iframe for TEE
+
+Verify User is on Scout Iframe for TEE 
+    Wait Until Keyword Succeeds  20  2  Page Should Contain  Hello, Scout QA
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  positions-table 
+    # Image  xpath=//*[src="/static/tee/images/logo_scouttee.png"]   
+
+Go to Job Details page in TEE
+  [Arguments]  ${jobTitle}
+    Click Link  ${jobTitle}   
+
+Go To ATS Page
+  [Arguments]  ${ats} 
+    Go to Partner "${ats}" page 
+
 Go To TBE-Sandbox
     Verify user is logged in to Scout Admin
 	Go to Partner "taleo" page
 	Go to Company "TALENTDRIVE2" page 
 	
 Go to Partner "${partner}" page
-    Click Link  /admin/account/${partner}/
+    Wait Until Page Contains  ${partner}
+    Click Link  ${partner}
     
 Go to Company "${company}" page
-    Click Link  /admin/account/taleo/${company}/   	
+    Wait Until Page Contains  ${company}
+    Click Link  ${company}       	
 	
 Verify user is on TBE-Sandbox Users page
 	Page Should Contain  Users	
-	
-Verify User is on Scout Admin Login Page
-	Title Should Be  Admin | Scout	
 
 Go to Home Page
 	Click Link  /admin/index.html

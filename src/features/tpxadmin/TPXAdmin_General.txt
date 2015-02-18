@@ -13,9 +13,7 @@ ${jobTitle}	 Test Job for Automation
 Scenario: Test Login to Scout Admin and Activate and Deactivate User
   [Tags]  SMOKE  USER_TESTING
   [Documentation]  User must be deactivated first	
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	When Access User Page  57
@@ -28,9 +26,7 @@ Scenario: Test Login to Scout Admin and Activate and Deactivate User
 
 Scenario: Validate Page Links
   [Tags]  SMOKE  LINKS
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go to Partners
 	Then Verify User is in Partners
 	When Go to Terms and Conditions Page
@@ -46,9 +42,7 @@ Scenario: Validate Page Links
 	
 Scenario: Job Notification Testing
   [Tags]  SMOKE  EMAIL
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	And Input Job Posting Notification Email
@@ -62,9 +56,7 @@ Scenario: Job Notification Testing
 Scenario: Test Diversity Feature
   [Tags]  SMOKE  DIVERSITY 
   [Documentation]  Diversity Feature Must be Turned On First	  
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	And Turn Off Diversity Option
@@ -75,9 +67,7 @@ Scenario: Test Diversity Feature
 Scenario: Validate Job Question Form in Scout Admin
   [Tags]  SMOKE  QUESTIONFRM
   [Documentation]  Job Test Job for Automation must be Open
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	When Go to Job Form in Admin  ${jobTitle}
@@ -88,9 +78,7 @@ Scenario: Validate Job Question Form in Scout Admin
 Scenario: Add Scout+ Company and Provide Special Pricing
   [Tags]  SMOKE  SCOUTPLUS
   [Documentation]  Prior to running, confirm that BH-Sandbox2 is not a Scout+ Company for TBE
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	And Add Scout+ Company
@@ -105,9 +93,7 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 Scenario: Adding a New User for KENEXA in Scout Admin
   [Tags]  SMOKE  KX  NEW_USER
   [Documentation]  This code will generate a new account that must be removed after running the automation
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}  
- 	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
- 	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
  	When Go To Kenexa New Company
  	Then Verify User is on Kenexa New Company Page & Users Section Exist
  	When TPX Admin Go to "Add Recruiter" Page
@@ -120,9 +106,7 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
   [Documentation]  Scenario break-down: 
     ...  1) This test suite relies on the recruiter "Tom A. Cruise" for editing 
   	...  2) "Justin Stanizzi Test" is the existing recruiter being checked
-    Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
-    And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-    Then Verify user is logged in to Scout Admin 
+    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
     Given Go to Kenexa New Company
     Then Verify user is on the User Info Page
     Given User Edits the Account Profile
@@ -143,18 +127,14 @@ Scenario: Edit Account Info and User Role for Kenexa in Scout Admin
 Scenario: Deactivate User for Kenexa in Scout Admin
   [Tags]  SMOKE  KX  DEACTIVATE_USER
   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
- 	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}
-    And Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-    Then Verify user is logged in to Scout Admin 
+ 	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
     Given User Navigates to Page and Deactivates Account
     Then Verify User has been Deactivated
 
 Scenario: Fill Out Placement Form for BH User
   [Tags]  SMOKE  PLACEMENTFRM
   [Documentation]  Job Test Job for Automation must be Open
-	Given User is on Scout Admin Login Page  ${TPXADMIN_STG}  ${BROWSER}   
-	When Enter login details  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-	Then Verify user is logged in to Scout Admin
+	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page
 	When Open Placement Form

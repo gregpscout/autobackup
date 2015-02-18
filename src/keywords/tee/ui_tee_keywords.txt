@@ -1,0 +1,11 @@
+*** Keywords ***
+User is on TEE Site  
+  [Arguments]  ${Url}  ${Browser}  
+	Open Browser  ${Url}  ${Browser}
+	Maximize Browser Window
+	
+Login to TEE
+  [Arguments]  ${username}  ${password}
+    Input Text  dialogTemplate-dialogForm-content-login-name1  ${username}
+    Input Text  dialogTemplate-dialogForm-content-login-password  ${password}
+    Click Link  dialogTemplate-dialogForm-content-login-defaultCmd	
