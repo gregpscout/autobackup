@@ -54,7 +54,6 @@ Go to Scout iframe in TEE after Impersonation
 Verify User is on Scout Iframe for TEE 
     Wait Until Keyword Succeeds  20  2  Page Should Contain  Hello, Scout QA
     Wait Until Keyword Succeeds  20  2  Page Should Contain Element  positions-table 
-    # Image  xpath=//*[src="/static/tee/images/logo_scouttee.png"]   
 
 Go to Job Details page in TEE
   [Arguments]  ${jobTitle}
@@ -78,7 +77,11 @@ Go to Company "${company}" page
     Click Link  ${company}       	
 	
 Verify user is on TBE-Sandbox Users page
+  [Arguments]  ${companyName}
+    Page Should Contain  ${companyName}
 	Page Should Contain  Users	
+	Page Should Contain  Terms and Conditions
+	Page Should Contain Element  xpath= //*[@class="info__diversity"]
 
 Go to Home Page
 	Click Link  /admin/index.html
