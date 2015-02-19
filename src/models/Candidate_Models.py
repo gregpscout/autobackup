@@ -53,7 +53,7 @@ PCR_Candidate_Missing_Resume = {
     "last_name": "NoResume",
     "full_name": "Robot_Jingle NoResume",
     "id": 'NA-8786423354',
-    "fee": '15'
+    "fee": '15%'
 }
 
 PCR_Candidate_Missing_Email = {
@@ -61,5 +61,5 @@ PCR_Candidate_Missing_Email = {
     "last_name": "NoEmail",
     "full_name": "Robot_Jennifer NoEmail",
     "id": 'NA-8769226125',
-    "fee": '24'
+    "fee": '24%'
 }
