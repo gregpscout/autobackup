@@ -36,3 +36,19 @@ TEE_FEEDBACK= {
     "subject": "Feedback: Scout QA at Think Talent (tee)",
     "content": "Robot Test Feedback in TEE"
 }
+
+SHARE_CANDIDATE = {
+    "subject": "Candidate for your review:",
+    "content1": "I&#39;ve forwarded the following candidate for your review:",
+    "content2": "Candidate:"
+}
+
+ACCEPT_CANDIDATE = {
+    "subject": "Congratulations, your candidate was accepted for consideration!",
+    "content": "Congratulations"
+}
+
+REJECT_CANDIDATE = {
+    "subject": "Your candidate was not accepted",
+    "content": "Thank you for your efforts."
+}

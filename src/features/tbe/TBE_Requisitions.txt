@@ -13,7 +13,7 @@ Variables         ../../models/Requisition_Models.py
 Variables         ../../models/Candidate_Models.py
 Variables         ../../models/Candidate_Rejection.py
 Variables         ../../models/Email_Templates.py
-Suite Teardown    Close Browser
+Test Teardown     Close All Browsers
 
 *** Variables ***
 ${syncTBEJobs}     ./manage.py --sync sync-taleo-requisitions
@@ -30,158 +30,130 @@ Scenario: Test Create Requisition in TBE for Bullhorn
   ...  Runs sync and waits for 4 mins for the sync to complete
   ...  Verifies that job is created in the database
   [Tags]  JOBCREATION_BH  SMOKE
-    Given User is on TBE Site  ${TBE}  ${BROWSER}
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Create New Requisition in TBE  ${TBE_REQ1}
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Create New Requisition in TBE  ${TBE_REQ1}
     And Create New Requisition in TBE  ${TBE_REQ2}
     ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
-    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-    Sleep  4m
-    Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
+    When Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    Then Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
 
 Scenario: Test Create Requisition in TBE for PCR
   [Documentation]  Creates jobs for PCR testing in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
   ...  Verifies that job is created in the database
   [Tags]  JOBCREATION_PCR  SMOKE
-    Given User is on TBE Site  ${TBE}  ${BROWSER}
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
+    Given User Logs in to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
     When Create New Requisition in TBE  ${TBE_REQ4}
     And Create New Requisition in TBE  ${TBE_REQ5}
     ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
-    Run Sync Jobs  ${HOST_TEST}  ${syncTBEJobs}
-    Sleep  4m
-    Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}    
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  test
     
 Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
   [Documentation]  Shares candidate and accepts the same candidate in TBE
   [Tags]  ACCEPTSUBMISSION_BH  SMOKE  SHARE
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
-    And Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Accept_Candidate}  staging  
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    When Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Accept_Candidate}  staging
     And Verify Diversity Icon is on Candidate Page  staging	
-    And Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging 
+    Then Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging
     And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}  staging
 
 Scenario: Test Candidate Sharing and Acceptance in TBE Test for PCR
   [Documentation]  Shares candidate and accepts the same candidate in TBE
   [Tags]  ACCEPTSUBMISSION_PCR  SMOKE  SHARE
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
-    And Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Accept_Candidate}  test
+    Given User Logs in to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    And Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    When Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Accept_Candidate}  test
     And Verify Diversity Icon is Not on Candidate Page  test  
-    And Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test 
+    Then Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test
     And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test     
     
 Scenario: Test Candidate Rejection in TBE for Candidate Qualifications for Bullhorn
   [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
   [Tags]  REJECTSUBMISSION_BH  SMOKE
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
-    And Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Reject_Candidate}  staging
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    When Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    Then Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Reject_Candidate}  staging
     And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}  staging       
     
 Scenario: Test Candidate Rejection in TBE due to Placement Fee for PCR
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
   [Tags]  REJECTSUBMISSION_PCR  REGRESSION  
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
-    And Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Reject_Candidate}  test
+    Given User Logs in to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    When Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
+    Then Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Reject_Candidate}  test
     And Reject Candidate in TBE  ${PCR_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}  test       
         
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
   [Tags]  REJECTSUBMISSION  REGRESSION  
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
-    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  staging  
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    When Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    Then Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  staging
     
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
   ...  Test feedback link
   [Tags]  LINKS  REGRESSION
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE
-    Then Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
-    Select Frame in TBE  staging
-    Test Feedback Link on Scout  ${TBE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}     
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    And Go to Requisitions Page in TBE
+    And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Select Frame in TBE  staging
+    When Test Feedback Link on Scout  ${TBE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
     And Sleep  5s
-    And Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
+    Then Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
 
 Scenario: Test Placing Job on Hold in TBE
   [Tags]  JOBHOLD
-    Given User is on TBE Site  ${TBE}  ${BROWSER}
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     When Create New Requisition in TBE  ${TBE_REQ3}
-    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs}
-    Sleep  4m
-    ${jobId}  Place Existing Requisition on Hold in TBE  ${TBE_REQ3['title']} 
-    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-    Sleep  4m
-    Verify Job is on Hold in Mongodb  ${jobId}
-
-# Before running any of the tests below, make sure that job requisitions TBE_REQ1 and TBE_REQ2 already exist in TBE
-# If not, run "JOBCREATION_BH" before running any of the following tests    
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    When User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    ${jobId}=  Place Existing Requisition on Hold in TBE  ${TBE_REQ3['title']}
+    And Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    Then Verify Job is on Hold in Mongodb  ${jobId}
 
 Scenario: Test Editing Non Closure fields for a Job in TBE
   [Tags]  JOB_EDIT  EDIT_NON_CLOSURE
-    Given User is on TBE Site  ${TBE}  ${BROWSER}
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    ${jobId}=  Edit Job Title Location and Education for an Existing Job in TBE  ${TBE_REQ1['title']}  ${EDIT_REQ1} 
-    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-    Sleep  4m
-    Verify Job Title in Mongodb  ${jobId}  ${EDIT_REQ1['title']}  1
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    When Create New Requisition in TBE  ${TBE_REQ7}
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    When User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    ${jobId}=  Edit Job Title Location and Education for an Existing Job in TBE  ${TBE_REQ7['title']}  ${EDIT_REQ1}
+    And Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    Then Verify Job Title in Mongodb  ${jobId}  ${EDIT_REQ1['title']}  1
 
 Scenario: Test Editing Closure fields for a Job in TBE
   [Tags]  JOB_EDIT  EDIT_CLOSURE
-    Given User is on TBE Site  ${TBE}  ${BROWSER}
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    ${jobId}=  Change Placement Fee for an Existing TBE Requisition  ${TBE_REQ2['title']}  27%
-    Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs}
-    Sleep  4m 
-    Verify Edited Job is Reopened in Scout  ${jobId}  ${TBE_REQ2['title']}  27
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    When Create New Requisition in TBE  ${TBE_REQ8}
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    When User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    ${jobId}=  Change Placement Fee for an Existing TBE Requisition  ${TBE_REQ8['title']}  27%
+    And Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+    Then Verify Edited Job is Reopened in Scout  ${jobId}  ${TBE_REQ8['title']}  27
 
 Scenario: Close Test Jobs in TBE
   [Documentation]  Close all jobs starting with robot_TBE in TBE after test execution
   [Tags]  CLEANUP_TBE
-    Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-    Then Verify user is logged in to TBE
-    When Go to Requisitions Page in TBE   
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    When Go to Requisitions Page in TBE
     Then Close Job in TBE  robot_TBE
     
 Scenario: Edit Job Question Form in TBE Scout Candidates Page
   [Tags]  MOINFO  REGRESSION
-	Given User is on TBE Site  ${TBE}  ${BROWSER} 
-    	When Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+	Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
 	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
-    	And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
+    And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
 	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	And Clear and Input Job Question Form  ${JOB_QUESTIONS}     	
+	When Clear and Input Job Question Form  ${JOB_QUESTIONS}
 	And Select TBE Window
-	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+	Then Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
 	And Validate Job Form Information  ${JOB_QUESTIONS}       	
 	
 

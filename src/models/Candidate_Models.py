@@ -63,3 +63,19 @@ PCR_Candidate_Missing_Email = {
     "id": 'NA-8769226125',
     "fee": '24%'
 }
+
+BHS_TEE_Accept = {
+    "name": "Robot_Accept_TEE Reagan",
+    "mod_name": "Robot_Accept_TEE R.",
+    "email": "reaganaccept@testmail.com",
+    "id": '152',
+    "fee": '27'
+}
+
+BHS_TEE_Reject = {
+    "name": "Robot_Reject_TEE Wilson",
+    "mod_name": "Robot_Reject_TEE W.",
+    "email": "wilsontee@testmail.com",
+    "id": '153',
+    "fee": '18'
+}

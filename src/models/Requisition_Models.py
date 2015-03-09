@@ -74,6 +74,30 @@ TBE_REQ6 = {
     "description": "TBE Job Requisition Test Description 3 for PCR"    
 }
 
+TBE_REQ7 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_BH_Scout_Test4",
+    "location": '57',
+    "jobCat": '113',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 4 for Bullhorn"
+}
+
+TBE_REQ8 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_BH_Scout_Test5",
+    "location": '57',
+    "jobCat": '113',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 5 for Bullhorn"
+}
+
 EDIT_REQ1 = {
     "title": "robot_Edited_TBE_Job1",
     "education": '820',
@@ -86,4 +110,29 @@ JOB_QUESTIONS = {
     "job_form_question_2": 'We are a fun start up!',
     "job_form_question_3": 'You need to be driven',
     "job_form_question_6": 'Medical Sales Experience marketing experience from a new company'
+}
+
+
+TEE_REQ1 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "Robot_TEE_Job1",
+    "location": '39',
+    "jobCat": '114',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TEE Job Requisition Test Description 1 for Bullhorn"
+}
+
+TEE_REQ2 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "Robot_TEE_Test_Job2",
+    "location": '73',
+    "jobCat": '122',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TEE Job Requisition Test Description 2 for Bullhorn"
 }
