@@ -1,7 +1,14 @@
 *** Settings ***
-Variables  ../../models/Requisition_Models.py
+Variables    ../../models/Requisition_Models.py
+Resource     ../../resources/settings.txt
 
 *** Keywords ***
+User Logs in to TBE
+  [Arguments]  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    User is on TBE Site  ${TBE}  ${BROWSER}
+    Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    Verify user is logged in to TBE
+
 User is on TBE Site  
   [Arguments]  ${Url}  ${Browser}  
 	Open Browser  ${Url}  ${Browser}
@@ -169,7 +176,7 @@ Select Frame in TBE
 
 Place Existing Requisition on Hold in TBE
   [Arguments]  ${jobTitle}
-    # Go to Requisitions Page in TBE
+    Go to Requisitions Page in TBE
     ${jobId}=  Get Job Req Id  ${jobTitle}
     Go to Edit Requisition on TBE  ${jobTitle}
     Select From List  status  5

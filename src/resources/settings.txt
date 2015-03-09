@@ -41,6 +41,14 @@ ${TPXADMIN_STG}             https://staging.talentpx.com/admin/login
 ${USERNAME_TPXADMIN_STG}    scout_support@goscoutgo.com
 ${PASSWORD_TPXADMIN_STG}    password1
 
+${TPXADMIN_TST}             https://test.talentpx.com/admin/login
+${USERNAME_TPXADMIN_TST}    scout_support@goscoutgo.com
+${PASSWORD_TPXADMIN_TST}    password
+
+${TPXADMIN_PROD}             https://prod.talentpx.com/admin/login
+${USERNAME_TPXADMIN_PROD}    scout_support@goscoutgo.com
+${PASSWORD_TPXADMIN_PROD}    198712ecf776b
+
 ${TEST_EMAIL_ID}			sent-email-test@talentdrive.com
 ${TEST_EMAIL_PWD}			Noreply2014$
 ${NOREPLY_TEST_EMAIL}		no-reply-test@goscoutgo.com

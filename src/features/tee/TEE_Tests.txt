@@ -5,8 +5,13 @@ Library           MongoDBLibrary
 Library           ImapLibrary
 Resource          ../../keywords/tee/ui_tee_keywords.txt
 Resource          ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt
+Resource          ../../keywords/common/ui_common_keywords.txt
 Resource          ../../resources/settings.txt
 Variables         ../../models/Email_Templates.py
+Variables         ../../models/Candidate_Models.py
+Variables         ../../models/Requisition_Models.py
+Variables         ../../models/Candidate_Rejection.py
+#Test Teardown     Close All Browsers
 
 
 *** Variables ***
@@ -22,7 +27,30 @@ Scenario: Test Feedback and Help Links in TEE
     And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
     And Go to Scout iframe in TEE after Impersonation
     And Test Feedback Link on Scout  ${TEE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-    And Test Need Help with Scout Link  ${needhelp_tee}  ${needhelp_text}        
+    And Test Need Help with Scout Link  ${needhelp_tee}  ${needhelp_text}
+
+Scenario: Share and Accept Candidate in TEE
+  [Tags]  TEE_ACCEPT  SMOKE
+    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
+    And Go to Scout iframe in TEE after Impersonation
+    And Go to Candidates page for job in TEE  ${TEE_REQ1['title']}
+    When Share Candidate in TEE  ${BHS_TEE_Accept['mod_name']}  scout_qa@talentdrive.com
+    Then Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${SHARE_CANDIDATE}  ${BHS_TEE_Accept['mod_name']}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  scout_qa@talentdrive.com
+    Then Accept Candidate in TEE  ${BHS_TEE_Accept}  ${TEE_REQ1['title']}
+
+Scenario: Reject Candidate in TEE
+  [Tags]  TEE_REJECT  SMOKE
+    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
+    And Go to Scout iframe in TEE after Impersonation
+    And Go to Candidates page for job in TEE  ${TEE_REQ1['title']}
+    When Reject Candidate in TEE  ${BHS_TEE_Reject['mod_name']}  other  ${TEE_Rejection_Comments['Fee']}
+    Then Validate Email Received  ${REJECT_CANDIDATE}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  Scout_QA@chatham-partners.com
+
+
+
+
 
 
 

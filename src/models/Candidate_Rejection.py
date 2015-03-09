@@ -10,3 +10,9 @@ TBE_Rejection_Comments = {
     "Other": "Testing TBE Rejection for Other reasons"
 }
 
+TEE_Rejection_Comments = {
+    "Qualifications": "Testing TEE Rejection for Candidate Qualifications",
+    "Fee": "Testing TEE Rejection for Placement Fee",
+    "Other": "Testing TEE Rejection for Other reasons"
+}
+

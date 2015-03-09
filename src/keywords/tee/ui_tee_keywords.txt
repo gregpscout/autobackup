@@ -8,4 +8,91 @@ Login to TEE
   [Arguments]  ${username}  ${password}
     Input Text  dialogTemplate-dialogForm-content-login-name1  ${username}
     Input Text  dialogTemplate-dialogForm-content-login-password  ${password}
-    Click Link  dialogTemplate-dialogForm-content-login-defaultCmd	
+    Click Link  dialogTemplate-dialogForm-content-login-defaultCmd
+
+Go to Scout iframe in TEE after Impersonation
+    Wait Until Keyword Succeeds  10  2  TPX Admin Login Page Should Be Open
+    Go To  https://staging.talentpx.com/tee/#/positions
+    Verify User is on Scout Iframe for TEE
+
+Go to Candidates page for job in TEE
+  [Arguments]  ${jobTitle}
+    Click Link  ${jobTitle}
+    Verify User is on Candidates List Page  ${jobTitle}
+
+Go To Candidate Review Page in TEE
+  [Arguments]  ${CandidateName}
+    Verify Candidate is Available for Review  ${CandidateName}
+    Click Link  ${CandidateName}
+
+Verify Candidate is Available for Review
+  [Arguments]  ${CandidateName}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  submissions-table  1  ${CandidateName}
+
+Share Candidate in TEE
+  [Arguments]  ${CandidateName}  ${email}
+    Go To Candidate Review Page in TEE  ${CandidateName}
+    Verify User is on Candidate Details Page  ${CandidateName}
+    Wait Until Keyword Succeeds  10  1  Click Element  share-candidate
+    Wait Until Page Contains Element  share-modal
+    Wait Until Keyword Succeeds  20  1  Input Text  share-modal__to  ${email}
+    Click Link  share-modal__send
+    Verify User is on Candidate Details Page  ${CandidateName}
+
+Accept Candidate in TEE
+  [Arguments]  ${Candidate_Obj}  ${jobTitle}
+    Verify User is on Candidate Details Page  ${Candidate_Obj['mod_name']}
+    Click Element  interested
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Element  candidate-exists-error
+    Verify Duplicate Candidate Message in TEE  ${Candidate_Obj}
+    Click Element  candidate-exists-error__continue
+    Wait Until Keyword Succeeds  60  2  Verify User is on Candidates List Page  ${jobTitle}
+    Page Should Not Contain  ${Candidate_Obj['name']}
+
+Reject Candidate in TEE
+  [Arguments]  ${CandidateName}  ${reason}  ${comments}
+    Go To Candidate Review Page in TEE  ${CandidateName}
+    Verify User is on Candidate Details Page  ${CandidateName}
+    Sleep  2s
+    Click Element  not-interested
+    Wait Until Keyword Succeeds  20  1  Page Should Contain Element  not-interested-modal
+    Wait Until Keyword Succeeds  20  4  Select Rejection Reason for TEE  ${reason}
+    Input Text  not-interested-modal__comments  ${comments}
+    Click Element  not-interested-modal__submit
+
+Select Rejection Reason for TEE
+  [Arguments]  ${reason}
+  [Documentation]  Takes qualifications or fee or other as arguments
+    Run Keyword If  '${reason}' == 'qualifications'  Select Radio Button  not-interested-reason  0
+    Run Keyword If  '${reason}' == 'fee'  Select Radio Button  not-interested-reason  1
+    Run Keyword If  '${reason}' == 'other'  Select Radio Button  not-interested-reason  2
+
+Verify Candidate is no Longer Pending Review
+  [Arguments]  ${CandidateName}  ${jobTitle}
+    Click Link  ${jobTitle}
+    Verify User is on Candidates List Page  ${jobTitle}
+    Page Should Not Contain  ${CandidateName}
+
+Verify User is on Candidate Details Page
+  [Arguments]  ${CandidateName}
+    Wait Until Page Contains  ${CandidateName}  20s
+    Wait Until Page Contains Element  interested  10s
+    Wait Until Page Contains Element  not-interested  10s
+    Wait Until Page Contains Element  share-candidate  10s
+
+Verify Duplicate Candidate Message in TEE
+  [Arguments]  ${Candidate_Obj}
+    Wait Until Keyword Succeeds  20  2  Element Should Contain  candidate-exists-error  ${Candidate_Obj['name']} (${Candidate_Obj['email']}) already exists in your Taleo system. Do you want to continue?
+    #Wait Until Keyword Succeeds  20  2  Element Should Contain  candidate-exists-error  ${Candidate_Obj['name']}
+    #Wait Until Keyword Succeeds  20  2  Element Should Contain  candidate-exists-error  ${Candidate_Obj['email']}
+
+Verify User is on Candidates List Page
+  [Arguments]  ${jobTitle}
+    Wait Until Keyword Succeeds  10  2  Element Should Be Visible  submissions-table
+    Page Should Contain  ${jobTitle}
+
+Go to Candidate Details Page from Scout Candidates List
+  [Arguments]  ${CandidateName}
+    Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="candidateList"]
+    Click Link  ${CandidateName}
+    Verify User is on Candidate Details Page
