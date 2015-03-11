@@ -1,6 +1,11 @@
 decorator==3.4.0
 docutils==0.12
-robotframework==2.8.6
-robotframework-selenium2library==1.6.0
 selenium==2.44.0
 wsgiref==0.1.2
+robotframework==2.8.7
+robotframework-selenium2library==1.6.0
+robotframework-httplibrary==0.4.2
+robotframework-imaplibrary==0.1.4
+pymongo==2.6.3
+robotframework-mongodblibrary==0.2.1
+
