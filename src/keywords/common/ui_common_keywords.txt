@@ -46,9 +46,14 @@ Validate Email Received for Candidate Submission
     Close Mailbox
 
 Generate Random Number
-    [Arguments]  ${input}
+  [Arguments]  ${input}
     ${mo}  ${day}  ${min}  ${sec}=  Get Time  month,day,min,sec
     ${output}  Catenate  ${input}${mo}${day}${min}${sec}
+    [return]  ${output}
+
+Generate Random Email
+    ${mo}  ${day}  ${min}  ${sec}=  Get Time  month,day,min,sec
+    ${output}  Catenate  ${mo}${day}${min}${sec}@testmail.com
     [return]  ${output}
 
 Sync Requisitions in Scout Admin for Company
@@ -60,3 +65,5 @@ Sync Requisitions in Scout Admin for Company
     Go to Company "${company}" page
     Click Button  Sync Requisitions
     Sleep  5m
+
+

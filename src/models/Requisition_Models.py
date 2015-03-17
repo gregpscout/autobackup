@@ -4,7 +4,7 @@ now = dt.datetime.now()
 
 TBE_REQ1 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test1",
+    "title": "TBEScoutAutomationTest1",
     "location": '39',
     "jobCat": '114',
     "status": '2',
@@ -16,7 +16,7 @@ TBE_REQ1 = {
 
 TBE_REQ2 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test2",
+    "title": "TBEScoutAutomationTest2",
     "location": '73',
     "jobCat": '122',
     "status": '2',
@@ -28,7 +28,7 @@ TBE_REQ2 = {
 
 TBE_REQ3 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test3",
+    "title": "TBEScoutAutomationTest3",
     "location": '49',
     "jobCat": '121',
     "status": '2',
@@ -115,7 +115,7 @@ JOB_QUESTIONS = {
 
 TEE_REQ1 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "Robot_TEE_Job1",
+    "title": "ScoutTestTEE1",
     "location": '39',
     "jobCat": '114',
     "status": '2',
@@ -127,7 +127,7 @@ TEE_REQ1 = {
 
 TEE_REQ2 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "Robot_TEE_Test_Job2",
+    "title": "ScoutTestTEE2",
     "location": '73',
     "jobCat": '122',
     "status": '2',

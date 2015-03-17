@@ -1,8 +1,10 @@
 *** Settings ***
 Resource          ../../keywords/common/ui_common_keywords.txt
+Resource          ../../resources/settings.txt
 
 *** Keywords ***
-User is on PCR Site  [Arguments]  ${url}  ${browser}  
+User is on PCR Site
+  [Arguments]  ${url}  ${browser}
 	Open Browser  ${url}  ${browser}
 	Maximize Browser Window
 		
@@ -17,6 +19,11 @@ Login to PCR
     Click Link  myhref_1
     Verify successful login to PCR
     Unselect Frame
+
+User goes to PCR Site and Logs In
+  [Arguments]  ${username}  ${password}  ${databaseId}
+    User is on PCR Site  ${PCR_TEST}  ${BROWSER}
+    Login to PCR  ${username}  ${password}  ${databaseId}
 
 Verify successful login to PCR
     Wait Until Keyword Succeeds  10  2  Title Should be  PCRecruiter (SCOUTUSER/SCOUTTEST1)
@@ -44,20 +51,24 @@ Search Jobs Orders Tab on Scout For PCR
     Wait Until Keyword Succeeds  20  2  Page Should Contain Element  signals-search
     Click link  signals-search
     Verify User is on Search Jobs Page for Scout in PCR
+    Unselect Frame
 
 Verify User is on Search Jobs Page for Scout in PCR
     Wait Until Keyword Succeeds  10  2  Element Should Be Visible  advanced-search
 
 Test Clear Button on Scout For PCR 
   [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
+    Selecting ScoutFrame in PCR
     Input Text  keyword  abcde
     Textfield Should Contain  keyword  abcde  
     Click Element  clear
     Textfield Should Contain  keyword  \
+    Unselect Frame
 
 Import Scout Job into PCR
   [Arguments]  ${jobTitle}
   [Documentation]  Searches and imports specified job from Scout iframe into PCR
+    Selecting ScoutFrame in PCR
     Search for Job by Title in Scout For PCR  ${jobTitle}
     Sleep  5s
     Select Checkbox  xpath=//*[@id="req-results-table"]/tbody/tr/td[1]/input
@@ -80,7 +91,16 @@ Back to Search on Scout for PCR
 
 Go To PCR Position Page to View Imported Job
   [Arguments]  ${jobTitle}  ${status}
-  [Documentation]  Goes back to Position page after importing a job from Scout into PCR to view the job
+  [Documentation]  Goes to Position page search for a job and open the job
+    Go To PCR Position Page and Search for Job  ${jobTitle}  ${status}
+    Select Frame  list
+    Wait Until Keyword Succeeds  10  5  Click Link  ${jobTitle}      
+    Unselect Frame
+    Verify the Job Selected is the Job Displayed in PCR  ${jobTitle}
+
+Go To PCR Position Page and Search for Job
+  [Arguments]  ${jobTitle}  ${status}
+  [Documentation]  Goes to Position page and searches for a job
     Click Position Tab in PCR
     Select Frame  list
     Wait Until Keyword Succeeds  20  2  Element Should Be Visible  datainputa
@@ -88,12 +108,8 @@ Go To PCR Position Page to View Imported Job
     Wait Until Keyword Succeeds  20  5  Select From List  dropdownc  Status
     Input Text  datainputc  ${status}
     Click Link  myhref_2
-    Wait Until Keyword Succeeds  10  2  Page Should Contain  ${jobTitle}  
+    Wait Until Keyword Succeeds  10  2  Page Should Contain  ${jobTitle}
     Unselect Frame
-    Select Frame  list
-    Wait Until Keyword Succeeds  10  5  Click Link  ${jobTitle}      
-    Unselect Frame
-    Verify the Job Selected is the Job Displayed in PCR  ${jobTitle}
 
 Verify the Job Selected is the Job Displayed in PCR
   [Arguments]  ${jobTitle}
@@ -196,8 +212,7 @@ Place the Accepted Candidate
 Delete Job from PCR
   [Arguments]  ${jobTitle}
     Select Frame  detail
-    Sleep  5s
-    Click Link  myhref_5
+    Wait Until Keyword Succeeds  20  2  Click Link  myhref_5
     Confirm Action
     Unselect Frame
 
