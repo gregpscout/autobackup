@@ -109,7 +109,7 @@ Scenario: Test Links in TBE
     Then Test Need Help with Scout Link  ${needhelp_tbe}  ${needhelp_text}
 
 Scenario: Test Placing Job on Hold in TBE
-  [Tags]  JOBHOLD
+  [Tags]  JOB_EDIT  JOBHOLD
     Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     When Create New Requisition in TBE  ${TBE_REQ3}
     Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
@@ -140,7 +140,7 @@ Scenario: Test Editing Closure fields for a Job in TBE
 
 Scenario: Close Test Jobs in TBE
   [Documentation]  Close all jobs starting with robot_TBE in TBE after test execution
-  [Tags]  CLEANUP_TBE
+  [Tags]  CLEANUP_TBE  CLEAN
     Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     When Go to Requisitions Page in TBE
     Then Close Job in TBE  robot_TBE

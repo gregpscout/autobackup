@@ -24,12 +24,11 @@ Scenario: PCR Smoke Test for Searching and Importing a Job
   ...  Search Iframe for Job and import
   ...  Verify that Job is imported
   [Tags]  SMOKE  JOBIMP
-	  Given User is on PCR Site  ${PCR_TEST}  ${browser}   
-	  When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
-	  Go to Scout Iframe in PCR
-	  Search Jobs Orders Tab on Scout For PCR
-	  Test Clear Button on Scout For PCR
-    Import Scout Job into PCR  ${TBE_REQ4['title']}
+	  Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+	  And Go to Scout Iframe in PCR
+	  When Search Jobs Orders Tab on Scout For PCR
+	  Then Test Clear Button on Scout For PCR
+      And Import Scout Job into PCR  ${TBE_REQ4['title']}
 
 Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Employer Contact Blinding feature verification
   [Documentation]  Testing PCR for the following
@@ -37,8 +36,7 @@ Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Emplo
   ...  Setting up Candidate Submissions 
   ...  Verifying that Employer Contact Info Blinded
   [TAGS]  SMOKE  SUBMISSIONS  BLINDING
-    Given User is on PCR Site  ${PCR_TEST}  ${browser}   
-    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}  
+    Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Edit Candidate Status Before Setting Up Interview  ${PCR_Accept_Candidate['first_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['id']}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Set Up Interview for Imported Job  ${PCR_Accept_Candidate}
@@ -46,7 +44,7 @@ Scenario: PCR Smoke Test for Editing candidates, Setting up Interviews and Emplo
     Set Up Interview for Imported Job  ${PCR_Reject_Candidate}
     Test Employer Info is Blinded to the Recruiter After Candidate Submission  ${TBE_REQ4['title']}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}
-    Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_SUBMISSION}  ${TBE_REQ1['title']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}  
+    Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${PCR_SUBMISSION}  ${TBE_REQ4['title']}  ${TEST_EMAIL_ID}  ${TEST_EMAIL_PWD}  ${NOREPLY_TEST_EMAIL}  ${SCOUT_PCR_EMAIL}
     Then Logout of PCR
 #Need to verify that the imported job does not exist after import (clean up script needed to be able to write/test this)
 
@@ -54,9 +52,8 @@ Scenario: PCR Smoke Test for Employer Contact Un-blinding and Candidate Placemen
   [Documentation]  Testing PCR for the following
   ...  Verify Employer Contact Info is Un-blinded after Candidate Acceptance
   ...  Candidate Placement
-  [TAGS]  SMOKE  PLACEMENT  BLINDING
-    Given User is on PCR Site  ${PCR_TEST}  ${browser}
-    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+  [TAGS]  SMOKE  PLACEMENT  UNBLINDING
+    Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Test Employer Info is Un-blinded After Candidate gets Accepted by Employer  ${TBE_REQ4['title']}
     Place the Accepted Candidate  ${PCR_Accept_Candidate['full_name']}  ${PCR_Accept_Candidate['last_name']}  ${PCR_Accept_Candidate['first_name']}
@@ -64,17 +61,15 @@ Scenario: PCR Smoke Test for Employer Contact Un-blinding and Candidate Placemen
 
 Scenario: PCR Cleanup
   [Documentation]  Once entire Smoke test is complete, delete the recently 'placed' job from PCR.
-  [TAGS]  CLEAN
-      Given User is on PCR Site  ${PCR_TEST}  ${browser}   
-      When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+  [TAGS]  CLEAN  CLEANUP_PCR
+      Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
       Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_filled}
       Delete Job from PCR  ${TBE_REQ4['title']}
       Then Logout of PCR
 
 Scenario: PCR Test Links
   [Tags]  LINKS  QUICK
-    Given User is on PCR Site  ${PCR_TEST}  ${BROWSER}
-    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+    Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go to Scout Iframe in PCR
     Test Links on Scout For PCR  ${TEST_SCOUTLINK}  ${PCR_FEEDBACK}
 
@@ -83,8 +78,7 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Resume
   ...  Submit Candidate with missing resume
   ...  This expects TBE_REQ4 to be already imported
   [Tags]  REGRESSION  MISSINGRESUME
-    Given User is on PCR Site  ${PCR_TEST}  ${browser}   
-    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+    Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Resume}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
@@ -95,8 +89,7 @@ Scenario: PCR Regression Test For Submitting Candidates with Missing Email
   ...  Submit Candidate with missing email
   ...  This expects TBE_REQ4 to be already imported
   [Tags]  REGRESSION  MISSINGEMAIL
-    Given User is on PCR Site  ${PCR_TEST}  ${browser}   
-    When Login to PCR  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
+    Given User goes to PCR Site and Logs In  ${USERNAME_PCR}  ${PASSWORD_PCR}  ${DATABASEID_PCR}
     Go To PCR Position Page to View Imported Job  ${TBE_REQ4['title']}  ${status_pending}
     Set Up Interview for Imported Job  ${PCR_Candidate_Missing_Email}
     Run Sync Jobs  ${HOST_TEST}  ${syncSubmissions}  
