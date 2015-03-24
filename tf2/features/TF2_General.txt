@@ -1,91 +1,130 @@
 *** Settings ***
 Library    Selenium2Library
-Suite Teardown    Close All Browsers
+#Suite Teardown    Close All Browsers
 Resource  ../keywords/TF2_keywords.txt
 Resource  ../resources/settings.txt
 
-*** Test Cases ***
-Scenario: Test login to Bullhorn ATS 
-  [Tags]  SMOKE  USER_TESTING  FIRST
-  [Documentation]  User must be deactivated first	
+*** Variables ***
+${school1}  Boston University
+${school2}  Boston College
+${stack_board_number}  2  
+${indeed_board_number}  3  
+${resumebucket_board_number}  4  
+${CB_board_number}  5
+${ladders_board_number}  6  
+${monster_board_number}  7  
+${zillions_board_number}  8  
+${workop_board_number}  9 
+${jv_notes}  This is a good candidate
+${first_tab}  SearchResultsTab0
+${second_tab}  SearchResultsTab1
+${third_tab}  SearchResultsTab2
+${first_tab_checkbox}  SearchResults-0-Checkbox-0
+${second_tab_checkbox}  SearchResults-1-Checkbox-0
+${saved_search_name}  Search1
+
+ *** Test Cases ***
+
+Scenario: Load direct Dev URL go to Advanced Search add Resumes Posted, then add Monster and search. 
+  [Tags]  SMOKE  IMPRT  MONSTER_BH
 	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
-	When Enter login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
 	Then Verify User is on Bullhorn Homepage
-	
-Scenario: Login to Bullhorn as (admin) and navigate to TF2 iframe on Dev
-  [Tags]  SMOKE USER_TESTING  SECOND
-  [Documentation]  User must be deactivated first	
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Advanced Search
+	And Go to Monster Advanced Search Tab
+	And Select Monster Advanced Search Values
+	And Add Boards Button
+	And Add Boards Checkbox  ${monster_board_number}
+	And Add Boards Update Button
+	And Run Search
+	And Select and Import Candidates in BH
+	And Unselect ATS Frame
+
+Scenario: Run Indeed Single Search in Bullhorn
+  [Tags]  SMOKE  IMPRT  INDEED_BH
 	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
-	When Enter login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
 	Then Verify User is on Bullhorn Homepage
-	Go to TF2 Dev Environment 
-	Sleep  10s
-
-Scenario: Load direct Dev URL navigate to Boards Admin and remove Indeed
-  [Tags]  SMOKE USER_TESTING  THIRD
-  [Documentation]  Indeed needs to be re-added in Boards Admin list first
-	Given User is online  ${TF2_DEV}  ${BROWSER}
-       Wait Until Element is Visible  //*[@id="StartSearch"]/span[2]  
-	Click Element  //*[@id="AccountTab-Gear"]/div[2]/a
-	Click Element  //*[@id="AccountTab-Gear"]/div[2]/ul/li[1]/a
-	Click Element  //*[@id="AdminBoards"]/tr[3]/td[4]/a
-       Wait Until Element is Visible  //*[@id="RemoveJobBoardModal"]/div[3]/a[2]
-	Click Element  //*[@id="RemoveJobBoardModal"]/div[3]/a[2]	
-	Sleep  10s
-
-
-Scenario: Load direct Dev URL navigate to Boards Admin and re-add Indeed
-  [Tags]  SMOKE USER_TESTING  FOURTH
-  [Documentation]  Indeed needs to be removed in Boards Admin list first
-	Given User is online  ${TF2_DEV}  ${BROWSER}
-        Wait Until Element is Visible  //*[@id="StartSearch"]/span[2]  
-	Click Element  //*[@id="AccountTab-Gear"]/div[2]/a
-	Click Element  //*[@id="AccountTab-Gear"]/div[2]/ul/li[1]/a
-	Click Element  //*[@id="AdminBoards"]/tr[3]/td[4]/a
-	Wait Until Element is Visible  IndeedSaveBtn
-        Click Element  IndeedSaveBtn
-	Sleep  10s
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Advanced Search 
+	And Add in Advanced Search Terms for Non CB and Monster Tests
+	And Unselect ATs Frame
+	And Select BH Frame
+	And Add Boards Button
+	And Add Boards Checkbox  ${indeed_board_number}
+	And Add Boards Update Button
+	And Run Search
+	And Select and Import Candidates in BH
+	And Unselect ATS Frame
 
 
-Scenario: Load direct Dev URL navigate to Boards Admin, add CareerBuilder and enter its credentials
-  [Tags]  SMOKE USER_TESTING  FIFTH
-  [Documentation]  This board needs to be removed in Boards Admin list first
-	Given User is online  ${TF2_DEV}  ${BROWSER}
-	Go to CB Board Page
-	Enter board login details  ${CB_username}  ${CB_password}
+Scenario: User logs in to Jobvite, navigates to TF2 iframe, adds multiple boards, runs search, imports one candidate from each (individual) board tab
+  [Tags]  SMOKE  JVIMPRT  IMPRT  IMPRT_FIRST
+  [Documentation]  User must be logged-out of BH first
+	Given User is In JobVite  ${jobvite_url}  ${BROWSER}
+	Then Log Into JobVite  ${jv_username}  ${jv_password}
+	And Verify User is on Jobvite Homepage
+	Then Go to TF2 Prod Environment in JV
+	And Select JV frame
+	And Enter Simple Search Keyword  ${KEYWORD}
+	And Add Boards Button
+	And Add Boards Checkbox  ${stack_board_number}
+	And Add Boards Checkbox  ${indeed_board_number}
+	And Add Boards Checkbox  ${resumebucket_board_number}
+	And Add Boards Checkbox  ${CB_board_number}
+	And Add Boards Checkbox  ${ladders_board_number}
+	And Add Boards Checkbox  ${monster_board_number}
+	And Add Boards Checkbox  ${workop_board_number}
+	And Add Boards Update Button
+	And Run Search
+	And Select and Import JV Candidate  ${jv_notes}  ${first_tab}  ${first_tab_checkbox}
 
+Scenario: User logs in to Jobvite, navigates to TF2 iframe, adds multiple boards, runs search, imports one candidate from each (individual) board tab
+  [Tags]  SMOKE  JVIMPRT  IMPRT  IMPRT_SECOND
+  [Documentation]  User must be logged-out of BH first
+	Given User is In JobVite  ${jobvite_url}  ${BROWSER}
+	Then Log Into JobVite  ${jv_username}  ${jv_password}
+	And Verify User is on Jobvite Homepage
+	Then Go to TF2 Prod Environment in JV
+	And Select JV frame
+	And Enter Simple Search Keyword  ${KEYWORD}
+	And Add Boards Button
+	And Add Boards Checkbox  ${stack_board_number}
+	And Add Boards Checkbox  ${indeed_board_number}
+	And Add Boards Checkbox  ${resumebucket_board_number}
+	And Add Boards Checkbox  ${CB_board_number}
+	And Add Boards Checkbox  ${ladders_board_number}
+	And Add Boards Checkbox  ${monster_board_number}
+	And Add Boards Checkbox  ${workop_board_number}
+	And Add Boards Update Button
+	And Run Search
+	And Select and Import JV Candidate  ${jv_notes}  ${second_tab}  ${second_tab_checkbox}
 
-Scenario: Load direct Dev URL go to Advanced Search add Resume Freshness, then add CB & Indeed and search
-  [Tags]  SMOKE USER_TESTING  SIXTH
-  [Documentation]  All previous search fields need to be cleared first
-	Given User is online  ${TF2_DEV}  ${BROWSER}
-	Wait Until Element Is Visible  AdvancedSearchButton
-	Click Element  AdvancedSearchButton
-	Wait Until Element Is Visible  AllTerms-AdvancedSearch
-	Click Element  AllTerms-AdvancedSearch
-	Enter Search Keyword  ${KEYWORD}
-	Wait Until Element Is Visible  AdvancedSearch-CareerBuilderTab
-	Click Element  AdvancedSearch-CareerBuilderTab
-	Sleep  10s
-	Wait Until Element Is Visible  ResumeFreshnessCB
-	Click Element  ResumeFreshnessCB
-	Sleep  10s
-	Set CB Resume Freshness 
+Scenario: (Bullhorn): save (simple) search
+  [Tags]  SMOKE  SAVESEARCH
+  [Documentation]  Run and save search
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment
+	And Select BH Frame
+	And Enter Simple Search Keyword  ${KEYWORD}
+	And Add Boards Button
+	And Add Boards Checkbox  ${stack_board_number}     
+	And Add Boards Checkbox  ${resumebucket_board_number}   
+	And Add Boards Checkbox  ${CB_board_number}  
+	And Add Boards Checkbox  ${ladders_board_number}  
+	And Add Boards Checkbox  ${monster_board_number}   
+	And Add Boards Checkbox  ${workop_board_number}  
+	And Add Boards Update Button
+	And Run Search
+	And Click Save Search button
+	And Label Saved Search  ${saved_search_name}
 	
 	
-Scenario: Load direct Dev URL navigate to Boards Admin and remove Indeed
-  [Tags]  SMOKE USER_TESTING  SEVENTH
-  [Documentation]  Indeed needs to be re-added in Boards Admin list first
-	Given User is online  ${TF2_DEV}  ${BROWSER}
-      Wait Until Element is Visible  //*[@id="StartSearch"]/span[2]  
-	Click On Admin Button	
 
-
-	
-
-	
-
-
-	
-	
-	
