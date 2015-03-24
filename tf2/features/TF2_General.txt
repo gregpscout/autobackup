@@ -127,7 +127,7 @@ Scenario: (Bullhorn): save (simple) search
 	And Label Saved Search  ${saved_search_name}
 	
 Scenario: Logs user into BH, navigates to iframe, adds multiple sources and runs search (TTB-170)
-  [Tags]  SMOKE  STACK_SINGLE
+  [Tags]  SMOKE  BH_ALL_BOARDS
   [Documentation]  User must be deactivated first	
 	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
 	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
