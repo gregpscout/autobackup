@@ -19,11 +19,16 @@ ${BH_FEEDBACK_TEXT}         Testing feedback from Bullhorn
 ${CB_username}  	RDBWebTest@talentdrive.com
 ${CB_password}	6QUWW9X8
 
-${KEYWORD}		          Manager
+${KEYWORD}		        Manager
 
 ${GOOGLE}			http://www.google.com
 
 ${TF2_DEV}			https://td-dev-app2.talentfilter.biz/direct/talentdrive.admin/talentfilter123!/bullhorn
+
+${jobvite_url}			https://source.jobvite.com/TalentNetwork/search/resumeSearch.html
+${jv_username}		Krishsaleem@gmail.com
+${jv_password}			Jobvite1
+
 
 ${PCR_TEST}					https://rc2.pcrecruiter.net
 ${USERNAME_PCR}				SCOUTUSER
