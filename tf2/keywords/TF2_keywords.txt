@@ -184,7 +184,7 @@ Label Saved Search
 
 Add All Boards
 	Add Boards Checkbox By Board Type And Name  jbAllIndustries  StackOverflow
-	Add Boards Checkbox By Board Type And Name	jbAllIndustries  Indeed	
+	# Add Boards Checkbox By Board Type And Name	jbAllIndustries  Indeed	
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  ResumeBucket
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  CareerBuilder
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  Ladders
@@ -198,8 +198,8 @@ Add All Boards
 
 	Add Boards Checkbox By Board Type And Name	jbFinancialServices	 EFinancial	
 
-	Add Boards Checkbox By Board Type And Name	jbTechnology  Dice	
-	Add Boards Checkbox By Board Type And Name	jbTechnology  DiceOpenWeb	
+	# Add Boards Checkbox By Board Type And Name	jbTechnology  Dice	
+	# Add Boards Checkbox By Board Type And Name	jbTechnology  DiceOpenWeb	
 
 	Add Boards Checkbox By Board Type And Name	jbTemps  NetTemps
 
@@ -214,19 +214,19 @@ Scroll Down Job Boards Div
 Validate Basic Advanced Search Results Per Board
 	Click Board Results Tab					stackoverflow
 	Verify Board Has At Least One Result	StackOverflow
-	Click Board Results Tab					indeed	
-	Verify Board Has At Least One Result	Indeed
+	# Click Board Results Tab				indeed	
+	# Verify Board Has At Least One Result	Indeed
 	Click Board Results Tab					resumebucket
 	Verify Board Has At Least One Result	ResumeBucket
 	Click Board Results Tab					careerbuilder
 	Verify Board Has At Least One Result	CareerBuilder
 	Click Board Results Tab					ladders
 	Verify Board Has At Least One Result	Ladders
+	Click Board Results Tab					monster
+	Verify Board Has At Least One Result	Monster
 	
 	Click Board Results Right Arrow Button
 
-	Click Board Results Tab					monster
-	Verify Board Has At Least One Result	Monster
 	Click Board Results Tab					workopolis	
 	Verify Board Has At Least One Result	Workopolis
 	Click Board Results Tab					ziprecruiter
@@ -235,13 +235,14 @@ Validate Basic Advanced Search Results Per Board
 	Verify Board Has At Least One Result	LeeHechtHarrison
 	Click Board Results Tab					efinancial	
 	Verify Board Has At Least One Result	EFinancial
-	Click Board Results Tab					dice	
-	Verify Board Has At Least One Result	Dice
+	# Click Board Results Tab				dice	
+	# Verify Board Has At Least One Result	Dice
 
-	Click Board Results Right Arrow Button
+	# Click Board Results Right Arrow Button
 
-	Click Board Results Tab					diceopenweb	
-	Verify Board Has At Least One Result	DiceOpenWeb
+	# Click Board Results Tab				diceopenweb	
+	# Verify Board Has At Least One Result	DiceOpenWeb
+
 	Click Board Results Tab					nettemps
 	Verify Board Has At Least One Result	NetTemps
 

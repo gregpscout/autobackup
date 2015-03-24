@@ -133,8 +133,10 @@ Scenario: Logs user into BH, navigates to iframe, adds multiple sources and runs
 	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
 	Then Verify User is on Bullhorn Homepage
 	And Go to TF2 Dev Environment
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
 	And Enter Simple Search Keyword  ${KEYWORD}
-	And Click Add Boards Button
+	And Add Boards Button
 	And Add All Boards 
 	And And Add Boards Update Button
 	And Run Search
