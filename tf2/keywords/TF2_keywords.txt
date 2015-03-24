@@ -190,23 +190,17 @@ Add All Boards
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  Ladders
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  Monster
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  Workopolis	
-
 	Scroll Down Job Boards Div
-
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  ZipRecruiter	
 	Add Boards Checkbox By Board Type And Name	jbAllIndustries  LeeHechtHarrison
-
 	Add Boards Checkbox By Board Type And Name	jbFinancialServices	 EFinancial	
-
 	# Add Boards Checkbox By Board Type And Name	jbTechnology  Dice	
 	# Add Boards Checkbox By Board Type And Name	jbTechnology  DiceOpenWeb	
-
 	Add Boards Checkbox By Board Type And Name	jbTemps  NetTemps
 
 Add Boards Checkbox By Board Type And Name
 	[Arguments]  ${group_name}  ${board_name}
 		Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="search-${group_name}"]/li[input/@value = '${board_name}']/label/span
-
 
 Scroll Down Job Boards Div
 	Execute Javascript			var dragDrop = { _dragIndex: 0, _dispatchHTMLMouseEvent: function (mouseEventType, coords, target) { var evt = document.createEvent("MouseEvents"); evt.initMouseEvent(mouseEventType, true, true, window, 0, coords[0], coords[1], coords[2], coords[3], false, false, false, false, 0, null); target.dispatchEvent(evt); console.log(evt); }, _sendMouseDrag: function (element, dragPoints) { this._dispatchHTMLMouseEvent("mousemove", dragPoints[this._dragIndex], element); this._dragIndex++; if (this._dragIndex < dragPoints.length - 1) { setTimeout(function () { dragDrop._sendMouseDrag(element, dragPoints); }, 10); } else { this._dispatchHTMLMouseEvent("mouseup", dragPoints[this._dragIndex], element); } }, _buildDragPoints: function (left, start, end, topOffsetDifference) { var dragPoints = []; for (var d = start; d < end; d++) { dragPoints.push([left, d + topOffsetDifference, left, d]); } return dragPoints; }, Execute: function (className, start, end, topOffsetDifference) { var dragHandleElement = document.getElementsByClassName(className)[0]; var dragPoints = this._buildDragPoints(dragHandleElement.offsetLeft, start, end, topOffsetDifference); this._dispatchHTMLMouseEvent("mousedown", dragPoints[0], dragHandleElement); this._sendMouseDrag(dragHandleElement, dragPoints); } }; dragDrop.Execute("slimScrollBar", 317, 487, 71);
@@ -223,10 +217,8 @@ Validate Basic Advanced Search Results Per Board
 	Click Board Results Tab					ladders
 	Verify Board Has At Least One Result	Ladders
 	Click Board Results Tab					monster
-	Verify Board Has At Least One Result	Monster
-	
+	Verify Board Has At Least One Result	Monster	
 	Click Board Results Right Arrow Button
-
 	Click Board Results Tab					workopolis	
 	Verify Board Has At Least One Result	Workopolis
 	Click Board Results Tab					ziprecruiter
@@ -237,15 +229,11 @@ Validate Basic Advanced Search Results Per Board
 	Verify Board Has At Least One Result	EFinancial
 	# Click Board Results Tab				dice	
 	# Verify Board Has At Least One Result	Dice
-
 	# Click Board Results Right Arrow Button
-
 	# Click Board Results Tab				diceopenweb	
 	# Verify Board Has At Least One Result	DiceOpenWeb
-
 	Click Board Results Tab					nettemps
 	Verify Board Has At Least One Result	NetTemps
-
 
 Click Board Results Tab
 	[Arguments]		${board}
