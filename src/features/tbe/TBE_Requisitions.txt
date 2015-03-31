@@ -22,6 +22,8 @@ ${needhelp_text}   Scout for Taleo Business Edition
 ${create_subject}  Your job has been posted to Scout for Taleo:
 ${create_content}  Your job has been successfully posted to Scout for Taleo:
 ${jobTitle}        Test Job for Automation
+${select_all_recruiters}	select-all
+${select_BH_recruiter_ScoutTest}	532b1cb9ffd3db1d7261077c
 
 *** Test Cases ***
 
@@ -35,7 +37,7 @@ Scenario: Test Create Requisition in TBE for Bullhorn
     And Create New Requisition in TBE  ${TBE_REQ2}
     ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     When Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
-    Then Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}
+    Then Retrieve JobId With Desired Fields From Mongodb  ${jobId}  ${TBE_REQ1['title']}  position_profile
 
 Scenario: Test Create Requisition in TBE for PCR
   [Documentation]  Creates jobs for PCR testing in TBE
@@ -126,7 +128,7 @@ Scenario: Test Editing Non Closure fields for a Job in TBE
     When User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     ${jobId}=  Edit Job Title Location and Education for an Existing Job in TBE  ${TBE_REQ7['title']}  ${EDIT_REQ1}
     And Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
-    Then Verify Job Title in Mongodb  ${jobId}  ${EDIT_REQ1['title']}  1
+    Then Verify Job Title in Mongodb  ${jobId}  ${EDIT_REQ1['title']}  1  position_profile
 
 Scenario: Test Editing Closure fields for a Job in TBE
   [Tags]  JOB_EDIT  EDIT_CLOSURE
@@ -156,4 +158,22 @@ Scenario: Edit Job Question Form in TBE Scout Candidates Page
 	Then Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
 	And Validate Job Form Information  ${JOB_QUESTIONS}       	
 	
+Scenario: Post Scout+ Job and Select All Recruiters 
+  [Tags]  SMOKE_PLUS  POST_SCOUT_PLUS_ALL
+	Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
+	${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
+	And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+	And Go To TBE-Sandbox
+	And Open Select Recruiters Page  ${jobId}   
+	And Select Scout+ Recruiters  ${select_all_recruiters}
+
+Scenario: Post Scout+ Job and Select a Specific Recruiter 
+  [Tags]  SMOKE_PLUS  POST_SCOUT_PLUS_SPECIFIC
+	Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
+	${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
+	And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+	Go To TBE-Sandbox
+	And Open Select Recruiters Page  ${jobId}   
+	And Select Scout+ Recruiters  ${select_BH_recruiter_ScoutTest}
+
 
