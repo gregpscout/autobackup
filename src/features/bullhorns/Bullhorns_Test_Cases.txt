@@ -3,7 +3,7 @@ Library           Selenium2Library
 Library           String
 Library           ImapLibrary
 Resource          ../../keywords/bullhorns/ui_bullhorns_keywords.txt
-Resource          ../../keywords/common/ui_common_keywords.txt   
+Resource          ../../keywords/common/ui_common_keywords.txt
 Resource          ../../resources/settings.txt
 Test Setup        Bullhorn Setup
 Test Teardown     Close All Browsers
@@ -14,7 +14,7 @@ Variables         ../../models/Email_Templates.py
 *** Variables ***
 ${Scout_BH_Candidate_Frame}  BHSWindow1717
 ${BH_Candidate_Frame}  JobPostingWnd
-${needhelp_bh}  Scout for Bullhorn - Go Scout Go    
+${needhelp_bh}  Scout for Bullhorn - Go Scout Go
 ${needhelp_text}  Scout for Bullhorn
 ${staging}  Scout Staging
 
@@ -23,7 +23,7 @@ ${staging}  Scout Staging
 Scenario: Test importing job and submitting candidate to Scout in Bullhorn
   [Tags]  JOBIMP  SUBMISSIONS  SMOKE  BLINDING
   [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
-           Bullhorn Setup   
+           Bullhorn Setup
     Given Go to Scout Environment  ${staging}
     When Go to Search Jobs Page on Scout For Bullhorn
     Then Test Clear Button on Scout For Bullhorn
@@ -35,77 +35,89 @@ Scenario: Test importing job and submitting candidate to Scout in Bullhorn
     When Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate}  ${Scout_BH_Candidate_Frame}
     Then Verify candidate has been submitted to job  ${TBE_REQ1['title']}  ${BHS_Reject_Candidate['name']}  ${Scout_BH_Candidate_Frame}
     And Test Contact Information is Blinded Before Acceptance  ${Scout_BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
-      
+
 Scenario: Test submitting candidate to a job in Bullhorn
   [Setup]  Update Candidate Status to Available  ${BHS_Accept_Candidate['name']}
-           Bullhorn Setup 
+           Bullhorn Setup
   [Documentation]  Should not be run as part of Smoke or Regression
   ...  This scenario can be run when candidate has to be submitted to an already imported job
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 
-	And Submit two internal candidates in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Reject_Candidate['name']}  ${BH_Candidate_Frame}
-	Then Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate}  ${BH_Candidate_Frame}
-	And Test Contact Information is Blinded Before Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
-	
-Scenario: Test Unblinding Feature
-  [Tags]  PLACEMENT  SMOKE  UNBLINDING
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 	
-	Then Test Contact Information is Unblinded After Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${TBE_SCOUT_EMAIL}
-	And Mark Candidate as Placed in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BH_Candidate_Frame} 
-	
-Scenario: Test submitting candidate with no email  
-  [Tags]  REGRESSION  SUBMISSION  MISSINGEMAIL
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ2['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ2['title']} 
-	And Submit two internal candidates in Bullhorn  ${TBE_REQ2['title']}  ${BHS_No_Email['name']}  ${BHS_No_Email['name']}  ${BH_Candidate_Frame}
-	Then Submit a Candidate to Scout Without Email and Verify Errors  ${TBE_REQ2['title']}  ${BHS_No_Email}  ${BH_Candidate_Frame}
+    Given Go to Jobs List Page in Bullhorn
+    And Search for Job in Bullhorn  ${TBE_REQ1['title']}
+    When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']}
+    And Submit two internal candidates in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BHS_Reject_Candidate['name']}  ${BH_Candidate_Frame}
+    Then Submit a candidate to a Scout job successfully  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate}  ${BH_Candidate_Frame}
+    And Test Contact Information is Blinded Before Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${SCOUT_EMAIL}
 
-Scenario: Test submitting candidate with no resume  
+Scenario: Test Unblinding Feature and Mark Candidate as Placed for TBE Job in Bullhorn
+  [Tags]  PLACEMENT  SMOKE  UNBLINDING
+    Given Go to Jobs List Page in Bullhorn
+    And Search for Job in Bullhorn  ${TBE_REQ1['title']}
+    When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']}
+    Then Test Contact Information is Unblinded After Acceptance  ${BH_Candidate_Frame}  ${TBE_SCOUT_CONTACT}  ${TBE_SCOUT_EMAIL}
+    And Mark Candidate as Placed in Bullhorn  ${TBE_REQ1['title']}  ${BHS_Accept_Candidate['name']}  ${BH_Candidate_Frame}
+
+Scenario: Test Unblinding Feature and Mark Candidate as Placed for TEE Job in Bullhorn
+  [Tags]  PLACEMENT_TEE  SMOKE  UNBLINDING
+    Given Go to Jobs List Page in Bullhorn
+    And Search for Job in Bullhorn  ${TEE_REQ1['title']}
+    When Go to Job Details Page in Bullhorn  ${TEE_REQ1['title']}
+    Then Test Contact Information is Unblinded After Acceptance  ${BH_Candidate_Frame}  ${TEE_SCOUT_CONTACT}  ${TEE_SCOUT_EMAIL}
+    And Mark Candidate as Placed in Bullhorn  ${TEE_REQ1['title']}  ${BHS_TEE_Accept['name']}  ${BH_Candidate_Frame}
+
+Scenario: Test submitting candidate with no email
+  [Tags]  REGRESSION  SUBMISSION  MISSINGEMAIL
+    Given Go to Scout Environment  ${staging}
+    And Go to Search Jobs Page on Scout For Bullhorn
+    When Import Scout Job into Bullhorn  ${TBE_REQ2['title']}
+    Then Go To View Imported Jobs for Bullhorn
+    When Submit two internal candidates in Bullhorn  ${TBE_REQ2['title']}  ${BHS_No_Email['name']}  ${BHS_No_Email['name']}  ${Scout_BH_Candidate_Frame}
+    Then Submit a Candidate to Scout Without Email and Verify Errors  ${TBE_REQ2['title']}  ${BHS_No_Email}  ${Scout_BH_Candidate_Frame}
+
+Scenario: Test submitting candidate with no resume
   [Tags]  REGRESSION  SUBMISSION  MISSINGRESUME
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ2['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ2['title']} 
-	And Submit two internal candidates in Bullhorn  ${TBE_REQ2['title']}  ${BHS_No_Resume['name']}  ${BHS_No_Resume['name']}  ${BH_Candidate_Frame}
-	Then Submit a Candidate to Scout Without Resume and Verify Errors  ${TBE_REQ2['title']}  ${BHS_No_Resume}  ${BH_Candidate_Frame}
-			
+    Given Go to Jobs List Page in Bullhorn
+    And Search for Job in Bullhorn  ${TBE_REQ2['title']}
+    When Go to Job Details Page in Bullhorn  ${TBE_REQ2['title']}
+    And Submit two internal candidates in Bullhorn  ${TBE_REQ2['title']}  ${BHS_No_Resume['name']}  ${BHS_No_Resume['name']}  ${BH_Candidate_Frame}
+    Then Submit a Candidate to Scout Without Resume and Verify Errors  ${TBE_REQ2['title']}  ${BHS_No_Resume}  ${BH_Candidate_Frame}
+
 Scenario: Test Feedback Link on Bullhorn Candidates Page
-  [Tags]  LINKS  REGRESSION  
-	Given Go to Jobs List Page in Bullhorn
-	And Search for Job in Bullhorn  ${TBE_REQ1['title']}
-	When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']} 	
-	And Select Frames and Go to Scout Candidates Page  ${BH_Candidate_Frame} 
-	Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-	
+  [Tags]  LINKS  REGRESSION
+    Given Go to Jobs List Page in Bullhorn
+    And Search for Job in Bullhorn  ${TBE_REQ1['title']}
+    When Go to Job Details Page in Bullhorn  ${TBE_REQ1['title']}
+    And Select Frames and Go to Scout Candidates Page  ${BH_Candidate_Frame}
+    Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+
 Scenario: Test Links on Bullhorn Jobs Page
   [Tags]  LINKS  REGRESSION  QUICK
-	Given Go to Scout Environment  ${staging}
-	And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
-	And Sleep  2s
-	Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
-	And Sleep  5s
-	And Test Need Help with Scout Link  ${needhelp_bh}  ${needhelp_text}
-
-
-
-    
-
-	
-	
-
-	
-	
+    Given Go to Scout Environment  ${staging}
+    And Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
+    And Sleep  2s
+    Then Test Feedback Link on Scout  ${BULLHORN_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+    And Sleep  5s
+    And Test Need Help with Scout Link  ${needhelp_bh}  ${needhelp_text}
 
 
 
 
 
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

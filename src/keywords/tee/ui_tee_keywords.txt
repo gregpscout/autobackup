@@ -21,38 +21,37 @@ Go to Candidates page for job in TEE
     Verify User is on Candidates List Page  ${jobTitle}
 
 Go To Candidate Review Page in TEE
-  [Arguments]  ${CandidateName}
-    Verify Candidate is Available for Review  ${CandidateName}
-    Click Link  ${CandidateName}
+  [Arguments]  ${Candidate_Obj}
+    Verify Candidate is Available for Review  ${Candidate_Obj}
+    Click Link  ${Candidate_Obj['mod_name']}
 
 Verify Candidate is Available for Review
-  [Arguments]  ${CandidateName}
-    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  submissions-table  1  ${CandidateName}
+  [Arguments]  ${Candidate_Obj}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  submissions-table  1  ${Candidate_Obj['mod_name']}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  submissions-table  3  ${Candidate_Obj['fee']}
 
 Share Candidate in TEE
-  [Arguments]  ${CandidateName}  ${email}
-    Go To Candidate Review Page in TEE  ${CandidateName}
-    Verify User is on Candidate Details Page  ${CandidateName}
+  [Arguments]  ${Candidate_Obj}  ${email}
+    Go To Candidate Review Page in TEE  ${Candidate_Obj}
+    Verify User is on Candidate Details Page in TEE  ${Candidate_Obj['mod_name']}
     Wait Until Keyword Succeeds  10  1  Click Element  share-candidate
     Wait Until Page Contains Element  share-modal
     Wait Until Keyword Succeeds  20  1  Input Text  share-modal__to  ${email}
     Click Link  share-modal__send
-    Verify User is on Candidate Details Page  ${CandidateName}
+    Verify User is on Candidate Details Page in TEE  ${Candidate_Obj['mod_name']}
 
 Accept Candidate in TEE
   [Arguments]  ${Candidate_Obj}  ${jobTitle}
-    Verify User is on Candidate Details Page  ${Candidate_Obj['mod_name']}
+    Verify User is on Candidate Details Page in TEE  ${Candidate_Obj['mod_name']}
     Click Element  interested
     Wait Until Keyword Succeeds  20  2  Page Should Contain Element  candidate-exists-error
-    Verify Duplicate Candidate Message in TEE  ${Candidate_Obj}
-    Click Element  candidate-exists-error__continue
     Wait Until Keyword Succeeds  60  2  Verify User is on Candidates List Page  ${jobTitle}
     Page Should Not Contain  ${Candidate_Obj['name']}
 
 Reject Candidate in TEE
-  [Arguments]  ${CandidateName}  ${reason}  ${comments}
-    Go To Candidate Review Page in TEE  ${CandidateName}
-    Verify User is on Candidate Details Page  ${CandidateName}
+  [Arguments]  ${Candidate_Obj}  ${reason}  ${comments}
+    Go To Candidate Review Page in TEE  ${Candidate_Obj}
+    Verify User is on Candidate Details Page in TEE  ${Candidate_Obj['mod_name']}
     Sleep  2s
     Click Element  not-interested
     Wait Until Keyword Succeeds  20  1  Page Should Contain Element  not-interested-modal
@@ -73,7 +72,7 @@ Verify Candidate is no Longer Pending Review
     Verify User is on Candidates List Page  ${jobTitle}
     Page Should Not Contain  ${CandidateName}
 
-Verify User is on Candidate Details Page
+Verify User is on Candidate Details Page in TEE
   [Arguments]  ${CandidateName}
     Wait Until Page Contains  ${CandidateName}  20s
     Wait Until Page Contains Element  interested  10s
