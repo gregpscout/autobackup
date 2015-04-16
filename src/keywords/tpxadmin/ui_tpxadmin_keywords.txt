@@ -177,14 +177,16 @@ Clear Job Posting Notification Email
 	Click Button  scout_plus__notification_save
 
 Add Scout+ Company
-	Input Text  scout_plus__add_exclusive__text  bullhorn-bhsandbox2
+  [Arguments]  ${ats_id}
+	Input Text  scout_plus__add_exclusive__text  ${ats_id}
 	Click Button  scout_plus__add_exclusive__button
 	
 Delete Scout+ Company
 	Wait Until Keyword Succeeds  10  2  Click Link  Remove
 
 Verify Scout+ Company was Added
-	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
+  [Arguments]  ${ats_id}
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  ${ats_id}
 
 Verify Scout+ Companies were Deleted
 	Wait Until Keyword Succeeds  10  2  Element Should Not Be Visible  table table-striped table-condensed 
@@ -404,17 +406,17 @@ TPX Admin Can Access the Page: Placement
 	
 Verify TPX Admin is on the Placement Page
 	Location Should Be  ${Staging_Admin_URL}admin/account/TPX/TPX/tpx-admin/#placements
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/p  #User Information Label
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[2]/div/p  #Action Section for activate/deactivate Label
-    Element Text Should Be  xpath=.//*[@id='placements']  Placements
-    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[1]/caption/h3  Status: Waiting
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[1]  #Status Waiting Table
-    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[2]/caption/h3  Status: Not Interested
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[2]  #Status Not Interested Table
-    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[3]/caption/h3  Status: Interested
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[3]  #Status Interested Table
-    Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[4]/caption/h3  Status: Imported
-    Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[4]  #Status Imported Table
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[1]/p  #User Information Label
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[2]/div[2]/div/p  #Action Section for activate/deactivate Label
+    	Element Text Should Be  xpath=.//*[@id='placements']  Placements
+    	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[1]/caption/h3  Status: Waiting
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[1]  #Status Waiting Table
+    	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[2]/caption/h3  Status: Not Interested
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[2]  #Status Not Interested Table
+    	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[3]/caption/h3  Status: Interested
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[3]  #Status Interested Table
+    	Element Text Should Be  xpath=.//*[@id='main']/div/div[3]/div/table[4]/caption/h3  Status: Imported
+    	Element Should Be Visible  xpath=.//*[@id='main']/div/div[3]/div/table[4]  #Status Imported Table
 
 User Returns to Scout Home Page
 	Click link  Scout
@@ -432,18 +434,18 @@ Verify User Has Landed on FAQ Page
 	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[1]/h4  What is Scout?
 	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[2]/h4  What are the benefits of utilizing Scout?
 	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[3]/h4  How do staffing agents sign up for Scout?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[4]/h4  What is the cost to use Scout?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[5]/h4  What are the services that Scout provides to staffing agencies?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[6]/h4  What candidate information is available to the employer? Is the submittal blinded or confidential?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[7]/h4  How does Scout handle duplicate submittals?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[8]/h4  What if an agent submits a candidate to Scout that is already in the employer's candidate database?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[9]/h4  How does an agent contact an employer working with Scout?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[10]/h4  What is a recommended job order?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[11]/h4  What is the "open for bid" feature?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[12]/h4  Does Scout provide a guarantee period for each hire? 
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[13]/h4  How does Scout handle the invoice and collection process?
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[14]/h4  If an employer modifies (or closes) a Scout job order, what happens to the candidates that have already been submitted
-    Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[15]/h4  Can employers hire a candidate that was submitted through Scout with the agent outside of Scout?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[4]/h4  What is the cost to use Scout?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[5]/h4  What are the services that Scout provides to staffing agencies?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[6]/h4  What candidate information is available to the employer? Is the submittal blinded or confidential?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[7]/h4  How does Scout handle duplicate submittals?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[8]/h4  What if an agent submits a candidate to Scout that is already in the employer's candidate database?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[9]/h4  How does an agent contact an employer working with Scout?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[10]/h4  What is a recommended job order?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[11]/h4  What is the "open for bid" feature?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[12]/h4  Does Scout provide a guarantee period for each hire? 
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[13]/h4  How does Scout handle the invoice and collection process?
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[14]/h4  If an employer modifies (or closes) a Scout job order, what happens to the candidates that have already been submitted
+    	Element Text Should Be  xpath=.//*[@id='faqpane']/ol/li[15]/h4  Can employers hire a candidate that was submitted through Scout with the agent outside of Scout?
 
 #------------
 
@@ -484,3 +486,23 @@ Validate Job Form Information
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 
+
+Open Select Recruiters Page
+   [Arguments]  ${jobId}
+  	Click Link  /common/preferred-recruiters/taleo-TALENTDRIVE2/${jobId}
+  
+Select Scout+ Recruiters
+  [Arguments]  ${recruiter}
+    	Select Window  Scout
+    	Select Checkbox  ${recruiter}
+    	Click Button  send
+
+Add a Scout+ Recruiter in TBE
+  [Arguments]  ${ats_id}
+	Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+	Go To TBE-Sandbox
+	Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
+	Add Scout+ Company  ${ats_id}
+
+
+
