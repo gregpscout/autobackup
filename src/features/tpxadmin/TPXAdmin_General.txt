@@ -138,8 +138,8 @@ Scenario: Deactivate User for Kenexa in Scout Admin
   [Tags]  SMOKE  KX  DEACTIVATE_USER
   [Documentation]  This will deactivate user "Raymond Wong" and reactivate the account afterwards
  	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG} 
-    Given User Navigates to Page and Deactivates Account
-    Then Verify User has been Deactivated
+    	Given User Navigates to Page and Deactivates Account
+    	Then Verify User has been Deactivated
 
 Scenario: Fill Out Placement Form for BH User
   [Tags]  SMOKE  PLACEMENTFRM
