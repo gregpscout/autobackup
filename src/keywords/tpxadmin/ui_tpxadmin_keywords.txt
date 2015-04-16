@@ -177,14 +177,16 @@ Clear Job Posting Notification Email
 	Click Button  scout_plus__notification_save
 
 Add Scout+ Company
-	Input Text  scout_plus__add_exclusive__text  bullhorn-bhsandbox2
+  [Arguments]  ${ats_id}
+	Input Text  scout_plus__add_exclusive__text  ${ats_id}
 	Click Button  scout_plus__add_exclusive__button
 	
 Delete Scout+ Company
 	Wait Until Keyword Succeeds  10  2  Click Link  Remove
 
 Verify Scout+ Company was Added
-	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  bhsandbox2 
+  [Arguments]  ${ats_id}
+	Wait Until Keyword Succeeds  10  2  Table Column Should Contain  xpath=//table[@class="table table-striped table-condensed"]  1  ${ats_id}
 
 Verify Scout+ Companies were Deleted
 	Wait Until Keyword Succeeds  10  2  Element Should Not Be Visible  table table-striped table-condensed 
@@ -484,3 +486,23 @@ Validate Job Form Information
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="2"]  ${job_form_model['job_form_question_2']} 
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="3"]  ${job_form_model['job_form_question_3']} 
 	Wait Until Keyword Succeeds  20  2  Element Text Should Be  xpath=//textarea[@tabindex="6"]  ${job_form_model['job_form_question_6']} 
+
+Open Select Recruiters Page
+   [Arguments]  ${jobId}
+  Click Link  /common/preferred-recruiters/taleo-TALENTDRIVE2/${jobId}
+  
+Select Scout+ Recruiters
+  [Arguments]  ${recruiter}
+  Select Window  Scout
+  Select Checkbox  ${recruiter}
+  Click Button  send
+
+Add a Scout+ Recruiter in TBE
+  [Arguments]  ${ats_id}
+	Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+	Go To TBE-Sandbox
+	Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
+	Add Scout+ Company  ${ats_id}
+
+
+

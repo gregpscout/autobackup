@@ -11,10 +11,10 @@ User Logs in to TBE
 
 User is on TBE Site  
   [Arguments]  ${Url}  ${Browser}  
-	Open Browser  ${Url}  ${Browser}
-	Maximize Browser Window
-	TBE Login Page Should Be Open
-	
+    Open Browser  ${Url}  ${Browser}
+    Maximize Browser Window
+    TBE Login Page Should Be Open
+
 Login to TBE
   [Arguments]  ${username}  ${password}  ${companyCode}
     Input Text  uname  ${username}
@@ -55,7 +55,7 @@ Enter Job Details for TBE
     Unselect Frame
     Click Button  update
     Sleep  10s             # Adding sleep to make sure it gets updated in TBE database for verification            
-    	
+
 Get Job Req Id
   [Arguments]  ${jobTitle}
   [Documentation]  Returns job id when searched by title on TBE  
@@ -85,14 +85,14 @@ Delete Job from TBE
  
 Verify user is logged in to TBE
     Page Should Contain  My View:
-	      
+
 Verify User is on TBE Requisitions Page
     Page Should Contain  Requisitions: Home  
     Page Should Contain Element  keywords   
-		
+
 TBE Login Page Should Be Open
-	Title Should Be  Log into Taleo Business Edition	
-	
+    Title Should Be  Log into Taleo Business Edition
+
 Go to Scout Candidates List for Job  
   [Arguments]  ${jobTitle}  ${env}
     Search Job Requisition on TBE  ${jobTitle}
@@ -164,7 +164,7 @@ Verify User is on Job Details Page for Staging
   [Arguments]  ${jobTitle}
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a28  Posting Information 
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a185  Scout Candidates
-	
+
 Verify User is on Job Details Page for Test  
   [Arguments]  ${jobTitle}
     Wait Until Keyword Succeeds  10  2  Element Should Contain  \#a225  Posting Information 
@@ -232,28 +232,29 @@ Close Job in TBE
     Click Link  Closed
     Wait Until Page Contains  Change Requisitions to Closed ?
     Input Text  comment  Closing Automation Test Jobs in TBE
-    Click Button  update 
+    Click Button  update
+    Sleep  5s
 
 Verify Diversity Icon is on Candidate Page
   [Arguments]  ${env} 	
-	Select Frame in TBE  ${env} 
-	Wait Until Keyword Succeeds  20  2  Page Should Contain Image  xpath=//img[@src="/static/images/diversity.png"]
-	Unselect Frame
-	
+    Select Frame in TBE  ${env}
+    Wait Until Keyword Succeeds  20  2  Page Should Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+    Unselect Frame
+
 Verify Diversity Icon is Not on Candidate Page
    [Arguments]  ${env} 
-	Select Frame in TBE  ${env}  
-	Page Should Not Contain Image  xpath=//img[@src="/static/images/diversity.png"]
-	Unselect Frame
+    Select Frame in TBE  ${env}
+    Page Should Not Contain Image  xpath=//img[@src="/static/images/diversity.png"]
+    Unselect Frame
 
 Go to Job Form in Scout Candidates TBE Tab
    [Arguments]  ${jobId}  ${env}
-	Select Frame in TBE  ${env}  
-	Wait Until Keyword Succeeds  20  2  Click Link  /common/job-details/taleo-TALENTDRIVE2/${jobId}
-	Unselect Frame
+    Select Frame in TBE  ${env}
+    Wait Until Keyword Succeeds  20  2  Click Link  /common/job-details/taleo-TALENTDRIVE2/${jobId}
+    Unselect Frame
 
 Select TBE Window
-	Select Window  title=Taleo Business Edition ~ Premium
+    Select Window  title=Taleo Business Edition ~ Premium
 
 Create and Sync TBE Job 
   [Arguments]  ${req}  	

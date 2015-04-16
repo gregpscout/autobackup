@@ -11,13 +11,17 @@ Variables         ../../models/Email_Templates.py
 Variables         ../../models/Candidate_Models.py
 Variables         ../../models/Requisition_Models.py
 Variables         ../../models/Candidate_Rejection.py
-#Test Teardown     Close All Browsers
+Resource          ../../keywords/bullhorns/ui_bullhorns_keywords.txt
+Test Teardown     Close All Browsers
 
 
 *** Variables ***
 ${needhelp_tee}    Scout for Taleo Enterprise Edition - Go Scout Go    
 ${needhelp_text}   Scout for Taleo Enterprise Edition
 ${TEE_UserId}      53ad83e5ffd3db15d3ac387a
+${BH_Candidate_Frame}  JobPostingWnd
+${Scout_BH_Candidate_Frame}  BHSWindow1717
+${staging}  Scout Staging
 
 *** Test Cases ***
 
@@ -30,25 +34,36 @@ Scenario: Test Feedback and Help Links in TEE
     And Test Need Help with Scout Link  ${needhelp_tee}  ${needhelp_text}
 
 Scenario: Share and Accept Candidate in TEE
-  [Tags]  TEE_ACCEPT  SMOKE
-    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+  [Tags]  TEE_ACCEPT_REJECT  SMOKE
+    Given Test BH Submission for TEE  ${TEE_REQ1['title']}  ${BHS_TEE_Accept}  ${BHS_TEE_Reject}  ${Scout_BH_Candidate_Frame}  ${staging}
+    And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
     And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
     And Go to Scout iframe in TEE after Impersonation
     And Go to Candidates page for job in TEE  ${TEE_REQ1['title']}
-    When Share Candidate in TEE  ${BHS_TEE_Accept['mod_name']}  scout_qa@talentdrive.com
-    Then Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${SHARE_CANDIDATE}  ${BHS_TEE_Accept['mod_name']}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  scout_qa@talentdrive.com
+    When Share Candidate in TEE  ${BHS_TEE_Accept}  scout_qa@talentdrive.com
+    And Wait Until Keyword Succeeds  120  5  Validate Email Received for Candidate Submission  ${SHARE_CANDIDATE}  ${BHS_TEE_Accept['mod_name']}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  scout_qa@talentdrive.com
     Then Accept Candidate in TEE  ${BHS_TEE_Accept}  ${TEE_REQ1['title']}
+    When Reject Candidate in TEE  ${BHS_TEE_Reject}  other  ${TEE_Rejection_Comments['Fee']}
+    Then Wait Until Keyword Succeeds  120  5  Validate Email Received  ${REJECT_CANDIDATE}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  Scout_QA@chatham-partners.com
 
 Scenario: Reject Candidate in TEE
   [Tags]  TEE_REJECT  SMOKE
-    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    Given Test BH Submission for TEE  ${TEE_REQ1['title']}  ${BHS_TEE_Accept}  ${BHS_TEE_Reject}  ${Scout_BH_Candidate_Frame}  ${staging}
+    And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
     And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
     And Go to Scout iframe in TEE after Impersonation
     And Go to Candidates page for job in TEE  ${TEE_REQ1['title']}
-    When Reject Candidate in TEE  ${BHS_TEE_Reject['mod_name']}  other  ${TEE_Rejection_Comments['Fee']}
-    Then Validate Email Received  ${REJECT_CANDIDATE}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  Scout_QA@chatham-partners.com
+    When Reject Candidate in TEE  ${BHS_TEE_Reject}  other  ${TEE_Rejection_Comments['Fee']}
+    Then Wait Until Keyword Succeeds  120  5  Validate Email Received  ${REJECT_CANDIDATE}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}  Scout_QA@chatham-partners.com
 
-
+Scenario: Accept Candidate in TEE
+  [Tags]  TEE_ACCEPT  SMOKE
+    Given Test BH Submission for TEE  ${TEE_REQ1['title']}  ${BHS_TEE_Accept}  ${BHS_TEE_Reject}  ${Scout_BH_Candidate_Frame}  ${staging}
+    And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Impersonate User ${TEE_UserId} in Ats tee and Company Think Talent
+    And Go to Scout iframe in TEE after Impersonation
+    And Go to Candidates page for job in TEE  ${TEE_REQ1['title']}
+    When Accept Candidate in TEE  ${BHS_TEE_Accept}  ${TEE_REQ1['title']}
 
 
 

@@ -32,17 +32,17 @@ Validate Email Received
     Close Mailbox
 
 Validate Email Received for Candidate Submission  
-  [Arguments]  ${email_temp}  ${sub}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}  ${RECEIVER_EMAIL}
+  [Arguments]  ${email_temp}  ${req}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}  ${RECEIVER_EMAIL}
     Open Mailbox  server=imap.googlemail.com  user=${EMAIL_ID}  password=${EMAIL_PWD}   
     ${latest}=  Wait for mail  fromEmail=${NOREPLY_EMAIL}  toEmail=${RECEIVER_EMAIL}  timeout=150
     ${parts}=  Walk Multipart Email  ${latest}
     @{fields}=  Get Multipart Field Names
     ${subject}=  Get Multipart Field  Subject
     Should Contain  ${subject}  ${email_temp['subject']}
-    Should Contain  ${subject}  ${sub}
     ${payload}=  Get Multipart Payload  decode=True
-    ${content}=  Should Contain  ${payload}  ${email_temp['content1']}
-    ${content}=  Should Contain  ${payload}  ${email_temp['content2']}
+    Should Contain  ${payload}  ${email_temp['content1']}
+    Should Contain  ${payload}  ${email_temp['content2']}
+    Should Contain  ${payload}  ${req}
     Close Mailbox
 
 Generate Random Number

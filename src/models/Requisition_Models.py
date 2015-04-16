@@ -28,7 +28,7 @@ TBE_REQ2 = {
 
 TBE_REQ3 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "TBEScoutAutomationTest3",
+    "title": "robot_TBE_Scout_Test1",
     "location": '49',
     "jobCat": '121',
     "status": '2',
@@ -76,7 +76,7 @@ TBE_REQ6 = {
 
 TBE_REQ7 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test4",
+    "title": "robot_TBE_Scout_Test2",
     "location": '57',
     "jobCat": '113',
     "status": '2',
@@ -88,7 +88,7 @@ TBE_REQ7 = {
 
 TBE_REQ8 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test5",
+    "title": "robot_TBE_Scout_Test3",
     "location": '57',
     "jobCat": '113',
     "status": '2',

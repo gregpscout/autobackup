@@ -91,8 +91,8 @@ Scenario: Add Scout+ Company and Provide Special Pricing
 	Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
 	When Go To TBE-Sandbox
 	Then Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
-	And Add Scout+ Company
-	And Verify Scout+ Company was Added
+	And Add Scout+ Company  bullhorn-bhsandox2
+	And Verify Scout+ Company was Added  bullhorn-bhsandox2
 	And Turn On Scout Plus Special Price Feature
 	And Verify Scout Plus Special Price is Turned On
 	And Turn Off Scout Plus Special Price Feature

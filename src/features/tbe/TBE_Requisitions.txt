@@ -44,12 +44,12 @@ Scenario: Test Create Requisition in TBE for PCR
   ...  Runs sync and waits for 4 mins for the sync to complete
   ...  Verifies that job is created in the database
   [Tags]  JOBCREATION_PCR  SMOKE
-    Given User Logs in to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     When Create New Requisition in TBE  ${TBE_REQ4}
     And Create New Requisition in TBE  ${TBE_REQ5}
     ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
     Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  test
-    
+
 Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
   [Documentation]  Shares candidate and accepts the same candidate in TBE
   [Tags]  ACCEPTSUBMISSION_BH  SMOKE  SHARE
@@ -57,7 +57,7 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
     And Go to Requisitions Page in TBE
     And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
     When Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Accept_Candidate}  staging
-    And Verify Diversity Icon is on Candidate Page  staging	
+    And Verify Diversity Icon is on Candidate Page  staging
     Then Share Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  staging
     And Accept Candidate in TBE  ${BHS_Accept_Candidate['mod_name']}  ${TBE_REQ1['title']}  staging
 
@@ -68,10 +68,10 @@ Scenario: Test Candidate Sharing and Acceptance in TBE Test for PCR
     And Go to Requisitions Page in TBE
     And Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
     When Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Accept_Candidate}  test
-    And Verify Diversity Icon is Not on Candidate Page  test  
+    And Verify Diversity Icon is Not on Candidate Page  test
     Then Share Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${SCOUT_EMAIL}  test
-    And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test     
-    
+    And Accept Candidate in TBE  ${PCR_Accept_Candidate['mod_name']}  ${TBE_REQ4['title']}  test
+
 Scenario: Test Candidate Rejection in TBE for Candidate Qualifications for Bullhorn
   [Documentation]  Rejects candidates for a job in TBE with reason Candidate Qualifications
   [Tags]  REJECTSUBMISSION_BH  SMOKE
@@ -79,25 +79,25 @@ Scenario: Test Candidate Rejection in TBE for Candidate Qualifications for Bullh
     And Go to Requisitions Page in TBE
     When Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
     Then Verify Fee Percentage for the candidate submitted in TBE  ${BHS_Reject_Candidate}  staging
-    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}  staging       
-    
+    And Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Candidate_Qualifications']}  ${TBE_Rejection_Comments['Candidate_Qualifications']}  staging
+
 Scenario: Test Candidate Rejection in TBE due to Placement Fee for PCR
   [Documentation]  Rejects candidates for a job in TBE with reason Placement Fee
-  [Tags]  REJECTSUBMISSION_PCR  REGRESSION  
+  [Tags]  REJECTSUBMISSION_PCR  REGRESSION
     Given User Logs in to TBE  ${TBE_USERNAME_TEST}  ${TBE_PASSWORD_TEST}  ${TBE_COMPANY}
     And Go to Requisitions Page in TBE
     When Go to Scout Candidates List for Job  ${TBE_REQ4['title']}  test
     Then Verify Fee Percentage for the candidate submitted in TBE  ${PCR_Reject_Candidate}  test
-    And Reject Candidate in TBE  ${PCR_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}  test       
-        
+    And Reject Candidate in TBE  ${PCR_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Placement_Fee']}  ${TBE_Rejection_Comments['Placement_Fee']}  test
+
 Scenario: Test Candidate Rejection in TBE for Other Reason
   [Documentation]  Rejects candidates for a job in TBE with reason Other
-  [Tags]  REJECTSUBMISSION  REGRESSION  
+  [Tags]  REJECTSUBMISSION  REGRESSION
     Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     And Go to Requisitions Page in TBE
     When Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
     Then Reject Candidate in TBE  ${BHS_Reject_Candidate['mod_name']}  ${TBE_Rejection_Reasons['Other']}  ${TBE_Rejection_Comments['Other']}  staging
-    
+
 Scenario: Test Links in TBE
   [Documentation]  Validates the following links in TBE
   ...  Test feedback link
@@ -146,34 +146,37 @@ Scenario: Close Test Jobs in TBE
     Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     When Go to Requisitions Page in TBE
     Then Close Job in TBE  robot_TBE
-    
+    And Close Job in TBE  TBEScoutAutomationTest1
+    And Close Job in TBE  TBEScoutAutomationTest2
+
 Scenario: Edit Job Question Form in TBE Scout Candidates Page
   [Tags]  MOINFO  REGRESSION
-	Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
-	${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    ${jobId}=  Get Job Req Id  ${TBE_REQ1['title']}
     And Go to Scout Candidates List for Job  ${TBE_REQ1['title']}  staging
-	And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	When Clear and Input Job Question Form  ${JOB_QUESTIONS}
-	And Select TBE Window
-	Then Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
-	And Validate Job Form Information  ${JOB_QUESTIONS}       	
+    And Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+    When Clear and Input Job Question Form  ${JOB_QUESTIONS}
+    And Select TBE Window
+    Then Go to Job Form in Scout Candidates TBE Tab  ${jobId}  staging
+    And Validate Job Form Information  ${JOB_QUESTIONS}       	
 	
 Scenario: Post Scout+ Job and Select All Recruiters 
   [Tags]  SMOKE_PLUS  POST_SCOUT_PLUS_ALL
-	Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
-	${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
-	And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-	And Go To TBE-Sandbox
-	And Open Select Recruiters Page  ${jobId}   
-	And Select Scout+ Recruiters  ${select_all_recruiters}
+    Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
+    ${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
+    And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Go To TBE-Sandbox
+    And Open Select Recruiters Page  ${jobId}   
+    And Select Scout+ Recruiters  ${select_all_recruiters}
 
 Scenario: Post Scout+ Job and Select a Specific Recruiter 
   [Tags]  SMOKE_PLUS  POST_SCOUT_PLUS_SPECIFIC
-	Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
-	${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
-	And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-	Go To TBE-Sandbox
-	And Open Select Recruiters Page  ${jobId}   
-	And Select Scout+ Recruiters  ${select_BH_recruiter_ScoutTest}
+     Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
+     ${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
+     And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+     Go To TBE-Sandbox
+     And Open Select Recruiters Page  ${jobId}   
+     And Select Scout+ Recruiters  ${select_BH_recruiter_ScoutTest}
+
 
 

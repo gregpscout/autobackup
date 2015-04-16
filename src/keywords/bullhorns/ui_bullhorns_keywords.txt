@@ -1,5 +1,6 @@
 *** Settings ***
 Resource          ../../resources/settings.txt
+Resource          ../common/ui_common_keywords.txt
 
 *** Keywords ***
 Bullhorn Setup
@@ -104,9 +105,9 @@ Submit two internal candidates in Bullhorn
     ${y}=  Fetch From Right  ${x}  \#                          # Ignore text in the id
     Wait Until Keyword Succeeds  5  1  Click Button  Add Internal Submission
     Unselect Frame
-    Select Frame  addPlacementWnd${y}  
-    Wait Until Page Contains  Add Internal Submission: 
-    Wait Until Keyword Succeeds  5  1  Click Element  xpath=//div[@class="picker-multi Candidate picker"]       
+    Wait Until Keyword Succeeds  10  1  Page Should Contain  Add Internal Submission:
+    Wait Until Keyword Succeeds  20  1  Select Frame  PlacementWnd${y}
+    Wait Until Keyword Succeeds  5  1  Click Element  xpath=//div[@class="picker-multi Candidate picker"]
     Selecting Candidate on Bullhorn Submission Page  ${candidate_name1}
     Selecting Candidate on Bullhorn Submission Page  ${candidate_name2}
     Click Button  Save
@@ -117,7 +118,7 @@ Selecting Candidate on Bullhorn Submission Page
     Input Text  userID_userInput  ${candidate_name}
     Sleep  2s                                                 # Waiting for auto-complete to populate matching candidate
     Click Element  sendingUserID_userInput                    # Need to click outside the auto-complete element to select the suggested candidate
-    Sleep  2s      
+    Sleep  2s
       
 Submit a candidate to a Scout job successfully 
   [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
@@ -221,7 +222,7 @@ Verify User is on Jobs List Page for Bullhorn
     Page Should Contain  Jobs
     Wait Until Keyword Succeeds  20  2  Page Should Contain Element  keywords  
     
-Search for Job in Bullhorn  
+Search for Job in Bullhorn
   [Arguments]  ${jobTitle}
   [Documentation]  Once user is on jobs list page in Bullhorn
   ...  this keyword searches for the specified job in Bullhorn  
@@ -319,6 +320,48 @@ Mark Candidate as Placed in Bullhorn
     Select Frame  addNewPlacementWnd${y}
     Click Button  Save
     Unselect Frame
+
+Test BH Submission for TEE
+  [Arguments]  ${jobTitle}  ${candidate_obj1}  ${candidate_obj2}  ${frame}  ${env}
+    Bullhorn Setup
+    Go to Scout Environment  ${env}
+    Go to Search Jobs Page on Scout For Bullhorn
+    Import Scout Job into Bullhorn  ${jobTitle}
+    Go To View Imported Jobs for Bullhorn
+    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj1}  ${frame}
+    Verify candidate has been submitted to job  ${jobTitle}  ${candidate_obj1['name']}  ${frame}
+    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj2}  ${frame}
+    Sleep  1m
+
+Submit a candidate to a Scout job successfully for TEE
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+  [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
+  ...  This keyword submits the candidate to the job in Scout for Bullhorn
+  ...  And verifies that the candidate is submitted successfully
+    ${email}=  Submit the candidate to Scout for TEE  ${jobTitle}  ${candidate_obj}  ${frame}
+    Select Frames on Candidates Page  ${frame}
+    Wait Until Keyword Succeeds  20  2  Element Should contain  xpath=//h3  Candidate submitted
+    Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
+    Table Should Contain  xpath=//table  ${candidate_obj['name']}    # Edit this once table has an id or name
+    Unselect Frame
+    [return]  ${email}
+
+Submit the candidate to Scout for TEE
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+  [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
+  ...  submits the candidate in Scout
+    Verify User is on Job Details Page in Bullhorn  ${jobTitle}
+    Select Frames and Go to Scout Candidates Page  ${frame}
+    Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_obj['name']}
+    Select Radio Button  id  ${candidate_obj['id']}
+    Click Button  Submit Selected Candidate
+    Wait Until Keyword Succeeds  10  2  Verify User is on Candidate Submission Page for Scout
+    Select From List  fee  ${candidate_obj['fee']}         # Updating fee to test open to bid option
+    ${email}=  Generate Random Email                       # Generating random email for every submission
+    Input Text  email  ${email}                            # Updating email to avoid duplicate candidates
+    Click Button  submit-candidate
+    Unselect Frame
+    [return]  ${email}
 
 
         
