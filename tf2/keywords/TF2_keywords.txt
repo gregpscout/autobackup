@@ -265,4 +265,7 @@ Select 2 First Tabbed Candidate For Import In BH
 Import Tabbed Candidates in BH
 	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="ImportCandidatesTop"]/a/span
 	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"import-direct-option-button")]
-	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"button import-close")]
+	#Debug
+	#
+        Wait Until Element Is Visible  xpath=//*[contains(@class,"button import-close")]  30
+        Click Element  xpath=//*[contains(@class,"button import-close")]
