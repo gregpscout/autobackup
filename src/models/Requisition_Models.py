@@ -115,24 +115,14 @@ JOB_QUESTIONS = {
 
 TEE_REQ1 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "ScoutTestTEE1",
-    "location": '39',
-    "jobCat": '114',
+    "title": "ScoutTestTEEBH1",
     "status": '2',
-    "numOpen": '1',
-    "duration": '1',
-    "postToScout": 'CUSTOM_935',
     "description": "TEE Job Requisition Test Description 1 for Bullhorn"
 }
 
 TEE_REQ2 = {
     "openDate": now.strftime("%m/%d/%Y"),
     "title": "ScoutTestTEE2",
-    "location": '73',
-    "jobCat": '122',
     "status": '2',
-    "numOpen": '1',
-    "duration": '1',
-    "postToScout": 'CUSTOM_935',
     "description": "TEE Job Requisition Test Description 2 for Bullhorn"
 }
