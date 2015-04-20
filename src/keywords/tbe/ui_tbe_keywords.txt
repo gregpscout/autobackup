@@ -256,3 +256,15 @@ Go to Job Form in Scout Candidates TBE Tab
 Select TBE Window
     Select Window  title=Taleo Business Edition ~ Premium
 
+Create and Sync TBE Job 
+  [Arguments]  ${req}  	
+     	User is on TBE Site  ${TBE}  ${BROWSER}
+    	Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    	Verify user is logged in to TBE
+    	Create New Requisition in TBE  ${req}
+    	${jobId}=  Get Job Req Id  ${req['title']}
+    	Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
+    	Sleep  4m
+    	[return]  ${jobId.strip()}
+
+

@@ -98,6 +98,19 @@ TBE_REQ8 = {
     "description": "TBE Job Requisition Test Description 5 for Bullhorn"
 }
 
+TBE_SCOUT_PLUS_1 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_BH_Scout_Test4",
+    "location": '57',
+    "jobCat": '113',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 4 for BH.  Scout+ Job"
+}
+
+
 EDIT_REQ1 = {
     "title": "robot_Edited_TBE_Job1",
     "education": '820',

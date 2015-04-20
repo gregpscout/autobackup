@@ -5,10 +5,10 @@ Library         MongoDBLibrary
 ${dbHost}      dbstguseb01.talentpx.com
 ${dbPort}      ${27017}
 ${dbname}      tpx
-${coll}        position_profile
+
 
 *** Keywords ***
-Retrieve JobId With Desired Fields From Mongodb  [Arguments]  ${PassJobId}  ${JobTitle}
+Retrieve JobId With Desired Fields From Mongodb  [Arguments]  ${PassJobId}  ${JobTitle}  ${coll}
     Comment  Connect to MongoDB Server
     Connect To MongoDB  ${dbHost}  ${dbPort}
     ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}"}  title  ${false}
@@ -18,7 +18,7 @@ Retrieve JobId With Desired Fields From Mongodb  [Arguments]  ${PassJobId}  ${Jo
     Disconnect From MongoDB
 
 Verify Job is on Hold in Mongodb  
-  [Arguments]  ${PassJobId}  
+  [Arguments]  ${PassJobId}  ${coll}
     Connect To MongoDB  ${dbHost}  ${dbPort}
     ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}"}  _status  ${false}
     Log    ${allResults}
@@ -27,7 +27,7 @@ Verify Job is on Hold in Mongodb
     Disconnect From MongoDB
 
 Verify Job Title in Mongodb  
-  [Arguments]  ${PassJobId}  ${title}  ${status}
+  [Arguments]  ${PassJobId}  ${title}  ${status}  ${coll}
     Connect To MongoDB  ${dbHost}  ${dbPort}
     ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  title  ${false}
     Log    ${allResults}
@@ -36,7 +36,7 @@ Verify Job Title in Mongodb
     Disconnect From MongoDB
 
 Verify Job Fee Percentage in Mongodb
-  [Arguments]  ${PassJobId}  ${status}  ${fee}
+  [Arguments]  ${PassJobId}  ${status}  ${fee}  ${coll}
     Connect To MongoDB  ${dbHost}  ${dbPort}
     ${allResults}   Retrieve MongoDB Records With Desired Fields  ${dbname}  ${coll}  {"req_id": "${PassJobId}","_status": ${status}}  _fee_pct  ${false}
     Log    ${allResults}
@@ -44,7 +44,7 @@ Verify Job Fee Percentage in Mongodb
     Should Contain  ${allResults}  ${fee}
     Disconnect From MongoDB    
     
-Delete Desired Objects From Mongodb  [Arguments]  ${PassJobId}  
+Delete Desired Objects From Mongodb  [Arguments]  ${PassJobId}  ${coll}   
     Comment  Connect to MongoDB Server
     Connect To MongoDB  ${dbHost}  ${dbPort}
     Remove MongoDB Records  ${dbname}  ${coll}  {"req_id": "${PassJobId}"} 
