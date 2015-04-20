@@ -1,5 +1,6 @@
 *** Settings ***
 Library    Selenium2Library
+Library    DebugLibrary
 #Suite Teardown    Close All Browsers
 Resource  ../keywords/TF2_keywords.txt
 Resource  ../resources/settings.txt
@@ -24,7 +25,6 @@ ${second_tab_checkbox}  SearchResults-1-Checkbox-0
 ${saved_search_name}  Search1
 
  *** Test Cases ***
-
 Scenario: Load direct Dev URL go to Advanced Search add Resumes Posted, then add Monster and search. 
   [Tags]  SMOKE  IMPRT  MONSTER_BH
 	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
@@ -141,4 +141,34 @@ Scenario: Logs user into BH, navigates to iframe, adds multiple sources and runs
 	And And Add Boards Update Button
 	And Run Search
 	And Validate Basic Advanced Search Results Per Board	
+
+
+# JIRA TTB-172
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-172: (test case 1): Stack Overflow
+Scenario: (Bullhorn): multiple candidate imports (multiple boards)
+  [Tags]  SMOKE  IMPRT  BH_MULTBDS  IMPRT_BHMULTFIRST  J172
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S}
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Enter Simple Search Keyword  JAVA
+	And Add Boards Button
+	And Add Boards Checkbox  ${stack_board_number}
+	And Add Boards Checkbox  ${indeed_board_number}
+	And Add Boards Checkbox  ${resumebucket_board_number}
+	And Add Boards Checkbox  ${CB_board_number}
+	And Add Boards Checkbox  ${ladders_board_number}
+	And Add Boards Checkbox  ${monster_board_number}
+	And Add Boards Checkbox  ${zillions_board_number}
+	And Add Boards Checkbox  ${workop_board_number}
+	#And Add Boards Checkbox  ${ziprecruiter_board_number}
+	And Add Boards Update Button
+	And Refresh Add Boards Modal
+	#Debug
+	And Run Search
+	And Select 2 First Tabbed Candidate For Import In BH
+	And Import Tabbed Candidates in BH
 

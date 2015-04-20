@@ -245,3 +245,24 @@ Click Board Results Right Arrow Button
 Verify Board Has At Least One Result
 	[Arguments]		${board}
 	Page Should Contain Element		//table[@data-value="${board}"]/tbody/tr
+
+Refresh Add Boards Modal
+	Wait Until Keyword Succeeds  10  2  Click Element  AddJobBoard
+	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="JobSearchPopup"]/div[2]/a[1]
+
+Select 2 First Tabbed Candidate For Import In BH
+  [Arguments]
+	## should return class="complete" when all search is done for SearchResults-Tab-AllBoards
+	## Debug
+        Wait Until Keyword Succeeds  20  2  Get Element Attribute  SearchResults-Tab-AllBoards@class
+
+	## click first tab
+	Wait Until Keyword Succeeds  10  2  Click Link  SearchResultsTab0
+	#Debug
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[@for="SearchResults-0-Checkbox-0"]
+        Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[@for="SearchResults-0-Checkbox-1"]
+
+Import Tabbed Candidates in BH
+	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="ImportCandidatesTop"]/a/span
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"import-direct-option-button")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"button import-close")]

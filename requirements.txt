@@ -8,4 +8,4 @@ robotframework-httplibrary==0.4.2
 robotframework-imaplibrary==0.1.4
 pymongo==2.6.3
 robotframework-mongodblibrary==0.2.1
-
+robotframework-debuglibrary==0.3
