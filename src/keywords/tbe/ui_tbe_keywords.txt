@@ -1,6 +1,7 @@
 *** Settings ***
 Variables    ../../models/Requisition_Models.py
 Resource     ../../resources/settings.txt
+Resource     ../common/ui_common_keywords.txt
 
 *** Keywords ***
 User Logs in to TBE
@@ -54,7 +55,7 @@ Enter Job Details for TBE
     Input Text  xpath= //body[contains(@class,'cke_editable')]  ${tbeReq['description']} 
     Unselect Frame
     Click Button  update
-    Sleep  10s             # Adding sleep to make sure it gets updated in TBE database for verification            
+    Sleep  10s             # Adding sleep to make sure it gets updated in TBE database for verification
 
 Get Job Req Id
   [Arguments]  ${jobTitle}
@@ -262,9 +263,9 @@ Create and Sync TBE Job
     	Login to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     	Verify user is logged in to TBE
     	Create New Requisition in TBE  ${req}
+    	Sleep  20s
     	${jobId}=  Get Job Req Id  ${req['title']}
-    	Run Sync Jobs  ${HOST_STAGING}  ${syncTBEJobs} 
-    	Sleep  4m
+    	Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
     	[return]  ${jobId.strip()}
 
 
