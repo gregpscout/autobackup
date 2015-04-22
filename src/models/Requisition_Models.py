@@ -100,14 +100,26 @@ TBE_REQ8 = {
 
 TBE_SCOUT_PLUS_1 = {
     "openDate": now.strftime("%m/%d/%Y"),
-    "title": "robot_TBE_BH_Scout_Test4",
+    "title": "robot_TBE_BH_Scout_Plus1",
     "location": '57',
     "jobCat": '113',
     "status": '2',
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 4 for BH.  Scout+ Job"
+    "description": "TBE Job Requisition Test Description 1 for BH. Scout+ Job"
+}
+
+TBE_SCOUT_PLUS_2 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_BH_Scout_Plus2",
+    "location": '57',
+    "jobCat": '113',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 2 for BH. Scout+ Job"
 }
 
 

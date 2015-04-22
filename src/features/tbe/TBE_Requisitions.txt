@@ -170,7 +170,7 @@ Scenario: Post Scout+ Job and Select All Recruiters
 Scenario: Post Scout+ Job and Select a Specific Recruiter 
   [Tags]  SMOKE_PLUS  POST_SCOUT_PLUS_SPECIFIC
      Given Add a Scout+ Recruiter in TBE  bullhorn-bhsandbox2
-     ${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_1} 
+     ${jobId}=  Create and Sync TBE Job  ${TBE_SCOUT_PLUS_2}
      And Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
      Go To TBE-Sandbox
      And Open Select Recruiters Page  ${jobId}   
