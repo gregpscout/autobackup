@@ -154,21 +154,181 @@ Scenario: (Bullhorn): multiple candidate imports (multiple boards)
 	And Go to TF2 Dev Environment
 	And Select BH Frame
 	And Verify that the TF Iframe Loaded
-	And Enter Simple Search Keyword  JAVA
+	And Enter Simple Search Keyword  Perl
 	And Add Boards Button
 	And Add Boards Checkbox  ${stack_board_number}
 	And Add Boards Checkbox  ${indeed_board_number}
 	And Add Boards Checkbox  ${resumebucket_board_number}
 	And Add Boards Checkbox  ${CB_board_number}
-	And Add Boards Checkbox  ${ladders_board_number}
+#	And Add Boards Checkbox  ${ladders_board_number}
 	And Add Boards Checkbox  ${monster_board_number}
 	And Add Boards Checkbox  ${zillions_board_number}
-	And Add Boards Checkbox  ${workop_board_number}
-	#And Add Boards Checkbox  ${ziprecruiter_board_number}
+#	And Add Boards Checkbox  ${workop_board_number}
+#	#And Add Boards Checkbox  ${ziprecruiter_board_number}
 	And Add Boards Update Button
 	And Refresh Add Boards Modal
 	#Debug
 	And Run Search
 	And Select 2 First Tabbed Candidate For Import In BH
 	And Import Tabbed Candidates in BH
+
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 1: Monster (UK)
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_1
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S}
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate Monster UK Creds  ${MonsterUK_CAT}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 2: Stack Overflow
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_2  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate Stack Creds  ${Stack_username}  ${Stack_pw}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 3: CareerBuilder
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_3  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate CB Creds  ${CB_username}  ${CB_password}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: NOTE: CREDS "LOCKED-OUT"....NEED TO RESET (CONTACTED JEFFREY)
+#JIRA ref: TTB-173: test case 4: Ladders
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_4  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate Ladders Creds  ${Ladders_username}  ${Ladders_password}  
+
+
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 5: Monster
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_5  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate Monster Creds  ${Monster_CAT}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 6: Workopolis
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_6  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate Workopolis Creds  ${Workop_username}  ${Workop_password}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 7: ZipRecruiter
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_7  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate ZipRecruiter Creds  ${Zip_username}  ${Zip_password}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 8: LHH
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_8  
+  [Documentation]  TUser must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate LHH Creds  ${LHH_username}  ${LHH_password}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 9: eFinancial
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_9  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate eFinancial Creds  ${efinancial_username}  ${efinancial_password}
+
+
+#FINALIZED IN JIRA FOR Q1
+#SK: SCRIPT PASSED
+#JIRA ref: TTB-173: test case 10: Net-Temps
+Scenario: (Bullhorn): validating credentials for all boards (admin account)
+  [Tags]  SMOKE  VALIDATECREDS  ADMINBDS_10  
+  [Documentation]  User must be logged out of BH first
+	Given User is on Bullhorn Login Page  ${BULLHORN_S}  ${BROWSER}   
+	When Enter BH login details  ${USERNAME_BULLHORN_S}  ${PASSWORD_BULLHORN_S} 
+	Then Verify User is on Bullhorn Homepage
+	And Go to TF2 Dev Environment 
+	And Select BH Frame
+	And Verify that the TF Iframe Loaded
+	And Go to Boards Admin list
+	And Validate NetTemps Creds  ${nettemps_username}  ${nettemps_password}
 

@@ -269,3 +269,109 @@ Import Tabbed Candidates in BH
 	#
         Wait Until Element Is Visible  xpath=//*[contains(@class,"button import-close")]  30
         Click Element  xpath=//*[contains(@class,"button import-close")]
+
+#Validate Monster UK Creds
+#  [Arguments]  ${MonsterUK_CAT}
+#	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Monster UK"]
+#	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+#	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")] 
+#	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtCatCodeMonsterUK  ${MonsterUK_CAT}
+# 	Wait Until Keyword Succeeds  10  2  Click Button  MonsterUKSaveBtn
+
+
+Validate Stack Creds
+	[Arguments]  ${Stack_username}  ${Stack_pw}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Stack Overflow"]
+	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="StackOverflowCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameStackOverflow  ${Stack_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")] 
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordStackOverflow  ${Stack_pw}
+	Wait Until Keyword Succeeds  10  2  Click Button  StackOverflowSaveBtn
+
+
+Validate CB Creds
+  [Arguments]  ${CB_username}  ${CB_password}
+        Debug
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="CareerBuilder"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="CareerBuilderCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="CareerBuilderCreds"]/div/div[1]/div/div/div/span/img	
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameCareerBuilder  ${CB_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")] 
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordCareerBuilder  ${CB_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  CareerBuilderSaveBtn
+
+
+Validate Ladders Creds
+  [Arguments]  ${Ladders_username}  ${Ladders_password}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="TheLadders"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="LaddersCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Click Element  //*[@id="LaddersCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameLadders  ${Ladders_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordLadders  ${Ladders_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  LaddersSaveBtn
+
+Validate Monster Creds
+  [Arguments]  ${Monster_CAT}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Monster"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")] 
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")] 	
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtCatCodeMonster  ${Monster_CAT}
+  	Wait Until Keyword Succeeds  10  2  Click Button  MonsterSaveBtn
+
+Validate Workopolis Creds
+  [Arguments]  ${Workop_username}  ${Workop_password}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Workopolis (CA)"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="WorkopolisCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameWorkopolis  ${Workop_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordWorkopolis  ${Workop_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  WorkopolisSaveBtn
+
+
+Validate ZipRecruiter Creds
+  [Arguments]  ${Zip_username}  ${Zip_password}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="ZipRecruiter"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="ZipRecruiterCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameZipRecruiter  ${Zip_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordZipRecruiter  ${Zip_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  ZipRecruiterSaveBtn
+
+
+Validate LHH Creds
+  [Arguments]  ${LHH_username}  ${LHH_password}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Lee Hecht Harrison"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="LeeHechtHarrisonCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameLeeHechtHarrison  ${LHH_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordLeeHechtHarrison  ${LHH_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  LeeHechtHarrisonSaveBtn
+
+Validate eFinancial Creds
+  [Arguments]  ${efinancial_username}  ${efinancial_password}
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="eFinancialCareers"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="EFinancialCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameEFinancial  ${efinancial_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordEFinancial  ${efinancial_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  EFinancialSaveBtn
+
+
+Validate NetTemps Creds
+  [Arguments]  ${nettemps_username}  ${nettemps_password}
+        #Debug
+	Wait Until Keyword Succeeds  10  2  Click Link  //*[text()="Net-Temps"]
+	Wait Until Keyword Succeeds  10  2  Mouse Over  //*[@id="NetTempsCreds"]/div/div[1]/div/div/div/span/img
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtUserNameNetTemps  ${nettemps_username}
+	Wait Until Keyword Succeeds  10  2  Mouse Over  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[contains(@class,"passwordFieldCloseButton")]
+	Wait Until Keyword Succeeds  10  2  Input Text  UsersMySettings-txtPasswordNetTemps  ${nettemps_password}
+	Wait Until Keyword Succeeds  10  2  Click Button  NetTempsSaveBtn

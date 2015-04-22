@@ -19,6 +19,39 @@ ${BH_FEEDBACK_TEXT}         Testing feedback from Bullhorn
 ${CB_username}  	RDBWebTest@talentdrive.com
 ${CB_password}	6QUWW9X8
 
+
+${MonsterUK_CAT}	1:EAAQPKUX_sUb7vLn14Nmnclpf5Vrb06BaehfCMY05lF79qojB7heYUIFLsFUqmkm1cpL33Ntowyfs8YHhsot2iUOzmnLAHiX5LdFxSSJJMBXY13kOORVG2ZhcWuUyBguh8O2
+
+${Stack_username}		jsimmons@talentdrive.com
+${Stack_pw}			talent123!
+
+${Ladders_username}	jsimmons@talentdrive.com
+${Ladders_password}	talent123##!
+
+${Monster_CAT}	1:EAAQPKUX_sUb7vLn14Nmnclpf5Vrb06BaehfCMY05lF79qojB7heYUIFLsFUqmkm1cpL33Ntowyfs8YHhsot2iUOzmnLAHiX5LdFxSSJJMBXY13kOORVG2ZhcWuUyBguh8O2
+
+${Workop_username}	jsimmons@talentdrive.com
+${Workop_password}	Talent123!
+
+${Zip_username}	jsimmons@talentdrive.com
+${Zip_password}	Talent123!
+
+${LHH_username}	talentdrive
+${LHH_password}	Talent123#$
+
+${efinancial_username}	sgordon@talentdrive.com
+${efinancial_password}	Talent123!
+
+${nettemps_username}	talentd
+${nettemps_password}	boston
+
+${KEYWORD}		        Admin
+
+${uk_keyword}			Manager
+${uk_postalcode}		B15 2TT
+
+
+
 ${KEYWORD}		        Manager
 
 ${GOOGLE}			http://www.google.com
@@ -35,17 +68,6 @@ ${USERNAME_PCR}				SCOUTUSER
 ${PASSWORD_PCR}				a8kjlLk2
 ${DATABASEID_PCR}			ScoutTest1
 
-${TBE}                      https://tbe.taleo.net/login
-${TBE_USERNAME}             qa_scout
-${TBE_PASSWORD}             qa_scout
-${TBE_COMPANY}              TALENTDRIVE2
-${TBE_CONTACT}				QA Scout
-
-${TBE_USERNAME_TEST}        pparker
-${TBE_PASSWORD_TEST}        spiderman2013
-${TBE_PHONE_TEST}			(617) 535-5030
-${TBE_CONTACT_TEST}			Peter Parker
-${TBE_EMAIL_TEST}			scout_qa@goscoutgo.com
 
 ${TPXADMIN_STG}             https://staging.talentpx.com/admin/login
 ${USERNAME_TPXADMIN_STG}    scout_support@goscoutgo.com
