@@ -33,6 +33,10 @@ Scenario: Test Feedback and Help Links in TEE
     And Test Feedback Link on Scout  ${TEE_FEEDBACK}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
     And Test Need Help with Scout Link  ${needhelp_tee}  ${needhelp_text}
 
+
+# Below Test will log in to BH, import the TEE job, submits two candidates with random email and fee
+# Logs in to TEE and verifies candidate email and placement fee
+# Tests share candidate, accept candidate and reject candidate
 Scenario: Share and Accept Candidate in TEE
   [Tags]  TEE_ACCEPT_REJECT  SMOKE
     Given Test BH Submission for TEE  ${TEE_REQ1['title']}  ${BHS_TEE_Accept}  ${BHS_TEE_Reject}  ${Scout_BH_Candidate_Frame}  ${staging}
