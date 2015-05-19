@@ -36,9 +36,10 @@ Expand the Bullhorn menu bar
   [Documentation]  Expands the main menu bar in Bullhorn S to provide user with options  
     Click Element  new-menu  
     
-Go to Search Jobs Page on Scout For Bullhorn  
+Go to Search Jobs Page on Scout For Bullhorn
+  [Arguments]  ${iframe}
   [Documentation]  Takes user to search jobs page in Scout iframe when already in iframe
-    Wait Until Keyword Succeeds  10  1  Select Frame  BHSWindow1717
+    Wait Until Keyword Succeeds  10  1  Select Frame  ${iframe}
     Wait Until Keyword Succeeds  5  1  Click Link  signals-search
     Verify User is on Search Jobs Page for Scout
     Unselect Frame
@@ -47,9 +48,10 @@ Verify User is on Search Jobs Page for Scout
   [Documentation]  Verifies user is already on Search Jobs tab in Scout iframe for Bullhorn
     Page Should Contain  Search Scout
 
-Test Clear Button on Scout For Bullhorn 
+Test Clear Button on Scout For Bullhorn
+  [Arguments]  ${iframe}
   [Documentation]  Verifies clear button works on Scout iframe by entering random text and clearing it
-    Select Frame  BHSWindow1717
+    Select Frame  ${iframe}
     Wait Until Keyword Succeeds  5  5  Input Text  keyword  abcde
     Textfield Should Contain  keyword  abcde  
     Click Element  clear
@@ -57,9 +59,9 @@ Test Clear Button on Scout For Bullhorn
     Unselect Frame
     
 Import Scout Job into Bullhorn
-  [Arguments]  ${jobTitle}
+  [Arguments]  ${jobTitle}  ${iframe}
   [Documentation]  Searches and imports specified job from Scout iframe into Bullhorn
-    Select Frame  BHSWindow1717
+    Select Frame  ${iframe}
     Search for Job by Title in Scout For Bullhorn  ${jobTitle}
     Wait Until Keyword Succeeds  20  2  Select Checkbox  xpath=//*[@id="req-search-table"]/tbody/tr[1]/td[1]/input   
     Click Button  import-selected 
@@ -75,8 +77,9 @@ Search for Job by Title in Scout For Bullhorn
     Wait Until Keyword Succeeds  20  2  Table Row Should Contain  req-search-table  1  ${jobTitle}
 
 Go To View Imported Jobs for Bullhorn
+  [Arguments]  ${iframe}
   [Documentation]  Selects  view imported jobs button after importing a job from Scout into Bullhorn
-    Select Frame  BHSWindow1717
+    Select Frame  ${iframe}
     Click Button  import-confirm-close
     Unselect Frame
         
@@ -121,11 +124,11 @@ Selecting Candidate on Bullhorn Submission Page
     Sleep  2s
       
 Submit a candidate to a Scout job successfully 
-  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  This keyword submits the candidate to the job in Scout for Bullhorn
   ...  And verifies that the candidate is submitted successfully
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_obj}  ${frame}
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
     Select Frames on Candidates Page  ${frame}
     Wait Until Keyword Succeeds  20  2  Element Should contain  xpath=//h3  Candidate submitted
     Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
@@ -133,8 +136,8 @@ Submit a candidate to a Scout job successfully
     Unselect Frame    
     
 Submit a Candidate to Scout Without Email and Verify Errors
-  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame} 
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame}  ${env}
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}  ${env}
     Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="alert-message error"]
@@ -142,8 +145,8 @@ Submit a Candidate to Scout Without Email and Verify Errors
     Unselect Frame        
     
 Submit a Candidate to Scout Without Resume and Verify Errors
-  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame} 
-    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_Obj}  ${frame}  ${env}
+    Submit the candidate to Scout  ${jobTitle}  ${candidate_Obj}  ${frame}  ${env}
     Select Frames on Candidates Page  ${frame}
     Verify User is on Candidate Submission Page for Scout
     Wait Until Keyword Succeeds  10  2  Page Should Contain Element  xpath=//*[@class="control-group error"]
@@ -155,11 +158,11 @@ Select Frames on Candidates Page
     Select Frame  iframeObj 
         
 Submit the candidate to Scout  
-  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  submits the candidate in Scout  
     Verify User is on Job Details Page in Bullhorn  ${jobTitle}
-    Select Frames and Go to Scout Candidates Page  ${frame}
+    Select Frames and Go to Scout Candidates Page  ${frame}  ${env}
     Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_obj['name']}
     Select Radio Button  id  ${candidate_obj['id']}
     Click Button  Submit Selected Candidate
@@ -187,9 +190,9 @@ Test Contact Information is Unblinded After Acceptance
     Unselect Frame        
        
 Verify candidate has been submitted to job
-  [Arguments]  ${jobTitle}  ${candidate_name}  ${frame} 
+  [Arguments]  ${jobTitle}  ${candidate_name}  ${frame}  ${env}
   [Documentation]  Verifies that the candidate has been submitted to Scout
-    Select Frames and Go to Scout Candidates Page  ${frame}
+    Select Frames and Go to Scout Candidates Page  ${frame}  ${env}
     Wait Until Keyword Succeeds  10  2  Table Should Contain  submissions  ${candidate_name}   
     Unselect Frame                                           
     
@@ -205,9 +208,9 @@ Test Feedback Link on Scout For Bullhorn Candidates Page
     Unselect Frame
 
 Select Frames and Go to Scout Candidates Page
-  [Arguments]  ${frame} 
+  [Arguments]  ${frame}  ${env}
     Select Frame  ${frame}                      # Frame name is different if you get to this screen from Scout as opposed to BH directly
-    Wait Until Keyword Succeeds  10  2  Click Link  Scout Staging
+    Wait Until Keyword Succeeds  10  2  Click Link  ${env}
     Wait Until Keyword Succeeds  10  2  Select Frame  iframeObj
     
 Go to Jobs List Page in Bullhorn
@@ -327,18 +330,18 @@ Test BH Submission for TEE
     Go to Scout Environment  ${env}
     Go to Search Jobs Page on Scout For Bullhorn
     Import Scout Job into Bullhorn  ${jobTitle}
-    Go To View Imported Jobs for Bullhorn
-    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj1}  ${frame}
-    Verify candidate has been submitted to job  ${jobTitle}  ${candidate_obj1['name']}  ${frame}
-    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj2}  ${frame}
+    Go To View Imported Jobs for Bullhorn  ${frame}
+    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj1}  ${frame}  ${env}
+    Verify candidate has been submitted to job  ${jobTitle}  ${candidate_obj1['name']}  ${frame}  ${env}
+    Submit a candidate to a Scout job successfully for TEE  ${jobTitle}  ${candidate_obj2}  ${frame}  ${env}
     Sleep  1m
 
 Submit a candidate to a Scout job successfully for TEE
-  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  This keyword submits the candidate to the job in Scout for Bullhorn
   ...  And verifies that the candidate is submitted successfully
-    ${email}=  Submit the candidate to Scout for TEE  ${jobTitle}  ${candidate_obj}  ${frame}
+    ${email}=  Submit the candidate to Scout with Random Email  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
     Select Frames on Candidates Page  ${frame}
     Wait Until Keyword Succeeds  20  2  Element Should contain  xpath=//h3  Candidate submitted
     Table Should Contain  xpath=//table  ${jobTitle}          # Edit this once table has an id or name
@@ -346,12 +349,12 @@ Submit a candidate to a Scout job successfully for TEE
     Unselect Frame
     [return]  ${email}
 
-Submit the candidate to Scout for TEE
-  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}
+Submit the candidate to Scout with Random Email
+  [Arguments]  ${jobTitle}  ${candidate_obj}  ${frame}  ${env}
   [Documentation]  Once the candidate is submitted to a job internally in Bullhorn
   ...  submits the candidate in Scout
     Verify User is on Job Details Page in Bullhorn  ${jobTitle}
-    Select Frames and Go to Scout Candidates Page  ${frame}
+    Select Frames and Go to Scout Candidates Page  ${frame}  ${env}
     Wait Until Keyword Succeeds  20  2  Table Column Should Contain  candidate-list  2  ${candidate_obj['name']}
     Select Radio Button  id  ${candidate_obj['id']}
     Click Button  Submit Selected Candidate
@@ -362,6 +365,11 @@ Submit the candidate to Scout for TEE
     Click Button  submit-candidate
     Unselect Frame
     [return]  ${email}
+
+
+
+
+
 
 
         
