@@ -64,6 +64,22 @@ Sync Requisitions in Scout Admin for Company
     Go To ATS Page  ${ats}
     Go to Company "${company}" page
     Click Button  Sync Requisitions
-    Sleep  5m
+    Sleep  6m
+
+User is on Build Verification Site
+  [Arguments]  ${Url}
+    Open Browser  ${Url}  ${Browser}
+    Maximize Browser Window
+    Wait Until Keyword Succeeds  10  1  Page Should Contain  "name": "milton-tpx"
+
+Verify Build Version
+  [Arguments]  ${HOST}
+    Open connection and log in  ${HOST}
+    ${stdout}=  Execute Command  cat current/deployment_info.json
+    #${stdout}=  Execute Command  cat current/deployment_info.json | grep "tag"
+    [Return]  ${stdout}
+
+
+
 
 
