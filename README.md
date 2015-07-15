@@ -1,6 +1,5 @@
 milton-automation
 =================
-
 Automation project for milton-tpx
 
 
@@ -11,7 +10,6 @@ https://goscoutgo.atlassian.net/wiki/pages/viewpage.action?pageId=10223795
 
 SETUP
 =================
-
 virtualenv ve
 . ve/bin/activate
 pip install -r requirements.txt
