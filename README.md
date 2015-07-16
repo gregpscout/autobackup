@@ -20,16 +20,22 @@ Automation project for milton-tpx
 ### TALENTFILTER
 Running TalentFilter 2.0 tests
 
-pybot -i FIRST tf2/features/TF2_General.txt
+* pybot -i FIRST tf2/features/TF2_General.txt
 
 
 
 ### SCOUT
 Running Scout Tests
 
+**NOTE:** make sure to set your password and keyfile locaiton in settings.py
+
 To run smoke tests for TBE/BH and TBE-PCR
-sh scripts/run_smoke.sh
+
+* sh scripts/run_smoke.sh
 
 To run quick tests for build verification
-pybot -i QUICK src/features/
+
+* pybot -i QUICK src/features/
+
+
 
