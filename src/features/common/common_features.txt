@@ -1,0 +1,25 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Resource          ../../keywords/common/ui_common_keywords.txt
+Resource          ../../keywords/db/sync_tasks.txt
+Resource          ../../resources/settings.txt
+Test Teardown     Close All Browsers
+
+
+*** Test Cases ***
+Scenario: Get Deployed Build Information on Staging
+  [Documentation]  Get details of the build deployed on staging environment
+  [Tags]  BUILD_INFO_STG  QUICK  SMOKE  REGRESSION
+    ${build_info}=  Verify Build Version  ${STAGING_SERVER}
+    Log  ABOUT BUILD ON STAGING - ${build_info}  HTML
+
+Scenario: Get Deployed Build Information on Test
+  [Documentation]  Get details of the build deployed on test environment
+  [Tags]  BUILD_INFO_TST  QUICK_TEST  SMOKE  REGRESSION
+    ${build_info}=  Verify Build Version  ${TEST_SERVER}
+    Log  ABOUT BUILD ON TEST - ${build_info}  HTML
+
+
+
+
