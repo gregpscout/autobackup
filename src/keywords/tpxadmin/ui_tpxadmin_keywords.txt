@@ -3,6 +3,8 @@ Library    String
 Resource  ../../resources/settings.txt
 Resource  ../../keywords/common/ui_common_keywords.txt
 Variables  ../../models/Recruiter_Models.py
+Resource  ../../keywords/common/pycharm.txt
+
 
 *** Variables ***
 ${Staging_Admin_URL}	https://staging.talentpx.com/
@@ -17,10 +19,12 @@ ${emailDomain}  @mailinator.com
 
 	
 *** Keywords ***
+
+
 User is on Scout Admin Login Page
   [Arguments]  ${url} 
 	Open Browser  ${url}  ${BROWSER}
-	Maximize Browser Window
+	#Maximize Browser Window
 	TPX Admin Login Page Should Be Open
 	
 TPX Admin Login Page Should Be Open
@@ -43,8 +47,10 @@ Verify user is logged in to Scout Admin
 
 Impersonate User ${userId} in Ats ${ats} and Company ${company}
     Go To ATS Page  ${ats}
-    Go to Company "${company}" page  
+    Go to Company "${company}" page
     Wait Until Keyword Succeeds  10  2  Click Element  xpath=//*[@href="\/admin\/impersonate\?user_id=${userId}"]
+    #even tho it suceeds it seems to need a second or two to be read else it 404's
+    Sleep  4s
 
 Verify User is on Scout Iframe for TEE 
     Wait Until Keyword Succeeds  20  2  Page Should Contain  Hello, Scout QA
@@ -504,5 +510,56 @@ Add a Scout+ Recruiter in TBE
 	Verify user is on TBE-Sandbox Users page  TALENTDRIVE2
 	Add Scout+ Company  ${ats_id}
 
+
+
+
+
+# TPX iFRAME KEYWORDS FOR SENDOUTS
+
+Set up and Impersonate "${RichLittle}" for iFrame Testing in TPX "${SO_PARTNER}" "${SO_COMPANY}"
+#for some reason this works more often with the logs in here still it has a hard time finding the link to click
+      Login to Scout Admin   ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+
+      Go To Company Page  ${SO_PARTNER}  ${SO_COMPANY}
+      Set Test Variable  ${URLXpath}  "___"
+      Set Test Variable  ${URLXpath}  ${IMPERSONATE_GREGPARSONS_LINK_sandbox_xpath}
+      Log To Console  one urlx is ${URLXpath}
+
+      Run Keyword If      '${RichLittle}' == 'Geddy'  Set Test Variable  ${URLXpath}  ${IMPERSONATE_GEDDY_LINK_sandbox_xpath}
+      Run Keyword If      '${RichLittle}' == 'Alex'  Set Test Variable  ${URLXpath}  ${IMPERSONATE_ALEX_LINK_sandbox_xpath}
+      Run Keyword If      '${RichLittle}' == 'gregParsons'  Set Test Variable  ${URLXpath}  ${IMPERSONATE_GREGPARSONS_LINK_sandbox_xpath}
+      Log To Console  two urlx is ${URLXpath}
+      Wait Until Page Contains Element  ${URLXpath}  10
+      Click Link  ${URLxpath}
+      Wait Until Page Contains  Password  10
+
+      Verify You Are Logged Out Of Scout Admin
+
+SendOuts Search And Import iFrame in TPX
+      Wait Until Keyword Succeeds  20  2   Load Scout Job Search iFrame  ${SO_SEARCH}
+      #Click Scout Job iFrame Search Page 2 Button
+      Switch To Search Job Orders Tab In Scout iFrame
+      #pass the target job field name from the ini you want to read
+      #Search Job Orders in Scout iFrame By Title  job
+      Search Job Orders in Scout iFrame By Title  job2
+      Import The Found Job
+
+#QUES: are these no longer needed and superceeded by common calls?
+#TODO: combine the two and just pass the phrase "Logged Into" or "Logged Out Of"
+Verify You Are Logged Into Scout Admin
+  [Documentation]  Verifying that you are indeed logged into the Scout TPXAdmin
+      #Sleep  3s
+      Page Should Contain  ${LOGOUT_HREF_CAPTION_text}
+      Page Should Contain Link  ${LOGOUT_HREF}   loglevel=${LOGLEVEL}
+      Location Should Contain  ${SITE_URL}
+
+#TODO: combine the two and just pass the phrase "Logged Into" or "Logged Out Of"
+Verify You Are Logged Out Of Scout Admin
+  [Documentation]  Verifying that you are indeed logged out of the Scout TPXAdmin
+      #Sleep  3s
+      Page Should Contain  ${LOGIN_HREF_text}
+      Page Should Contain Link  ${LOGIN_HREF}  loglevel=${LOGLEVEL}
+      Location Should Contain  ${SITE_URL}
+      Sleep  2s
 
 

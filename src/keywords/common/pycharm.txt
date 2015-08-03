@@ -1,0 +1,15 @@
+*** Settings ***
+Resource  db_Retrieve_Job_From_Mongodb.txt
+Resource  sync_tasks.txt
+Resource  soWriteIni.txt
+Resource  mysettings.txt
+
+Resource  ui_bullhorns_keywords.txt
+Resource  ui_bullhorn_keywords.txt
+Resource  ui_tpxadmin_keywords.txt
+Resource  ui_sendouts_keywords.txt
+Resource  ui_common_keywords.txt
+Resource  ui_tbe_keywords.txt
+Resource  ui_tee_keywords.txt
+Resource  ui_pcr_keywords.txt
+

@@ -25,6 +25,13 @@ ${jobTitle}        Test Job for Automation
 
 *** Test Cases ***
 
+Scenario: TestIt
+  [Tags]  GREGP
+    Log  ${TBE_REQ1['title']}
+    Enter Job Details for TBE  ${TBE_REQ1}
+
+
+
 Scenario: Test Create Requisition in TBE for Bullhorn
   [Documentation]  Creates jobs for Bullhorn testing in TBE
   ...  Runs sync and waits for 4 mins for the sync to complete
@@ -59,6 +66,18 @@ Scenario: Test Create Requisition in TBE for PCR
     And Create New Requisition in TBE  ${TBE_REQ5}
     ${jobId}=  Get Job Req Id  ${TBE_REQ4['title']}
     Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  test
+
+Scenario: Test Create Requisition in TBE for SO
+  [Documentation]  Creates jobs for PCR testing in TBE
+  ...  Runs sync and waits for 4 mins for the sync to complete
+  ...  Verifies that job is created in the database
+  [Tags]  JOBCREATION_SO  SMOKE
+    Given User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+    When Create New Requisition in TBE  ${TBE_REQ9}
+    And Create New Requisition in TBE  ${TBE_REQ10}
+    ${jobId}=  Get Job Req Id  ${TBE_REQ9['title']}
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  test
+
 
 Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
   [Documentation]  Shares candidate and accepts the same candidate in TBE

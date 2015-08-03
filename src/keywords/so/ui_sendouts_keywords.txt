@@ -1,0 +1,212 @@
+*** Settings ***
+Resource  ../../keywords/common/pycharm.txt
+
+*** Keywords ***
+    
+Load Scout Job Search iFrame 
+  [Documentation]  loads the scout iframe outside of the test ATS
+  [Arguments]  ${iFrameSearchURL}
+      Go To  ${iFrameSearchURL}
+      Verify Scout Job iFrame Fully Loaded
+Switch To Search Job Orders Tab In Scout iFrame
+      Wait Until Element is Visible  ${iFRAME_SEARCH_TAB_xpath}
+      Click Link  ${iFRAME_SEARCH_TAB_xpath}
+Verify Sync Jobs After Getting Data From Sendouts Ini File 
+  [Arguments]  ${iniSection}  ${JobCaption}  ${JobIdCaption}
+      ${SOJobTitleSearchString}=  Read Item from Ini  ${iniSection}  ${JobCaption} 
+      ${SOJobId}=  Read Item from Ini  ${iniSection}  ${JobIdCaption} 
+      Wait Until Keyword Succeeds  10  2  Retrieve JobId With Desired Fields From Mongodb  ${SOJobId}  ${SOJobTitleSearchString}
+
+Search Job Orders In Scout iFrame By Title
+  [Arguments]  ${TargetJob}
+  [Documentation]  using the (keyword or) Title search box only, perform a search
+      ${SOJobTitleSearchStringFromIni}=  Read Item from Ini  LOGIN  ${TargetJob}
+      Input Text  keyword  ${SOJobTitleSearchStringFromIni}
+      Click Scout Job iFrame Search Button
+      Wait until Page Contains  The placement fee is the gross placement fee  10
+      Page Should Not Contain  Your search for ${SOJobTitleSearchStringFromIni} returned no results. 
+      Wait until Page Contains Element  //*[@id="req-search-table"]/tbody/tr/td[3]
+
+
+Import The Found Job
+      Verify the Search Title String Search Results Success Case
+      #vs fail case
+      Tic the Scout Job iFrame First Search Results Checkbox
+      Click Scout Job iFrame Import Button
+      #TODO how to verify that worked
+      Back to Search on Scout for SendOuts
+Share Candidate
+      Click Button  share-candidate-button
+      Wait Until Keyword Succeeds  10  2  Page Should Contain Element  share-modal
+      Input Text  to_addresses  scout_qa+shareTest@goscoutgo.com
+      Click Element  share-modal__send    
+      Verify User is on Candidate Details Page
+Accept Candidate
+      Click Button  interested 
+      Wait Until Keyword Succeeds  10  2  Page Should Contain Element  interested-modal 
+      Element Should Contain  interested-modal  Would you like to import ${Robot_Accept_SO Tessa['mod_name']} to the ${workingTitle} requisition?
+      Click Element  interested-modal__submit
+Reject Candidate With Reason 
+  [Arguments]  ${RejectReason}
+      Click Button  not-interested
+      Wait Until Keyword Succeeds  10  2  Page Should Contain Element  not-interested-modal
+      Log To Console  ${RejectReason}
+      Run Keyword If  ${RejectReason} == 0  Select Radio Button  not-interested-reason  ${TBE_Rejection_Reasons['Candidate_Qualifications']}
+      Run Keyword If  ${RejectReason} == 1  Select Radio Button  not-interested-reason  ${TBE_Rejection_Reasons['Placement_Fee']}
+      Run Keyword If  ${RejectReason} == 2  Select Radio Button  not-interested-reason  ${TBE_Rejection_Reasons['Other']}
+      Run Keyword If  ${RejectReason} == 5  Select Radio Button  not-interested-reason  ${TBE_Rejection_Reasons['Duplicate']}
+
+      Run Keyword If  ${RejectReason} == 0  Input Text  not-interested-modal__comments  ${TBE_Rejection_Comments['Candidate_Qualifications']}
+      Run Keyword If  ${RejectReason} == 0  Input Text  not-interested-modal__comments  ${TBE_Rejection_Comments['Placement_Fee']}
+      Run Keyword If  ${RejectReason} == 0  Input Text  not-interested-modal__comments  ${TBE_Rejection_Comments['Other']}
+      Click Element  not-interested-modal__submit
+
+
+Back To Search On Scout for SendOuts
+  [Documentation]  selects back to search button after importing a job from Scout into Bullhorn
+      Wait Until Page Contains Element  import-back-to-list
+      Click Button  import-back-to-list   
+      Verify User is on Search Jobs Page for Scout in SO
+
+
+
+#TODO figure out how to merge with and expand the common version of this 
+Go To Company Page 
+  [Arguments]  ${PARTNER}  ${COMPANY}
+      Log to Console  ${PARTNER}  ${COMPANY}
+      Verify You Are Logged Into Scout Admin
+      Log to Console   ${SITE_URL}/admin/account/${PARTNER}/${COMPANY}/
+      Go To  ${SITE_URL}/admin/account/${PARTNER}/${COMPANY}/
+      Log to Console  {COMPANY_PAGE_DIVERSITY_HEADER_xpath}
+      Wait Until Page Contains Element  ${COMPANY_PAGE_DIVERSITY_HEADER_xpath}
+
+
+Verify Scout Job iFrame Fully Loaded
+  [Documentation]  verifies the search results page loaded via  pagination button number 1 is visible
+      Wait Until Element is Visible  ${iFRAME_SEARCH_PAGE_1_BUTTON_xpath}  10
+
+# TODO ahhh, what are the differences of these?
+# copied from PCR - combine?
+Verify User Is On Search Jobs Page For Scout In SO
+  [Documentation]  Verifies that the search loaded in the iframe via teh text advanced search showing
+      Element Should Be Visible  advanced-search
+      Wait Until Page Contains  Find new orders matched for you.
+Verify Scout Job iFrame Search Is Fully Loaded
+  [Documentation]  Verifies the iFrame Search page is full loaded
+      Wait Until Page Contains  days
+Verify Search Page Is Loaded
+  [Documentation]  Verifies the iFrame Search results page loaded by checking
+  ...  that the  import button is visible
+  ...  and the page title is right
+      Wait Until Page Contains  Find new orders matched for you.
+      Wait Until Element is Visible  ${iFRAME_IMPORT_BUTTON_xpath}
+      ${searchTitleIsCorrect}=  Title Should Be  ${SO_iFRAME_title}
+
+
+Verify the Search Title String Search Results Success Case
+      Wait Until Element is Visible  ${SO_BY_TITLE_SEARCH_STRING_RESULT_xpath}  4
+Verify the Search Title String Search Results Fail Case
+      Wait Until Element is Visible  ${iFRAME_SEARCH_FAIL_xpath}
+      Element Text Should Be  ${iFRAME_SEARCH_FAIL_xpath}  ${iFRAME_SEARCH_FAIL_text}  2
+
+#kill it off and envelop it elsewhere
+Verify Scout Job iFrame First Checkbox Is Selected
+  [Documentation]  not exact science here but close enough for now
+  ...   assumes we are searching for 1 specific result
+      Wait Until Page Contains   1 selected
+
+
+Click Scout Job iFrame Search Button
+  [Documentation]   Click the Search button
+      #First time in the search button is called "review", if returning from import it is called "searchButton"
+      ${status}  ${value}=  Run Keyword And Ignore Error  Assign Id To Element  xpath=${iFRAME_SEARCH_BUTTON_xpath}  searchBUTTON
+      Run Keyword Unless  '${status}' == 'PASS'  Assign Id To Element  xpath=${iFRAME_SEARCH_IMPORT_RETURN_BUTTON_xpath}  searchBUTTON
+      Click Element  searchBUTTON
+Click Scout Job iFrame Search Page 2 Button
+  [Documentation]   Click the button that will take you to page two
+      Wait Until Element is Visible  ${iFRAME_SEARCH_PAGE_2_BUTTON_xpath}
+      Assign Id To Element  xpath=  ${iFRAME_SEARCH_PAGE_2_BUTTON_xpath}
+      Click Element  ${iFRAME_SEARCH_PAGE_2_BUTTON_xpath}
+Tic the Scout Job iFrame First Search Results Checkbox
+  [Documentation]   Tic the checkbox for the search result(s)
+      # TODO - don't need try it -     Set Suite Variable  ${checked}  False 
+      ${checked}=   Run Keyword And Return Status  Checkbox Should Not Be Selected  xpath=${iFRAME_FIRST_SEARCH_RESULT_CHECKBOX_xpath}
+      Run Keyword if  '${checked}'  Select Checkbox  xpath=${iFRAME_FIRST_SEARCH_RESULT_CHECKBOX_xpath}  
+      ${checked}=   Run Keyword And Return Status  Checkbox Should Be Selected  xpath=${iFRAME_FIRST_SEARCH_RESULT_CHECKBOX_xpath}
+      #and wait
+Click Scout Job iFrame Import Button
+  [Documentation]   Click the import button, and check that it succeeds
+      ${checked}=   Run Keyword And Return Status  Checkbox Should Be Selected  xpath=${iFRAME_FIRST_SEARCH_RESULT_CHECKBOX_xpath}
+      Run Keyword if  '${checked}'  Click Button  ${iFRAME_IMPORT_BUTTON_id} 
+      #Get Alert Message ?? no need ??
+
+      #TEST ============================================================
+      #that the import worked
+      #we have seen it fail so we want to catch that so we can debug it
+      ${status}   ${value} =  Run Keyword And Ignore Error  Wait Until Page Contains  An error occured importing this job.
+        
+      #FAIL CASE:  
+      #should it fail add a line to the log
+      Run Keyword If  '${status}' == 'PASS'  Log To Console  THE IMPORT FAILED
+
+      #SUCEES CASE: 
+      #if the import was successful as it should be   
+      Run Keyword Unless  '${status}' == 'PASS'  Wait Until Page Contains  * Fee: The placement fee is the gross placement fee % and not the net placement fee.
+
+#============================================================================
+# for the next three I want to use the common versions but I need to adjust 
+# it for the fact that sendouts SUBJECT hasfeedback prepended to it        
+#============================================================================
+
+# TODO
+# Test Need Help with Scout Link  in common file  
+Test Need Help With Scout Link For Sendouts
+  [Arguments]  ${needhelp_link}  ${needhelp_text}
+      Click Link  xpath=//*[@class="faq"]
+      Sleep  2s
+      Select Window  title=${needhelp_link}
+      Page Should Contain  ${needhelp_text}
+      Close Window
+#TODO had to change the nam adding "for sendouts" as there is already a  "Test Feedback Link on Scout"
+#Found: 'ui_pcr_keywords.Test Feedback Link on Scout' and 'ui_sendouts_keywords.Test Feedback Link on Scout'
+# Test Feedback Link on Scout is in common  
+Test Feedback Link On Scout For Sendouts
+  [Arguments]  ${feedback_input}  ${feedback_subject}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}
+      Sleep  3s
+      Log To Console   ------------------------ here   -------------------------`
+      Click Link  xpath=//*[@class="feedback-link"]
+      Wait Until Element is Visible  feedback-modal
+      Sleep  5s
+      Input Text  feedback-modal__feedback-textarea  ${feedback_input}
+      Click Button  feedback-modal__submit
+      Sleep  5s
+      Validate Email Received For Sendouts For Subject And Content  ${feedback_input}  ${feedback_subject}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}
+#TODO had to change the nam adding "for sendouts" as there is already a  "Test Feedback Link on Scout"
+#Found: Found: 'ui_pcr_keywords.Validate Email Received' and 'ui_sendouts_keywords.Validate Email Received'
+Validate Email Received For Sendouts For Subject And Content
+  [Arguments]  ${validate_input}  ${validate_subject}  ${EMAIL_ID}  ${EMAIL_PWD}  ${NOREPLY_EMAIL}
+      Open Mailbox  server=imap.googlemail.com  user=${EMAIL_ID}  password=${EMAIL_PWD}   
+      ${latest}=  Wait for mail  fromEmail=${NOREPLY_EMAIL}  toEmail=${SCOUT_QA_EMAIL}  timeout=60
+      ${parts}=  Walk Multipart Email  ${latest}
+      @{fields}=  Get Multipart Field Names
+      ${subject}=  Get Multipart Field  Subject
+        
+      #TODO -  has this been addressed?
+      #subjects are not the same, 'Feedback: ' is prepended
+      ${feedbackPrepend}=  Set Variable  Feedback:
+      ${new_validate_subject}=  Catenate  ${feedbackPrepend} ${validate_subject}
+
+      Should Be Equal   ${subject}   ${new_validate_subject}
+      ${payload}=  Get Multipart Payload  decode=True
+      ${content}=  Should Contain  ${payload}  ${validate_input}
+      Close Mailbox
+
+
+Submit The Candidate
+  [Documentation]   This is a simple keyword to allow for the use of "wait until keyword succeeds"
+      #yes it needs double slashes in this case to escape them
+      Run  "C:\\Users\\IEUser\\vm\\auto\\milton-automation\\src\\resources\\Sendouts_submission.exe"
+Place The Candidate
+  [Documentation]   This is a simple keyword to allow for the use of "wait until keyword succeeds"
+      # yes it needs double slashes in this case to escape them
+      Run  "C:\\Users\\IEUser\\vm\\auto\\milton-automation\\src\\resources\\Sendouts_placement.exe"

@@ -1,0 +1,188 @@
+*** Settings ***
+Library    Selenium2Library
+Library    OperatingSystem 
+Library    MongoDBLibrary
+Library    ImapLibrary
+Library    SSHLibrary
+Library    Screenshot
+Library    Dialogs
+Library    String
+
+Resource  ../../keywords/common/pycharm.txt
+
+Resource   ../../keywords/db/db_Retrieve_Job_From_Mongodb.txt
+Resource   ../../keywords/db/sync_tasks.txt
+
+Resource   ../../keywords/tpxadmin/ui_tpxadmin_keywords.txt
+Resource   ../../keywords/so/ui_sendouts_keywords.txt
+Resource   ../../keywords/tbe/ui_tbe_keywords.txt
+Resource   ../../keywords/pcr/ui_pcr_keywords.txt
+
+Resource   ../../resources/soWriteIni.txt
+#Resource   ../../resources/mysettings.txt
+Resource   ../../resources/settings.txt
+
+Variables  ../../models/Candidate_Rejection.py
+Variables  ../../models/Requisition_Models.py
+Variables  ../../models/Candidate_Models.py
+Resource  ../../keywords/common/pycharm.txt
+
+#Suite Teardown   Close All Browsers
+
+*** Variables ***
+#${browser}  googlechrome
+
+${feedback_input}  Robot Test Feedback in Sendouts
+${feedback_subject}  Geddy Lee at sendouts-sandbox (sendouts)
+${needhelp_so}  Scout for Sendouts - Go Scout Go  
+${needhelp_text}  Scout for Sendouts
+
+${OS}  Win
+
+
+*** Test Cases ***
+
+
+# VIDEO 1 ------------------------------------------------------------
+
+Scenario: Create New Requisition in TBE For Sendouts
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  WRITEINI  VIDEO1  ONE
+      Given Write Model To Ini
+      When User Logs in to TBE  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
+      Then Create New Requisition In TBE  ${TBE_REQ9}
+      And Create New Requisition In TBE  ${TBE_REQ10}
+      #And  Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
+      Log To Console  Sleeping 6 minutes for sync
+      And Sleep  6 minutes
+
+      #dateTimed Title Set as workintTitle
+      ${workingTitle}=  Set Variable   ${TBE_REQ9['title']}
+      ${jobId_1}=  Get Job Req Id  ${workingTitle}  #${TBE_REQ9['title']}
+
+      #update the ini file
+      And Write Item To Ini  LOGIN  Job  ${workingTitle}
+      And Write Item To Ini  LOGIN  JobId  ${jobId_1}
+
+      Close All Browsers
+
+
+
+
+Scenario: Impersonate Search And Import for iFrame Testing in TPX
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  IMPSRCH  VIDEO1
+      #Given Set Up And Impersonate "Geddy" For iFrame Testing In TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
+      Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+      And Sleep  2s
+      When Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
+      Then SendOuts Search And Import iFrame In TPX
+
+      Close All Browsers
+
+# VIDEO 2 ------------------------------------------------------------
+
+Scenario: Submit the Candidate via AutoIt
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  SUBMIT  VIDEO2
+  [Documentation]  Testing SendOuts for the following
+  ...  We have this part created in AutoIt for the windows app Sendouts
+  ...  so we call the autoit as exe
+       Wait Until Keyword Succeeds  10  2  Submit The Candidate
+
+# VIDEO 3 ------------------------------------------------------------
+
+
+Scenario: Share Candidate in TPX
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  SHARE  VIDEO3
+
+      #TODO pull out and put into ui_sendouts as Keyword to call 
+      ${JobId}=  Read Item from Ini  LOGIN  JobId
+      ${workingTitle}=  Read Item from Ini  LOGIN  Job
+      ${URL}=  Set Variable  ${SO_TBEJOBSEARCH}${JobId}
+      # can choose GregParsons, Geddy or Alex
+
+      # via TPX
+      #Given Login to Scout Admin  ${url}  ${username}  ${password}
+      Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+      #Given Set Up And Impersonate "GregParsons" For iFrame Testing In TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
+      When Impersonate User ${TBE_GREGP_USERID} in Ats ${TBE_PARTNER} and Company ${TBE_COMPANY}
+      #When Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
+      Log  ${URL}
+
+      Given Go To  ${URL}
+      When Click Link  ${SO__Accept_Candidate_Tessa['mod_name']}
+      #When Click Link  ${Robot_Accept_SO_Tessa['mod_name']}
+      And Verify User Is On Candidate Details Page
+      Then Share Candidate
+
+      Close All Browsers
+
+
+Scenario: Accept Candidate in TPX
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  ACCEPT  VIDEO3
+
+      ${JobId}=  Read Item from Ini  LOGIN  JobId
+      ${workingTitle}=  Read Item from Ini  LOGIN  Job
+      ${URL}=  Set Variable  ${SO_TBEJOBSEARCH}${JobId}
+      
+      Given Set up and Impersonate "GregParsons" for iFrame Testing in TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
+      And Go To  ${URL}
+      When Click Link  ${Robot_Accept_SO_Tessa['mod_name']}
+      And Verify User Is On Candidate Details Page
+      Then Accept Candidate
+      
+      Close All Browsers
+
+
+# VIDEO 3A -----------------------------------------------------------
+
+
+Scenario: Reject Candidate via AutoIt
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  REJECT  VIDEO3A
+
+      ${JobId}=  Read Item from Ini  LOGIN  jobid
+      ${URL}=  Set Variable  ${SO_TBEJOBSEARCH}${JobId}
+
+      Given Set Up And Impersonate "GregParsons" For iFrame Testing In TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
+      And Go To  ${URL}
+      When Click Link  ${Robot_Reject_SO_Candidate2['mod_name']} 
+      And Verify User Is On Candidate Details Page 
+
+      # calls a random reason, or you can force a selection
+      ${rejectReason}=  Generate Random String  1  0125
+      Then Reject Candidate With Reason  ${rejectReason} 
+      
+      Close All Browsers
+
+
+# VIDEO 4 ------------------------------------------------------------
+
+Scenario: Place the Candidate in TPX
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  PLACE  VIDEO4
+  [Documentation]  Testing SendOuts for the following
+  ...  We have this part created in AutoIt for the windows app Sendouts
+  ...  so we call the autoit as exe
+       Wait Until Keyword Succeeds  10  2  Place The Candidate        
+
+# VIDEO 5 ------------------------------------------------------------
+
+Scenario: Test Links in TPX
+  [Tags]  SENDOUTS  ENDTOEND  SMOKE  TESTLINKS  FEEDBACK  VIDEO5
+    #Given Set Up And Impersonate For iFrame Testing In TPX  Geddy
+    Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
+    And Sleep  2s
+    Then Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
+    And Go To  ${SO_SEARCH}
+    # TODO to figure out why I can't swap this ONE line out
+    # for the rest of the lines - window gets lost
+    #Then Test Links on Scout For PCR  ${SO_SEARCH}  ${feedback_subject}
+
+    And Sleep  2s
+    Then Test Feedback Link On Scout For Sendouts  ${feedback_input}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+
+    #Given Set Up And Impersonate For iFrame Testing In TPX  Geddy
+    And Go To  ${SO_SEARCH}
+    And Sleep  2s
+    Then Test Need Help With Scout Link  ${needhelp_so}  ${needhelp_text}
+
+
+
+  

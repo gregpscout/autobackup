@@ -1,6 +1,8 @@
 import datetime as dt
 from datetime import datetime, time, timedelta
+
 now = dt.datetime.now()
+
 
 TBE_REQ1 = {
     "openDate": now.strftime("%m/%d/%Y"),
@@ -97,6 +99,58 @@ TBE_REQ8 = {
     "postToScout": 'CUSTOM_935',
     "description": "TBE Job Requisition Test Description 5 for Bullhorn"
 }
+
+TBE_REQ9 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_SO_Scout_Test09",
+    "location": '73',
+    "jobCat": '119',
+    "status": '2',
+    "numOpen": '9',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 1 (Req9) for SendOuts"
+}
+
+TBE_REQ10 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_SO_Scout_Test10",
+    "location": '73',
+    "jobCat": '119',
+    "status": '2',
+    "numOpen": '10',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 2 (req10) for SendOuts"
+}
+
+
+TBE_REQ11 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_SO_Scout_Test2",
+    "location": '61',
+    "jobCat": '116',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 1 for SendOuts"
+}
+
+TBE_REQ12 = {
+    "openDate": now.strftime("%m/%d/%Y"),
+    "title": "robot_TBE_SO_Scout_Test3",
+    "location": '38',
+    "jobCat": '115',
+    "status": '2',
+    "numOpen": '1',
+    "duration": '1',
+    "postToScout": 'CUSTOM_935',
+    "description": "TBE Job Requisition Test Description 2 for SendOuts"
+}
+
 
 TBE_SCOUT_PLUS_1 = {
     "openDate": now.strftime("%m/%d/%Y"),

@@ -1,0 +1,67 @@
+*** Settings ***
+# homemade library of self defined "keyword" functions
+Library  ../src/resources/iniWriterForAutoit.py
+# include the settings file for our tests
+Resource  ../src/resources/settings.txt
+
+Resource  ../../keywords/common/pycharm.txt
+
+*** Keywords ***
+
+Write Model To Ini
+  # about integer variables =======================
+  #
+  # ${INTEGER} =    Set Variable    0
+  # Log To Console  1 ${INTEGER}
+  # ${INTEGER} =    Evaluate    ${INTEGER} + 1
+  # Log To Console  2 ${INTEGER}
+  # Set Test Variable  ${INTEGER}  ${INTEGER + 1}
+  # Log To Console  3 ${INTEGER}
+
+    #I was getting the wrong number of items sent to createConfigFile
+    # turned out that there was only 1 space between two of the items in the list
+    ${a} =    Set Variable    0
+
+    @{items} =  Create List  ${INI_WRITE_FILE_LOCATION}  ${INI_SECTION_NAME}  ${SO_CLIENTNAME}  ${SO_COMPANY}  ${SO_USERNAME}  ${SO_PASSWORD}  ${SO_JOB_TITLE_SEARCH_STRING_1}  ${SO_JOB_TITLE_SEARCH_STRING_2}  ${SO_JOB_TITLE_SEARCH_STRING_3}  ${SO_SUBMISSIONNAME}  ${SO_SUBMISSIONNAME2}  ${SO_SUBMISSIONNAME3}
+    Log To Console  ====
+    :FOR  ${item}  IN  @{items}
+    \    ${a} =   Evaluate   ${a} + 1
+    \    Log To Console  count:item ${a} ${item}
+    \    Log  ${item}
+    #Call to external library keyword in AutoItConfigLibrary.py or iniWriterForAutoit
+    createConfigFile  @{items}
+
+Write Item To Ini
+  [Arguments]  ${sectionName}  ${itemName}  ${item}    
+    #Call to external library keyword in AutoItConfigLibrary.py or iniWriterForAutoit
+    Log To Console  ${INI_WRITE_FILE_LOCATION}
+    @{items} =  Create List  ${INI_WRITE_FILE_LOCATION}  ${sectionName}  ${itemName}  ${item} 
+    ${a} =    Set Variable    0
+    Log To Console  ----
+    Log To Console  WRITE TO INI: count:item
+    :FOR  ${item}  IN  @{items}
+    \    ${a} =   Evaluate   ${a} + 1
+    \    Log To Console  WRITE TO INI: ${a} ${item}
+    \    Log  ${item}
+    ${reply}=  addConfigItem  @{items}
+
+Read Item from Ini
+  [Arguments]  ${section}  ${option}  
+    @{items} =  Create List  ${INI_WRITE_FILE_LOCATION}  ${section}  ${option}
+    ${a} =    Set Variable    0
+    Log To Console  ----
+    Log To Console  WRITE TO INI: count:item
+    :FOR  ${item}  IN  @{items}
+    \    ${a} =   Evaluate   ${a} + 1
+    \    Log To Console  WRITE TO INI: ${a} ${item} ${item[${a-1}]}
+    \    Log  ${item}
+       
+
+    ${targetOption} =  readConfigItem  @{items} 
+    Log To Console  returned targetOption is : ${targetOption}
+    Log To Console  ---------------------------------------------
+    Log To Console  .                                         .
+
+
+    [return]  ${targetOption}
+

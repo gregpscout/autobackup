@@ -1,9 +1,12 @@
 *** Settings ***
 Variables    ../../models/Requisition_Models.py
+Library      OperatingSystem
 Resource     ../../resources/settings.txt
 Resource     ../common/ui_common_keywords.txt
+Resource  ../../keywords/common/pycharm.txt
 
 *** Keywords ***
+
 User Logs in to TBE
   [Arguments]  ${TBE_USERNAME}  ${TBE_PASSWORD}  ${TBE_COMPANY}
     User is on TBE Site  ${TBE}  ${BROWSER}
@@ -13,7 +16,7 @@ User Logs in to TBE
 User is on TBE Site  
   [Arguments]  ${Url}  ${Browser}  
     Open Browser  ${Url}  ${Browser}
-    Maximize Browser Window
+    #Maximize Browser Window
     TBE Login Page Should Be Open
 
 Login to TBE
@@ -24,24 +27,35 @@ Login to TBE
     Click Button  Submit	
     
 Go to Create Requisition Form in TBE
-  [Documentation]  Takes the user to Create Requisition Form when logged in to TBE
-    Mouse Down On Link  Requisitions 
-    Wait Until Page Contains  New Requisition
-    Wait Until Element is Visible  xpath=/html/body/div[4]/div/div/ul/li[2]/ul/li[2]/a
-    Click Link  New Requisition	
-    Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a  
+  [Documentation]  Takes the user to Create Requisition Form when logged in to TBE With Case for Windows which does not see New Requistion
+    Run Keyword If  '%{OS}' == 'Windows_NT'  Go To  https://chj.tbe.taleo.net/chj01/ats/requisitions/RequisitionAdd.jsp?act=add&subtabs=Y
+    Run Keyword Unless  '%{OS}' == 'Windows_NT'  Mouse Down On Link  Requisitions
+    Run Keyword Unless  '%{OS}' == 'Windows_NT'  Wait Until Page Contains  New Requisition
+    Run Keyword Unless  '%{OS}' == 'Windows_NT'  Wait Until Element is Visible  xpath=/html/body/div[4]/div/div/ul/li[2]/ul/li[2]/a
+    Run Keyword Unless  '%{OS}' == 'Windows_NT'  Click Link  New Requisition
+    Run Keyword Unless  '%{OS}' == 'Windows_NT'  Mouse Up  xpath=/html/body/div[4]/div/div/ul/li[2]/a
     
 User is on Create Requisition Page for TBE
     Page Should Contain  Requisitions: New Requisition 
     
-Create New Requisition in TBE  
+Create New Requisition in TBE
   [Arguments]  ${tbeReq} 
     Go to Create Requisition Form in TBE
-    User is on Create Requisition Page for TBE 
+    User is on Create Requisition Page for TBE
     Enter Job Details for TBE  ${tbeReq}
-    
+
 Enter Job Details for TBE  
-  [Arguments]  ${tbeReq}    
+  [Arguments]  ${tbeReq}
+    #Log Title
+    #Log Location
+    Log  ${tbeReq}
+    Log  ${tbeReq['title']}
+    Log  ${tbeReq['openDate']}
+    Log To Console  ${tbeReq}
+    Log To Console  ${tbeReq['title']}
+    Log To Console  ${tbeReq['openDate']}
+    Log To Console  ${tbeReq['description']}
+
     Input Text  openedDate  ${tbeReq['openDate']}
     Input Text  title  ${tbeReq['title']} 
     Select From List  location  ${tbeReq['location']}
@@ -51,6 +65,7 @@ Enter Job Details for TBE
     Select From List  duration  ${tbeReq['duration']}
     Select Checkbox  ${tbeReq['postToScout']}
     Checkbox Should Be Selected  CUSTOM_950
+    Select From List  CUSTOM_936  ${tbeReq['fee']}
     Select Frame  xpath=//iframe[contains(@class,'cke_wysiwyg_frame')]
     Input Text  xpath= //body[contains(@class,'cke_editable')]  ${tbeReq['description']} 
     Unselect Frame

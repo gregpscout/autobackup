@@ -63,8 +63,8 @@ Sync Requisitions in Scout Admin for Company
     Run Keyword if  '${env}' == 'prod'  Login to Scout Admin  ${TPXADMIN_PROD}  ${USERNAME_TPXADMIN_PROD}  ${PASSWORD_TPXADMIN_PROD}
     Go To ATS Page  ${ats}
     Go to Company "${company}" page
-    Click Button  Sync Requisitions
-    Sleep  6m
+    #Click Button  Sync Requisitions
+    #Sleep  6m
 
 User is on Build Verification Site
   [Arguments]  ${Url}

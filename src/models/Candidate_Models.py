@@ -1,5 +1,6 @@
 import datetime as dt
 from datetime import datetime, time, timedelta
+
 now = dt.datetime.now()
 
 BHS_Accept_Candidate = {
@@ -79,3 +80,34 @@ BHS_TEE_Reject = {
     "id": '153',
     "fee": '18'
 }
+
+SO__Accept_Candidate_Tessa = {
+"name": "Tessa",
+"mod_name": "Tessa C.",
+"id": '85',
+"fee": '13'
+}
+
+SO__Accept_Candidate_Tiesto = {
+"name": "Tiesto",
+"mod_name": "Tiesto C.",
+"id": '112',
+"fee": '10'
+}
+
+Robot_Accept_SO_Tessa = {
+    "name": "Tessa",
+    "mod_name": "Tessa C.",
+    "id": '85'
+}
+Robot_Reject_SO_Candidate2 = {
+    "name": "Tiesto",
+    "mod_name": "Tiesto C.",
+    "id": '112'
+}
+Robot_Extra_SO_Candidate3 = {
+    "name": "Taylor Swift",
+    "mod_name": "Taylor S.",
+    "id": '112'
+}
+
