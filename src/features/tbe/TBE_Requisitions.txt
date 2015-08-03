@@ -25,11 +25,6 @@ ${jobTitle}        Test Job for Automation
 
 *** Test Cases ***
 
-Scenario: TestIt
-  [Tags]  GREGP
-    Log  ${TBE_REQ1['title']}
-    Enter Job Details for TBE  ${TBE_REQ1}
-
 
 
 Scenario: Test Create Requisition in TBE for Bullhorn
