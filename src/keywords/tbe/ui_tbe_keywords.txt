@@ -16,7 +16,7 @@ User Logs in to TBE
 User is on TBE Site  
   [Arguments]  ${Url}  ${Browser}  
     Open Browser  ${Url}  ${Browser}
-    #Maximize Browser Window
+    Maximize Browser Window
     TBE Login Page Should Be Open
 
 Login to TBE

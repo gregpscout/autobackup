@@ -24,7 +24,7 @@ ${emailDomain}  @mailinator.com
 User is on Scout Admin Login Page
   [Arguments]  ${url} 
 	Open Browser  ${url}  ${BROWSER}
-	#Maximize Browser Window
+	Maximize Browser Window
 	TPX Admin Login Page Should Be Open
 	
 TPX Admin Login Page Should Be Open
