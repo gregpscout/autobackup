@@ -94,7 +94,6 @@ Scenario: Create New Requisition in TBE For Sendouts
 
 Scenario: Impersonate Search And Import for iFrame Testing in TPX
   [Tags]  SENDOUTS  ENDTOEND  SMOKE  IMPSRCH  VIDEO1
-      #Given Set Up And Impersonate "Geddy" For iFrame Testing In TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
       Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
       And Sleep  2s
       When Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
@@ -126,7 +125,6 @@ Scenario: Share Candidate in TPX
       # via TPX
       #Given Login to Scout Admin  ${url}  ${username}  ${password}
       Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-      #Given Set Up And Impersonate "GregParsons" For iFrame Testing In TPX "${TBE_PARTNER}" "${TBE_COMPANY}"
       When Impersonate User ${TBE_GREGP_USERID} in Ats ${TBE_PARTNER} and Company ${TBE_COMPANY}
       #When Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
       Log  ${URL}
@@ -192,21 +190,18 @@ Scenario: Test Links in TPX
   [Tags]  SENDOUTS  ENDTOEND  SMOKE  TESTLINKS  FEEDBACK  VIDEO5
     #Given Set Up And Impersonate For iFrame Testing In TPX  Geddy
     Given Login to Scout Admin  ${TPXADMIN_STG}  ${USERNAME_TPXADMIN_STG}  ${PASSWORD_TPXADMIN_STG}
-    And Sleep  2s
-    Then Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
+    # replaced sleep 2s with wait until below  -leave comment to see if this is a fail point
+    Then Wait Until Keyword Succeeds  10  2  Impersonate User ${SO_USERID} in Ats ${SO_PARTNER} and Company ${SO_COMPANY}
     And Go To  ${SO_SEARCH}
     # TODO to figure out why I can't swap this ONE line out
     # for the rest of the lines - window gets lost
     #Then Test Links on Scout For PCR  ${SO_SEARCH}  ${feedback_subject}
 
-    And Sleep  2s
-    Then Test Feedback Link On Scout For Sendouts  ${feedback_input}  ${feedback_subject}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
+    # replaced sleep 2s with wait until below  -leave comment to see if this is a fail point
+    Then Wait Until Keyword Succeeds  10  2  Test Feedback Link On Scout  ${feedback_input}  ${STAGING_EMAIL_ID}  ${STAGING_EMAIL_PWD}  ${NOREPLY_STAGING_EMAIL}
 
-    #Given Set Up And Impersonate For iFrame Testing In TPX  Geddy
-    And Go To  ${SO_SEARCH}
-    And Sleep  2s
-    Then Test Need Help With Scout Link  ${needhelp_so}  ${needhelp_text}
-
+    # replaced sleep 2s with wait until below  -leave comment to see if this is a fail point
+    Then Wait Until Keyword Succeeds  10  2  Test Need Help With Scout Link  ${needhelp_so}  ${needhelp_text}
 
 
   

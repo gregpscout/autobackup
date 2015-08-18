@@ -13,7 +13,8 @@ TBE_REQ1 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 1 for Bullhorn"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 1 for Bullhorn"
 }
 
 TBE_REQ2 = {
@@ -25,7 +26,8 @@ TBE_REQ2 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 2 for Bullhorn"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 2 for Bullhorn"
 }
 
 TBE_REQ3 = {
@@ -37,7 +39,8 @@ TBE_REQ3 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 3 for Bullhorn"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 3 for Bullhorn"
 }
 
 TBE_REQ4 = {
@@ -49,7 +52,8 @@ TBE_REQ4 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 1 for PCR"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 1 for PCR"
 }
 
 TBE_REQ5 = {
@@ -61,7 +65,8 @@ TBE_REQ5 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 2 for PCR"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 2 for PCR"
 }
 
 TBE_REQ6 = {
@@ -73,7 +78,8 @@ TBE_REQ6 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
-    "description": "TBE Job Requisition Test Description 3 for PCR"    
+    "fee": '722',
+    "description": "TBE Job Requisition Test Description 3 for PCR"
 }
 
 TBE_REQ7 = {
@@ -85,6 +91,7 @@ TBE_REQ7 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 4 for Bullhorn"
 }
 
@@ -97,6 +104,7 @@ TBE_REQ8 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 5 for Bullhorn"
 }
 
@@ -136,6 +144,7 @@ TBE_REQ11 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 1 for SendOuts"
 }
 
@@ -148,6 +157,7 @@ TBE_REQ12 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 2 for SendOuts"
 }
 
@@ -161,6 +171,7 @@ TBE_SCOUT_PLUS_1 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 1 for BH. Scout+ Job"
 }
 
@@ -173,6 +184,7 @@ TBE_SCOUT_PLUS_2 = {
     "numOpen": '1',
     "duration": '1',
     "postToScout": 'CUSTOM_935',
+    "fee": '722',
     "description": "TBE Job Requisition Test Description 2 for BH. Scout+ Job"
 }
 

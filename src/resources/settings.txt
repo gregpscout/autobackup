@@ -64,6 +64,25 @@ ${SCOUT_EMAIL}						scout_support@goscoutgo.com
 ${TBE_SCOUT_CONTACT}				QA Scout
 ${TBE_SCOUT_EMAIL}					scout_qa+tbeautomation@goscoutgo.com
 
+${TEE_SCOUT_CONTACT}                Scout QA
+${TEE_SCOUT_EMAIL}                  Scout_QA@goscoutgo.com
+
+#************************* TEE STAGING Elements **********************************
+${TEE}                              https://ptrthinktalent.taleo.net
+${TEE_USERNAME}                     ScoutQA
+${TEE_PASSWORD}                     taleo123
+
+#************************* TPX TEST Elements **********************************
+${TPXADMIN_TST}                     https://test.talentpx.com/admin/login
+${USERNAME_TPXADMIN_TST}            scout_support@goscoutgo.com
+${PASSWORD_TPXADMIN_TST}            password
+
+#************************* TPX PROD Elements **********************************
+${TPXADMIN_PROD}                    https://prod.talentpx.com/admin/login
+${USERNAME_TPXADMIN_PROD}           scout_support@goscoutgo.com
+${PASSWORD_TPXADMIN_PROD}           198712ecf776b
+
+
 #************************* SO Elements ***********************************
 # override for windows sendouts needs a specific change to "Win" for if/then
 ${OS}								Win

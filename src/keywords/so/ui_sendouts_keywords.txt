@@ -233,10 +233,12 @@ Validate Email Received For Sendouts For Subject And Content
       Close Mailbox
 
 
+
 Submit The Candidate
   [Documentation]   This is a simple keyword to allow for the use of "wait until keyword succeeds"
       #yes it needs double slashes in this case to escape them
       Run  "C:\\Users\\IEUser\\vm\\auto\\milton-automation\\src\\resources\\Sendouts_submission.exe"
+
 Place The Candidate
   [Documentation]   This is a simple keyword to allow for the use of "wait until keyword succeeds"
       # yes it needs double slashes in this case to escape them

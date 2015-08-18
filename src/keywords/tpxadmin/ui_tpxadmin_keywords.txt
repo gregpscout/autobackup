@@ -537,7 +537,6 @@ Set up and Impersonate "${RichLittle}" for iFrame Testing in TPX "${SO_PARTNER}"
 
 SendOuts Search And Import iFrame in TPX
       Wait Until Keyword Succeeds  20  2   Load Scout Job Search iFrame  ${SO_SEARCH}
-      #Click Scout Job iFrame Search Page 2 Button
       Switch To Search Job Orders Tab In Scout iFrame
       #pass the target job field name from the ini you want to read
       Search Job Orders in Scout iFrame By Title  job1

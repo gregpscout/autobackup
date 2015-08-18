@@ -71,7 +71,7 @@ Scenario: Test Create Requisition in TBE for SO
     When Create New Requisition in TBE  ${TBE_REQ9}
     And Create New Requisition in TBE  ${TBE_REQ10}
     ${jobId}=  Get Job Req Id  ${TBE_REQ9['title']}
-    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  test
+    Then Sync Requisitions in Scout Admin for Company  taleo  TALENTDRIVE2  staging
 
 
 Scenario: Test Candidate Sharing and Acceptance in TBE Staging for Bullhorn
