@@ -540,9 +540,9 @@ SendOuts Search And Import iFrame in TPX
       #Click Scout Job iFrame Search Page 2 Button
       Switch To Search Job Orders Tab In Scout iFrame
       #pass the target job field name from the ini you want to read
-      #Search Job Orders in Scout iFrame By Title  job
+      Search Job Orders in Scout iFrame By Title  job1
       Search Job Orders in Scout iFrame By Title  job2
-      Import The Found Job
+      Import The Found Job  0  1
 
 #QUES: are these no longer needed and superceeded by common calls?
 #TODO: combine the two and just pass the phrase "Logged Into" or "Logged Out Of"

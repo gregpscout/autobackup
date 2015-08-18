@@ -88,7 +88,8 @@ ${SO_SUBMISSIONNAME3}				Taylor Swift
 ${SO_CANDIDATENAME}					Tessa C.
 ${SO_CANDIDATENAME2}				Tiesto C.
 ${SO_CANDIDATENAME3}				Taylor S.
-
+${SO_SINGLE_IMPORT_TITLE_STRING_RESULT}  The following job order has been added to your queue
+${SO_MULTI_IMPORT_TITLE_STRING_RESULT}  The following jobs order has been added to your queue
 
 ${OUTPUT}							None
 ${SO_TBEJOBSEARCH}					https://staging.talentpx.com/taleo/list-candidates?REQUISITION_ID=

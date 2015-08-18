@@ -29,12 +29,21 @@ Search Job Orders In Scout iFrame By Title
 
 
 Import The Found Job
+  [Documentation]  import single or multi, go back to search or view jobs
+  [Arguments]  ${Multi}  ${GoBack}
       Verify the Search Title String Search Results Success Case
       #vs fail case
       Tic the Scout Job iFrame First Search Results Checkbox
       Click Scout Job iFrame Import Button
-      #TODO how to verify that worked
-      Back to Search on Scout for SendOuts
+      # insert new feature  - agree to qualified candidates
+      Agree To Qualified Canddiates
+      #check for Multi or single job text
+      Verify Import Post Agreement Title String Success Case  ${Multi}
+      #click Back to Search or View Jobs
+      Run Keyword If  ${GoBack} == 1  Back to Search on Scout for SendOuts
+      Run Keyword If  ${GoBack} == 0  View Jobs On Scout for SendOuts
+
+#SHARE ACCEPT REJECT
 Share Candidate
       Click Button  share-candidate-button
       Wait Until Keyword Succeeds  10  2  Page Should Contain Element  share-modal
@@ -62,15 +71,37 @@ Reject Candidate With Reason
       Click Element  not-interested-modal__submit
 
 
+
+
+#supporting Keywords -----------------------------------------------------
+
+
+Agree To Qualified Canddiates
+  [Documentation]  selects Agree button for Qualified Canddiates popup
+      Wait Until Page Contains Element  import-agreement__ok
+      Click Button  import-agreement__ok
+      #btn btn-primary
+Verify Import Post Agreement Title String Success Case
+  [Arguments]  ${Multi}
+       Sleep  4s
+       Wait Until Page Contains Element  import-header  4
+       Run Keyword If  ${Multi} == 0  Wait Until Element Contains  import-header  ${SO_SINGLE_IMPORT_TITLE_STRING_RESULT}  8
+       Run Keyword If  ${Multi} == 1  Wait Until Element Contains  import-header  ${SO_MULTI_IMPORT_TITLE_STRING_RESULT}  8
 Back To Search On Scout for SendOuts
   [Documentation]  selects back to search button after importing a job from Scout into Bullhorn
       Wait Until Page Contains Element  import-back-to-list
-      Click Button  import-back-to-list   
+      Click Button  import-back-to-list
+      Verify User is on Search Jobs Page for Scout in SO
+View Jobs On Scout for SendOuts
+  [Documentation]  selects view jobs button after importing a job from Scout into Bullhorn
+      Wait Until Page Contains Element  import-confirm-close
+      Click Button  import-confirm-close
       Verify User is on Search Jobs Page for Scout in SO
 
 
 
-#TODO figure out how to merge with and expand the common version of this 
+
+#TODO figure out how to merge with and expand the common version of this
 Go To Company Page 
   [Arguments]  ${PARTNER}  ${COMPANY}
       Log to Console  ${PARTNER}  ${COMPANY}

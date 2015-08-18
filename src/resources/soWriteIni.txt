@@ -1,10 +1,10 @@
 *** Settings ***
 # homemade library of self defined "keyword" functions
-Library  ../src/resources/iniWriterForAutoit.py
+Library  ../resources/iniWriterForAutoit.py
 # include the settings file for our tests
-Resource  ../src/resources/settings.txt
+Resource  ../resources/settings.txt
 
-Resource  ../../keywords/common/pycharm.txt
+Resource  ../keywords/common/pycharm.txt
 
 *** Keywords ***
 
